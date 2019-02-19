@@ -12,12 +12,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author teren
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "tweet.findById", query = "SELECT t FROM Tweet t WHERE t.id = :id")
+})
 public class Tweet implements Serializable {
     @Id
     @GeneratedValue
@@ -27,6 +34,7 @@ public class Tweet implements Serializable {
     private String message;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne

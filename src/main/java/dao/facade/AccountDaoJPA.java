@@ -6,9 +6,12 @@
 package dao.facade;
 
 import dao.IAccountDao;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import models.Account;
 
 /**
@@ -27,22 +30,35 @@ public class AccountDaoJPA implements IAccountDao {
         
     @Override
     public Account findById(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findById", Account.class);
+        query.setParameter("id", id);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result.get(0);
     }
 
     @Override
     public Account findByEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findByEmail", Account.class);
+        query.setParameter("email", email);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result.get(0);
     }
 
     @Override
     public Account findByUsername(String username) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findByUsername", Account.class);
+        query.setParameter("username", username);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result.get(0);    
     }
 
     @Override
     public List<Account> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Query query = entityManager.createQuery("SELECT a FROM Account a");
+         return  new ArrayList<>(query.getResultList());
     }
 
     @Override
@@ -58,7 +74,7 @@ public class AccountDaoJPA implements IAccountDao {
 
     @Override
     public void delete(Account entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entityManager.remove(entityManager.merge(entity));
     }
     
 }

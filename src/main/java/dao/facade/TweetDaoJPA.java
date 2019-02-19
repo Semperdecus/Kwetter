@@ -6,8 +6,11 @@
 package dao.facade;
 
 import dao.ITweetDao;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import models.Tweet;
 
 /**
@@ -19,12 +22,17 @@ public class TweetDaoJPA implements ITweetDao{
 
     @Override
     public Tweet findById(long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findById", Tweet.class);
+        query.setParameter("id", id);
+        List<Tweet> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result.get(0);
     }
 
     @Override
     public List<Tweet> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Query query = entityManager.createQuery("SELECT t FROM Tweet t");
+         return  new ArrayList<>(query.getResultList());
     }
 
     @Override
@@ -40,7 +48,7 @@ public class TweetDaoJPA implements ITweetDao{
 
     @Override
     public void delete(Tweet entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entityManager.remove(entityManager.merge(entity));
     }
     
 }

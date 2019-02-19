@@ -6,16 +6,25 @@
 package models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author teren
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
+    @NamedQuery(name = "account.findByUserame", query = "SELECT a FROM Account a WHERE a.username = :username"),
+    @NamedQuery(name = "account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
+})
 public class Account implements Serializable {
     @Id
     @GeneratedValue
@@ -37,7 +46,15 @@ public class Account implements Serializable {
     @Column(length = 160)
     private String bio;
 
+    private List<Tweet> tweets = new ArrayList<>();
+    private List<Account> following = new ArrayList<>();
+    private List<Account> followers = new ArrayList<>();
+    
     public Account() {
+        this.role = Role.USER.toString();
+        this.bio = "";
+        this.website = "";
+        this.location = "";
     }
 
     /**
@@ -48,10 +65,15 @@ public class Account implements Serializable {
      * @param password
      */
     public Account(Role role, String email, String username, String password) {
+        //TODO email, password, website, username, bio string validations
         this.role = role.toString();
         this.email = email;
         this.username = username;
         this.password = password;
+        this.location = "";
+        this.bio = "";
+        this.website = "";
+        this.location = "";
     }
     
     /**
@@ -74,8 +96,14 @@ public class Account implements Serializable {
      *
      * @return
      */
-    public String getRole() {
-        return role;
+    public Role getRole() {
+        if(role.equalsIgnoreCase(Role.USER.toString())) {
+            return Role.USER;
+        } else if (role.equalsIgnoreCase(Role.ADMIN.toString())) {
+            return Role.ADMIN;
+        } else {
+            return Role.USER;
+        }
     }
 
     /**
@@ -183,4 +211,39 @@ public class Account implements Serializable {
     }
     
     
+    public List<Tweet> getTweets() {
+        return tweets;
+    }
+
+    public void setTweets(List<Tweet> tweets) {
+        this.tweets = tweets;
+    }
+   
+    public void addTweets(Tweet tweet) {
+        tweets.add(tweet);
+    }
+
+    public List<Account> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<Account> following) {
+        this.following = following;
+    }
+    
+    public void addFollowing(Account account) {
+        following.add(account);
+    }       
+
+    public List<Account> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Account> followers) {
+        this.followers = followers;
+    }
+    
+    public void addFollowers(Account account) {
+        followers.add(account);
+    }    
 }
