@@ -20,6 +20,10 @@ import models.Tweet;
 public class TweetDaoJPA implements ITweetDao{
     private EntityManager entityManager;
 
+    public TweetDaoJPA(EntityManager entityManager) {
+
+    }
+
     @Override
     public Tweet findById(long id) {
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findById", Tweet.class);

@@ -20,7 +20,7 @@ import models.Account;
  */
 public class AccountDaoJPA implements IAccountDao {
 
-    @PersistenceContext(unitName ="KwetterPU")
+    @PersistenceContext(unitName ="KwetterTestPU")
     private EntityManager entityManager;
         
     public AccountDaoJPA(EntityManager entityManager) {

@@ -8,12 +8,15 @@ package models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,7 +25,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "account.findById", query = "SELECT a FROM Account a WHERE a.id = :id"),
-    @NamedQuery(name = "account.findByUserame", query = "SELECT a FROM Account a WHERE a.username = :username"),
+    @NamedQuery(name = "account.findByUsername", query = "SELECT a FROM Account a WHERE a.username = :username"),
     @NamedQuery(name = "account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
 })
 public class Account implements Serializable {
@@ -30,7 +33,7 @@ public class Account implements Serializable {
     @GeneratedValue
     private Long id;
     
-    private String role;
+    private String accountRole;
     
     @Column(nullable = false, unique = true)
     private String email;
@@ -39,22 +42,14 @@ public class Account implements Serializable {
     private String username;
     
     @Column(nullable = false, length = 20)
-    private String password;
+    private String accountPassword;
     private String location;
     private String website;
     
     @Column(length = 160)
     private String bio;
-
-    private List<Tweet> tweets = new ArrayList<>();
-    private List<Account> following = new ArrayList<>();
-    private List<Account> followers = new ArrayList<>();
     
     public Account() {
-        this.role = Role.USER.toString();
-        this.bio = "";
-        this.website = "";
-        this.location = "";
     }
 
     /**
@@ -65,11 +60,11 @@ public class Account implements Serializable {
      * @param password
      */
     public Account(Role role, String email, String username, String password) {
-        //TODO email, password, website, username, bio string validations
-        this.role = role.toString();
+        //TODO email, accountPassword, website, username, bio string validations
+        this.accountRole = role.toString();
         this.email = email;
         this.username = username;
-        this.password = password;
+        this.accountPassword = password;
         this.location = "";
         this.bio = "";
         this.website = "";
@@ -97,9 +92,9 @@ public class Account implements Serializable {
      * @return
      */
     public Role getRole() {
-        if(role.equalsIgnoreCase(Role.USER.toString())) {
+        if(accountRole.equalsIgnoreCase(Role.USER.toString())) {
             return Role.USER;
-        } else if (role.equalsIgnoreCase(Role.ADMIN.toString())) {
+        } else if (accountRole.equalsIgnoreCase(Role.ADMIN.toString())) {
             return Role.ADMIN;
         } else {
             return Role.USER;
@@ -111,7 +106,7 @@ public class Account implements Serializable {
      * @param role
      */
     public void setRole(String role) {
-        this.role = role;
+        this.accountRole = role;
     }
 
     /**
@@ -151,7 +146,7 @@ public class Account implements Serializable {
      * @return
      */
     public String getPassword() {
-        return password;
+        return accountPassword;
     }
 
     /**
@@ -159,7 +154,7 @@ public class Account implements Serializable {
      * @param password
      */
     public void setPassword(String password) {
-        this.password = password;
+        this.accountPassword = password;
     }
 
     /**
@@ -210,40 +205,4 @@ public class Account implements Serializable {
         this.bio = bio;
     }
     
-    
-    public List<Tweet> getTweets() {
-        return tweets;
-    }
-
-    public void setTweets(List<Tweet> tweets) {
-        this.tweets = tweets;
-    }
-   
-    public void addTweets(Tweet tweet) {
-        tweets.add(tweet);
-    }
-
-    public List<Account> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(List<Account> following) {
-        this.following = following;
-    }
-    
-    public void addFollowing(Account account) {
-        following.add(account);
-    }       
-
-    public List<Account> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(List<Account> followers) {
-        this.followers = followers;
-    }
-    
-    public void addFollowers(Account account) {
-        followers.add(account);
-    }    
 }

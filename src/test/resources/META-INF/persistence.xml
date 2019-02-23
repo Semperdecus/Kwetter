@@ -11,7 +11,7 @@
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create" />
-      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/kwetter"/>
+      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/kwetter_test"/>
       <property name="hibernate.connection.username" value="root"/>
       <property name="hibernate.connection.password" value="qw12QW!@"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
