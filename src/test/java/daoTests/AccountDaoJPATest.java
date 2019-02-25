@@ -6,7 +6,7 @@
 package daoTests;
 
 import dao.facade.AccountDaoJPA;
-import dao.facade.TweetDaoJPA;
+import exceptions.AccountException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -57,46 +57,68 @@ public class AccountDaoJPATest {
     /*
     Case 1: Don't allow empty username
     */
-    @Test
-    public void usernameTest1() {
+    @Test(expected=AccountException.class)
+    public void usernameTest1() throws Exception{
         // TODO - Don't allow empty username
         transaction.begin();
-        Account acc = dao.create(new Account(Role.USER, "user@mail.nl", "username", "password"));
+        Account account = dao.create(new Account(Role.USER, "user@mail.nl", "", "password"));
         transaction.commit();
-        assertEquals(acc.getUsername(), "username");
+        assertNull(account);
     }
     
     /*
     Case 2: Don't allow strings longer than 20 characters
     */
-    //@Test
+    @Test(expected=AccountException.class)
     public void usernameTest2() throws Exception {
         transaction.begin();
-        //Account account = dao.create(new Account(Role.USER, "user@mail.nl", "123456789012345678901", "password"));
-        //assertNull(account);
+        Account account = dao.create(new Account(Role.USER, "user@mail.nl", "123456789012345678901", "password"));
         transaction.commit();
+        assertNull(account);
     }
     
     /*
     Case 3: correct username
     */
-    //@Test
+    @Test
     public void usernameTest3() throws Exception {
-        // TODO - Don't allow empty username
         transaction.begin();
-        //Account account = dao.create(new Account(Role.USER, "user@mail.nl", "username", "password"));
-        //assertEquals(account, dao.findByUsername(account.getUsername()));
+        Account account = dao.create(new Account(Role.USER, "user@mail.com", "username", "password"));
+        assertEquals(account, dao.findByUsername(account.getUsername()));
         transaction.commit();
     }
     
     /*
     Case 4: don't allow emails without proper format
     */
-    //@Test
+    @Test(expected=AccountException.class)
     public void emailTest1() throws Exception {
         transaction.begin();
-        //Account account = dao.create(new Account(Role.USER, "mail", "username", "password"));
-        //assertNull(account);
+        Account account = dao.create(new Account(Role.USER, "mail", "username", "password"));
+        assertNull(account);
+        transaction.commit();
+    }
+    
+        
+    /*
+    Case 5: don't allow empty email
+    */
+    @Test(expected=AccountException.class)
+    public void emailTest2() throws Exception {
+        transaction.begin();
+        Account account = dao.create(new Account(Role.USER, "", "username", "password"));
+        assertNull(account);
+        transaction.commit();
+    }
+    
+    /*
+    Case 6: proper email
+    */
+    @Test
+    public void emailTest3() throws Exception {
+        transaction.begin();
+        Account account = dao.create(new Account(Role.USER, "user@mail.nl", "username", "password"));
+        assertEquals(account, dao.findByEmail(account.getEmail()));
         transaction.commit();
     }
 }

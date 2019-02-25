@@ -13,6 +13,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -49,6 +51,16 @@ public class Account implements Serializable {
     @Column(length = 160)
     private String bio;
     
+    
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
+    private List<Tweet> tweets = new ArrayList<>();
+
+    @ManyToMany
+    private List<Account> following = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
+    private List<Account> followers = new ArrayList<>();
+    
     public Account() {
     }
 
@@ -60,15 +72,10 @@ public class Account implements Serializable {
      * @param password
      */
     public Account(Role role, String email, String username, String password) {
-        //TODO email, accountPassword, website, username, bio string validations
         this.accountRole = role.toString();
         this.email = email;
         this.username = username;
         this.accountPassword = password;
-        this.location = "";
-        this.bio = "";
-        this.website = "";
-        this.location = "";
     }
     
     /**
@@ -204,5 +211,87 @@ public class Account implements Serializable {
     public void setBio(String bio) {
         this.bio = bio;
     }
+   
     
+    /**
+     * @return the tweets
+     */
+    public List<Tweet> getTweets() {
+        return tweets;
+    }
+    
+    /**
+     * Add a Tweet to an User
+     * @param tweet Tweet to add
+     */
+    public void addTweet(Tweet tweet) {
+        tweets.add(tweet);
+    }
+
+    /**
+     * @param tweets the tweets to set
+     */
+    public void setTweets(List<Tweet> tweets) {
+        this.tweets = tweets;
+    }
+    
+    /**
+     * @return the following
+     */
+    public List<Account> getFollowing() {
+        return following;
+    }
+
+    /**
+     * Add a following User
+     * @param user Following User to add
+     */
+    public void addFollowing(Account user) {
+        following.add(user);
+    }
+    
+    /**
+     * Remove a following User
+     * @param user 
+     */
+    public void removeFollowing(Account user) {
+        following.remove(user);
+    }
+    
+    /**
+     * @param following the following to set
+     */
+    public void setFollowing(List<Account> following) {
+        this.following = following;
+    }
+
+    /**
+     * @return the followers
+     */
+    public List<Account> getFollowers() {
+        return followers;
+    }
+
+    /**
+     * Add a Follower to a User
+     * @param follower Follower to add
+     */
+    public void addFollower(Account follower) {
+        followers.add(follower);
+    }
+    
+    /**
+     * Remove a Follower of a User
+     * @param follower 
+     */
+    public void removeFollower(Account follower) {
+        followers.remove(follower);
+    }
+    
+    /**
+     * @param followers the followers to set
+     */
+    public void setFollowers(List<Account> followers) {
+        this.followers = followers;
+    }
 }

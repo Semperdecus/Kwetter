@@ -5,6 +5,7 @@
  */
 package dao;
 
+import exceptions.AccountException;
 import java.util.List;
 import models.Account;
 
@@ -46,7 +47,7 @@ public interface IAccountDao {
      * @param entity
      * @return
      */
-    Account create(Account entity);
+    Account create(Account entity) throws AccountException;
     
     /**
      *

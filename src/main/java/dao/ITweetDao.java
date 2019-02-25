@@ -5,6 +5,7 @@
  */
 package dao;
 
+import exceptions.TweetException;
 import java.util.List;
 import models.Tweet;
 
@@ -23,6 +24,27 @@ public interface ITweetDao {
     
     /**
      *
+     * @param message
+     * @return
+     */
+    List<Tweet> findByMessage(String message);
+    
+    /**
+     *
+     * @param message
+     * @return
+     */
+    List<Tweet> findByUsername(String username);
+    
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public void deleteById(long id) throws TweetException;
+    
+    /**
+     *
      * @return
      */
     List<Tweet> findAll();
@@ -32,7 +54,7 @@ public interface ITweetDao {
      * @param entity
      * @return
      */
-    Tweet create(Tweet entity);
+    Tweet create(Tweet entity) throws TweetException;
     
     /**
      *

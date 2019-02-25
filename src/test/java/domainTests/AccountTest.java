@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package models;
+package domainTests;
 
 import java.util.List;
+import models.Account;
+import models.Role;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -80,16 +82,15 @@ public class AccountTest {
     /**
      * Test of getRole method, of class Account.
      */
-    @Test
+    @Test(expected=NullPointerException.class)
     public void testGetRole() {
         System.out.println("getRole");
-        Account instance = new Account();
+        
         Role expResult = Role.USER;
-        Role result = instance.getRole();
-        assertEquals(expResult, result);
-
-        expResult = Role.USER;
         assertEquals(expResult, testAccount.getRole());
+        
+        Account instance = new Account();
+        assertNull(instance.getRole());
     }
 
     /**
@@ -122,7 +123,7 @@ public class AccountTest {
         Account instance = new Account();
         String expResult = "";
         String result = instance.getEmail();
-        assertEquals(expResult, result);
+        assertNull(result);
 
         expResult = "user@gmail.com";
         assertEquals(expResult, testAccount.getEmail());
@@ -163,7 +164,7 @@ public class AccountTest {
         Account instance = new Account();
         String expResult = "";
         String result = instance.getUsername();
-        assertEquals(expResult, result);
+        assertNull(result);
 
         expResult = "username";
         assertEquals(expResult, testAccount.getUsername());
@@ -201,7 +202,7 @@ public class AccountTest {
         Account instance = new Account();
         String expResult = "";
         String result = instance.getPassword();
-        assertEquals(expResult, result);
+        assertNull(result);
 
         expResult = "password";
         assertEquals(expResult, testAccount.getPassword());
@@ -238,9 +239,9 @@ public class AccountTest {
         Account instance = new Account();
         String expResult = "";
         String result = instance.getLocation();
-        assertEquals(expResult, result);
+        assertNull(result);
 
-        assertEquals(expResult, testAccount.getLocation());
+        assertNull(expResult, testAccount.getLocation());
     }
 
     /**
@@ -267,9 +268,9 @@ public class AccountTest {
         Account instance = new Account();
         String expResult = "";
         String result = instance.getWebsite();
-        assertEquals(expResult, result);
+        assertNull(expResult, result);
 
-        assertEquals(expResult, testAccount.getWebsite());
+        assertNull(testAccount.getWebsite());
     }
 
     /**
@@ -301,9 +302,9 @@ public class AccountTest {
         Account instance = new Account();
         String expResult = "";
         String result = instance.getBio();
-        assertEquals(expResult, result);
+        assertNull(expResult, result);
 
-        assertEquals(expResult, testAccount.getBio());
+        assertNull(testAccount.getBio());
     }
 
     /**
