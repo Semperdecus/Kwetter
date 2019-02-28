@@ -61,4 +61,5 @@ public interface IAccountDao {
      * @param entity
      */
     void delete(Account entity);
+
 }

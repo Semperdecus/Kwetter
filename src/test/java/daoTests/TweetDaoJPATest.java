@@ -33,6 +33,7 @@ public class TweetDaoJPATest {
     private Account account;
     private Account accountBart;
     private Account accountEmma;
+    private Account accountAdmin;
     private boolean isInitialized = false;
 
     public TweetDaoJPATest() {
@@ -51,10 +52,12 @@ public class TweetDaoJPATest {
             accountBart = new Account(Role.USER, "bart@mail.nl", "bart", "password");
             accountEmma = new Account(Role.USER, "emma@mail.nl", "emma", "password");
             account = new Account(Role.USER, "user@mail.nl", "user", "password");
+            accountAdmin = new Account(Role.ADMIN, "admin@mail.nl", "admin", "password");
 
             entityManager.persist(account);
             entityManager.persist(accountEmma);
             entityManager.persist(accountBart);
+            entityManager.persist(accountAdmin);
 
             transaction.commit();
             isInitialized = true;
@@ -66,8 +69,14 @@ public class TweetDaoJPATest {
      */
     @Test
     public void createTest1() throws Exception {
-        Tweet tweet = dao.create(new Tweet("Tweet message", account));
-        assertNotNull(tweet);
+        // Arrange
+        Tweet tweet = new Tweet("Tweet message", account);
+        
+        // Act
+        Tweet daoTweet = dao.create(tweet);
+        
+        // Assert 
+        assertEquals("Tweet message", daoTweet.getMessage());
     }
 
     /*
@@ -92,7 +101,7 @@ public class TweetDaoJPATest {
     }
 
     /*
-    Case 4: Correct tweet (141 characters)
+    Case 4: Too long tweet (141 characters)
      */
     @Test(expected = TweetException.class)
     public void createTest4() throws Exception {
@@ -110,10 +119,8 @@ public class TweetDaoJPATest {
     @Test
     public void findByIdTest() throws Exception {
         // Create Tweet and persist to database
-        transaction.begin();
         Tweet tweet = new Tweet("Hello world!", account);
         Tweet createdTweet = dao.create(tweet);
-        transaction.commit();
 
         // Find tweet by id
         transaction.begin();
@@ -128,10 +135,8 @@ public class TweetDaoJPATest {
     @Test
     public void findByMessageTest1() throws Exception {
         // Create tweet
-        transaction.begin();
         Tweet tweet = new Tweet("Hello world!", account);
         Tweet createdTweet = dao.create(tweet);
-        transaction.commit();
 
         // Find by message
         transaction.begin();
@@ -146,10 +151,8 @@ public class TweetDaoJPATest {
     @Test
     public void findByUsernameTest1() throws Exception {
         // Create tweet
-        transaction.begin();
         Tweet tweet = new Tweet("Hello world!", account);
         Tweet createdTweet = dao.create(tweet);
-        transaction.commit();
 
         // Find by username
         transaction.begin();
@@ -171,11 +174,9 @@ public class TweetDaoJPATest {
     public void findByUsernameTest2() throws Exception {
 
         // Create 3 tweets
-        transaction.begin();
         dao.create(new Tweet("Hello world!", accountBart));
         dao.create(new Tweet("Hello world!", accountBart));
         dao.create(new Tweet("Hello world!", accountEmma));
-        transaction.commit();
 
         // Find by username "bart" with 2 tweets
         transaction.begin();
@@ -196,10 +197,8 @@ public class TweetDaoJPATest {
     @Test
     public void deleteByIdTest() throws Exception {
         // Create tweet
-        transaction.begin();
         Tweet tweet = new Tweet("Hello world!", account);
         Tweet createdTweet = dao.create(tweet);
-        transaction.commit();
 
         // 1 Tweet found
         transaction.begin();
@@ -218,4 +217,37 @@ public class TweetDaoJPATest {
         assertEquals(0, tweetNotFound.size());
         transaction.commit();
     }
+    
+    /*
+    Case 10: Test link between Tweet and Account tables
+     */
+    @Test
+    public void linkTweetAccountTest() throws Exception {
+        // Create tweet from Account Emma (id 3)
+        dao.create(new Tweet("emma's Tweet!", accountEmma));
+
+        // Find by username "emma" with 1 tweet
+        transaction.begin();
+        List<Tweet> tweetResultsEmma = dao.findByUsername("emma");
+        assertEquals("emma", tweetResultsEmma.get(0).getAccount().getUsername());
+        transaction.commit();
+    }
+
+    /*
+    Case 11: Delete tweet
+     */
+    @Test
+    public void deleteTweetTest() throws Exception {
+        // Create tweet from Account Emma (id 3)
+        dao.create(new Tweet("emma's Tweet!", accountEmma));
+
+        // Find by username "emma" with 1 tweet
+        transaction.begin();
+        List<Tweet> tweetResultsEmma = dao.findByUsername("emma");
+        dao.delete(tweetResultsEmma.get(0));
+        transaction.commit();
+        
+        assertEquals(this, account);
+    }
+    
 }

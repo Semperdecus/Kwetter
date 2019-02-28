@@ -5,9 +5,11 @@
  */
 package domainTests;
 
+import java.util.ArrayList;
 import java.util.List;
 import models.Account;
 import models.Role;
+import models.Tweet;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -329,4 +331,30 @@ public class AccountTest {
         assertEquals(sentence, testAccount.getBio());    
     }
 
+     /**
+     * Test of setBio method, of class Account.
+     */
+    @Test
+    public void testTweet() {
+        // Account in constructor does not add to tweet list
+        System.out.println("tweets");
+        Account instance = new Account();
+        Tweet tweet = new Tweet("new tweet", instance);
+        assertEquals(0, instance.getTweets().size());
+        
+        // Add tweet
+        Tweet tweet2 = new Tweet("second tweet", instance);
+        instance.addTweet(tweet2);
+        assertEquals(1, instance.getTweets().size());
+
+        // Set tweet list
+        List<Tweet> testTweets = new ArrayList<>();
+        testTweets.add(tweet);
+        testTweets.add(tweet2);
+        instance.setTweets(testTweets);
+        assertEquals(2, instance.getTweets().size());
+
+    }   
+    
+    
 }

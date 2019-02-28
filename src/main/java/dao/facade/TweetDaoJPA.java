@@ -11,8 +11,10 @@ import exceptions.TweetException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transaction;
 import models.Account;
 import models.Tweet;
 
@@ -23,10 +25,13 @@ import models.Tweet;
 public class TweetDaoJPA implements ITweetDao {
 
     private EntityManager entityManager;
+    private EntityTransaction transaction;
 
     public TweetDaoJPA(EntityManager entityManager) {
         super();
         this.entityManager = entityManager;
+        transaction = entityManager.getTransaction();
+
     }
 
     @Override
@@ -64,8 +69,10 @@ public class TweetDaoJPA implements ITweetDao {
 
     @Override
     public Tweet create(Tweet entity) throws TweetException {
+        transaction.begin();
         checkCreate(entity);
         entityManager.persist(entity);
+        transaction.commit();
         return entity;
     }
 
