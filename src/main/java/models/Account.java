@@ -35,7 +35,7 @@ public class Account implements Serializable {
     @GeneratedValue
     private Long id;
     
-    private String accountRole;
+    private Role accountRole;
     
     @Column(nullable = false, unique = true)
     private String email;
@@ -56,6 +56,7 @@ public class Account implements Serializable {
     private List<Tweet> tweets = new ArrayList<>();
 
     @ManyToMany
+    @JoinTable(name = "followers_following")
     private List<Account> following = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
@@ -72,7 +73,7 @@ public class Account implements Serializable {
      * @param password
      */
     public Account(Role role, String email, String username, String password) {
-        this.accountRole = role.toString();
+        this.accountRole = role;
         this.email = email;
         this.username = username;
         this.accountPassword = password;
@@ -99,9 +100,9 @@ public class Account implements Serializable {
      * @return
      */
     public Role getRole() {
-        if(accountRole.equalsIgnoreCase(Role.USER.toString())) {
+        if(accountRole == Role.USER) {
             return Role.USER;
-        } else if (accountRole.equalsIgnoreCase(Role.ADMIN.toString())) {
+        } else if (accountRole == Role.ADMIN) {
             return Role.ADMIN;
         } else {
             return Role.USER;
@@ -112,7 +113,7 @@ public class Account implements Serializable {
      *
      * @param role
      */
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.accountRole = role;
     }
 

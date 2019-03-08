@@ -21,45 +21,44 @@ public interface IAccountDao {
      * @return
      */
     Account findById(long id);
-    
+
     /**
      *
      * @param email
      * @return
      */
     Account findByEmail(String email);
-    
+
     /**
      *
      * @param username
      * @return
      */
     Account findByUsername(String username);
-    
+
     /**
      *
      * @return
      */
     List<Account> findAll();
-    
+
     /**
      *
      * @param entity
      * @return
      */
     Account create(Account entity) throws AccountException;
-    
+
     /**
      *
      * @param entity
      * @return
      */
     Account update(Account entity);
-    
+
     /**
      *
      * @param entity
      */
     void delete(Account entity);
-
 }

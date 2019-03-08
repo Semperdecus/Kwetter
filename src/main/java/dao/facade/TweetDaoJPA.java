@@ -12,59 +12,70 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transaction;
 import models.Account;
+import models.Role;
 import models.Tweet;
 
 /**
  *
  * @author teren
  */
-public class TweetDaoJPA implements ITweetDao {
+public class TweetDaoJPA extends Facade<Tweet> implements ITweetDao {
 
+    @PersistenceContext(unitName = "KwetterPU")
     private EntityManager entityManager;
     private EntityTransaction transaction;
 
     public TweetDaoJPA(EntityManager entityManager) {
-        super();
+        super(Tweet.class);
         this.entityManager = entityManager;
         transaction = entityManager.getTransaction();
-
     }
 
     @Override
     public Tweet findById(long id) {
+        transaction.begin();
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findById", Tweet.class);
         query.setParameter("id", id);
         List<Tweet> result = query.getResultList();
         System.out.println("count: " + result.size());
+        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public List<Tweet> findByMessage(String message) {
+        transaction.begin();
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findByMessage", Tweet.class);
         query.setParameter("message", message);
         List<Tweet> result = query.getResultList();
         System.out.println("count: " + result.size());
-        return query.getResultList();
+        transaction.commit();
+        return result;
     }
 
     @Override
     public List<Tweet> findByUsername(String username) {
+        transaction.begin();
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findByUsername", Tweet.class);
         query.setParameter("username", username);
         List<Tweet> result = query.getResultList();
         System.out.println("count: " + result.size());
-        return query.getResultList();
+        transaction.commit();
+        return result;
     }
 
     @Override
     public List<Tweet> findAll() {
+        transaction.begin();
         Query query = entityManager.createQuery("SELECT t FROM Tweet t");
-        return new ArrayList<>(query.getResultList());
+        List<Tweet> result = query.getResultList();
+        transaction.commit();
+        return result;
     }
 
     @Override
@@ -81,24 +92,35 @@ public class TweetDaoJPA implements ITweetDao {
         return entityManager.merge(entity);
     }
 
-    public void deleteById(long id) throws TweetException{
+    public void deleteById(long id, Account adminAccount) throws TweetException {
         final Tweet entity = findById(id);
 
         if (entity == null) {
             throw new TweetException("Tweet is not found.");
         } else {
-            delete(entity);
+            delete(entity, adminAccount);
         }
     }
 
     @Override
-    public void delete(Tweet entity) {
-        entityManager.remove(entityManager.merge(entity));
+    public void delete(Tweet entity, Account adminAccount) throws TweetException {
+        if (adminAccount.getRole() == Role.ADMIN) {
+            transaction.begin();
+            entityManager.remove(entityManager.merge(entity));
+            transaction.commit();
+        } else {
+            throw new TweetException("Account does not have permissions to delete tweet");
+        }
     }
 
     private void checkCreate(Tweet entity) throws TweetException {
         if (entity.getMessage().length() < 0 || entity.getMessage().isEmpty() || entity.getMessage().length() > 140) {
             throw new TweetException("Tweet has invalid length");
         }
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

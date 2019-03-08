@@ -10,7 +10,6 @@ import exceptions.TweetException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import models.Account;
 import models.Role;
@@ -27,13 +26,13 @@ public class TweetDaoJPATest {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kwetterTestPU");
     private EntityManager entityManager;
-    private EntityTransaction transaction;
     private TweetDaoJPA dao;
 
     private Account account;
     private Account accountBart;
     private Account accountEmma;
     private Account accountAdmin;
+    
     private boolean isInitialized = false;
 
     public TweetDaoJPATest() {
@@ -43,10 +42,8 @@ public class TweetDaoJPATest {
     @Before
     public void setUp() {
         entityManager = entityManagerFactory.createEntityManager();
-        transaction = entityManager.getTransaction();
 
         if (!isInitialized) {
-            transaction.begin();
             dao = new TweetDaoJPA(entityManager);
 
             accountBart = new Account(Role.USER, "bart@mail.nl", "bart", "password");
@@ -59,7 +56,6 @@ public class TweetDaoJPATest {
             entityManager.persist(accountBart);
             entityManager.persist(accountAdmin);
 
-            transaction.commit();
             isInitialized = true;
         }
     }
@@ -123,10 +119,8 @@ public class TweetDaoJPATest {
         Tweet createdTweet = dao.create(tweet);
 
         // Find tweet by id
-        transaction.begin();
         Tweet tweetFound = dao.findById(createdTweet.getId());
         assertEquals(createdTweet, tweetFound);
-        transaction.commit();
     }
 
     /*
@@ -139,10 +133,8 @@ public class TweetDaoJPATest {
         Tweet createdTweet = dao.create(tweet);
 
         // Find by message
-        transaction.begin();
         List<Tweet> tweetResults = dao.findByMessage(createdTweet.getMessage());
         assertEquals(1, tweetResults.size());
-        transaction.commit();
     }
 
     /*
@@ -155,16 +147,12 @@ public class TweetDaoJPATest {
         Tweet createdTweet = dao.create(tweet);
 
         // Find by username
-        transaction.begin();
         List<Tweet> tweetResults = dao.findByUsername(createdTweet.getAccount().getUsername());
         assertEquals(1, tweetResults.size());
-        transaction.commit();
 
         // Case insensitive
-        transaction.begin();
         List<Tweet> tweetResultsUppercase = dao.findByUsername(createdTweet.getAccount().getUsername().toUpperCase());
         assertEquals(1, tweetResultsUppercase.size());
-        transaction.commit();
     }
 
     /*
@@ -179,16 +167,12 @@ public class TweetDaoJPATest {
         dao.create(new Tweet("Hello world!", accountEmma));
 
         // Find by username "bart" with 2 tweets
-        transaction.begin();
         List<Tweet> tweetResultsBart = dao.findByUsername("bart");
         assertEquals(2, tweetResultsBart.size());
-        transaction.commit();
 
         // Find by username "emma" with 1 tweet
-        transaction.begin();
         List<Tweet> tweetResultsEmma = dao.findByUsername("Emma");
         assertEquals(1, tweetResultsEmma.size());
-        transaction.commit();
     }
 
     /*
@@ -201,21 +185,15 @@ public class TweetDaoJPATest {
         Tweet createdTweet = dao.create(tweet);
 
         // 1 Tweet found
-        transaction.begin();
         List<Tweet> tweetFound = dao.findAll();
         assertEquals(1, tweetFound.size());
-        transaction.commit();
         
         // Delete tweet
-        transaction.begin();
-        dao.deleteById(tweet.getId());
-        transaction.commit();
+        dao.deleteById(tweet.getId(), accountAdmin);
         
         // 0 Tweets found
-        transaction.begin();
         List<Tweet> tweetNotFound = dao.findAll();
         assertEquals(0, tweetNotFound.size());
-        transaction.commit();
     }
     
     /*
@@ -227,27 +205,35 @@ public class TweetDaoJPATest {
         dao.create(new Tweet("emma's Tweet!", accountEmma));
 
         // Find by username "emma" with 1 tweet
-        transaction.begin();
         List<Tweet> tweetResultsEmma = dao.findByUsername("emma");
         assertEquals("emma", tweetResultsEmma.get(0).getAccount().getUsername());
-        transaction.commit();
     }
 
     /*
     Case 11: Delete tweet
      */
     @Test
-    public void deleteTweetTest() throws Exception {
-        // Create tweet from Account Emma (id 3)
-        dao.create(new Tweet("emma's Tweet!", accountEmma));
+    public void deleteTweetTest1() throws Exception {
+        // Create tweet from Account Emma
+        Tweet deletableTweet = new Tweet("emma's Tweet!", accountEmma);
+        dao.create(deletableTweet);
 
         // Find by username "emma" with 1 tweet
-        transaction.begin();
-        List<Tweet> tweetResultsEmma = dao.findByUsername("emma");
-        dao.delete(tweetResultsEmma.get(0));
-        transaction.commit();
+        dao.delete(deletableTweet, accountAdmin);
         
-        assertEquals(this, account);
+        assertEquals(0, accountEmma.getTweets().size());
     }
-    
+  
+    /*
+    Case 12: Delete tweet without adminaccount
+     */
+    @Test(expected = TweetException.class)
+    public void deleteTweetTest2() throws Exception {
+        // Create tweet from Account Emma
+        Tweet deletableTweet = new Tweet("emma's Tweet!", accountEmma);
+        dao.create(deletableTweet);
+
+        // Delete tweet 
+        dao.delete(deletableTweet, account);
+    }
 }

@@ -7,6 +7,7 @@ package dao;
 
 import exceptions.TweetException;
 import java.util.List;
+import models.Account;
 import models.Tweet;
 
 /**
@@ -38,10 +39,10 @@ public interface ITweetDao {
     
     /**
      *
-     * @param id
+     * @param id, adminAccount
      * @return
      */
-    public void deleteById(long id) throws TweetException;
+    public void deleteById(long id, Account adminAccount) throws TweetException;
     
     /**
      *
@@ -65,7 +66,7 @@ public interface ITweetDao {
     
     /**
      *
-     * @param entity
+     * @param entity, adminAccount
      */
-    void delete(Tweet entity);
+    void delete(Tweet entity, Account adminAccount) throws TweetException;
 }

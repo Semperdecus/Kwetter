@@ -22,10 +22,6 @@ public abstract class Facade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
-        getEntityManager().persist(entity);
-    }
-
     public void edit(T entity) {
         getEntityManager().merge(entity);
     }

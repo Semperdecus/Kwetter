@@ -84,15 +84,12 @@ public class AccountTest {
     /**
      * Test of getRole method, of class Account.
      */
-    @Test(expected=NullPointerException.class)
+    @Test
     public void testGetRole() {
         System.out.println("getRole");
         
         Role expResult = Role.USER;
         assertEquals(expResult, testAccount.getRole());
-        
-        Account instance = new Account();
-        assertNull(instance.getRole());
     }
 
     /**
@@ -101,7 +98,7 @@ public class AccountTest {
     @Test
     public void testSetRole() {
         System.out.println("setRole");
-        String role = "";
+        Role role = null;
         Account instance = new Account();
         
         instance.setRole(role);
@@ -111,7 +108,7 @@ public class AccountTest {
         expResult = Role.USER;
         assertEquals(expResult, testAccount.getRole());
        
-        testAccount.setRole(Role.ADMIN.toString());
+        testAccount.setRole(Role.ADMIN);
         expResult = Role.ADMIN;
         assertEquals(expResult, testAccount.getRole());        
     }

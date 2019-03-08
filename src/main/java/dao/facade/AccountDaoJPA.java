@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -20,53 +21,66 @@ import models.Account;
  *
  * @author teren
  */
-public class AccountDaoJPA implements IAccountDao {
+public class AccountDaoJPA extends Facade<Account> implements IAccountDao {
 
-    @PersistenceContext(unitName = "KwetterTestPU")
+    @PersistenceContext(unitName = "KwetterPU")
     private EntityManager entityManager;
+    private EntityTransaction transaction;
 
     public AccountDaoJPA(EntityManager entityManager) {
-        super();
+        super(Account.class);
         this.entityManager = entityManager;
+        transaction = entityManager.getTransaction();
     }
 
     @Override
     public Account findById(long id) {
+        transaction.begin();
         TypedQuery<Account> query = entityManager.createNamedQuery("account.findById", Account.class);
         query.setParameter("id", id);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
+        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public Account findByEmail(String email) {
+        transaction.begin();
         TypedQuery<Account> query = entityManager.createNamedQuery("account.findByEmail", Account.class);
         query.setParameter("email", email);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
+        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public Account findByUsername(String username) {
+        transaction.begin();
         TypedQuery<Account> query = entityManager.createNamedQuery("account.findByUsername", Account.class);
         query.setParameter("username", username);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
+        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public List<Account> findAll() {
+        transaction.begin();
         Query query = entityManager.createQuery("SELECT a FROM Account a");
-        return new ArrayList<>(query.getResultList());
+        List<Account> result = query.getResultList();
+        transaction.commit();
+        return result;
     }
 
     @Override
     public Account create(Account entity) throws AccountException {
+        transaction.begin();
         checkCreate(entity);
         entityManager.persist(entity);
+        transaction.commit();
         return entity;
     }
 
@@ -77,7 +91,9 @@ public class AccountDaoJPA implements IAccountDao {
 
     @Override
     public void delete(Account entity) {
+        transaction.begin();
         entityManager.remove(entityManager.merge(entity));
+        transaction.commit();
     }
 
     private void checkCreate(Account entity) throws AccountException {
@@ -88,19 +104,25 @@ public class AccountDaoJPA implements IAccountDao {
         if (entity.getPassword().length() > 20 || entity.getPassword().length() < 0 || entity.getPassword().isEmpty()) {
             throw new AccountException("Password has an invalid length");
         }
-        
-        if(!isValidEmail(entity.getEmail()) || entity.getEmail().isEmpty() || entity.getEmail().length() < 0) {
+
+        if (!isValidEmail(entity.getEmail()) || entity.getEmail().isEmpty() || entity.getEmail().length() < 0) {
             throw new AccountException("Email has invalid format or invalid length");
         }
     }
-    
-    private boolean isValidEmail(String email){
+
+    private boolean isValidEmail(String email) {
         System.out.println("email: " + email);
         String emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-                              
-        Pattern pat = Pattern.compile(emailRegex); 
-        if (email == null) 
-            return false; 
-        return pat.matcher(email).matches(); 
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null) {
+            return false;
+        }
+        return pat.matcher(email).matches();
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return entityManager;
     }
 }

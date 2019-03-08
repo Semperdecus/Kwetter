@@ -29,7 +29,6 @@ public class AccountDaoJPATest {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kwetterTestPU");
     private EntityManager entityManager;
-    private EntityTransaction transaction;
     private AccountDaoJPA dao;
 
     private Account account;
@@ -44,10 +43,8 @@ public class AccountDaoJPATest {
     @Before
     public void setUp() {
         entityManager = entityManagerFactory.createEntityManager();
-        transaction = entityManager.getTransaction();
 
         if (!isInitialized) {
-            transaction.begin();
             dao = new AccountDaoJPA(entityManager);
 
             accountBart = new Account(Role.USER, "bart@mail.nl", "bart", "password");
@@ -61,12 +58,11 @@ public class AccountDaoJPATest {
             account.addFollower(accountEmma);
             account.addFollower(accountBart);
             accountBart.addFollower(accountEmma);
-            
+
             entityManager.persist(account);
             entityManager.persist(accountEmma);
             entityManager.persist(accountBart);
 
-            transaction.commit();
             isInitialized = true;
         }
     }
@@ -78,57 +74,47 @@ public class AccountDaoJPATest {
     /*
     Case 1: Don't allow empty username
      */
-    //@Test(expected=AccountException.class)
+    @Test(expected=AccountException.class)
     public void usernameTest1() throws Exception {
         // TODO - Don't allow empty username
-        transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "user@mail.nl", "", "password"));
-        transaction.commit();
-        assertNull(account);
+        Account accountUsername = dao.create(new Account(Role.USER, "user@mail.nl", "", "password"));
+        assertNull(accountUsername);
     }
 
     /*
     Case 2: Don't allow strings longer than 20 characters
      */
-    //@Test(expected=AccountException.class)
+    @Test(expected=AccountException.class)
     public void usernameTest2() throws Exception {
-        transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "user@mail.nl", "123456789012345678901", "password"));
-        transaction.commit();
-        assertNull(account);
+        Account accountUsername = dao.create(new Account(Role.USER, "user@mail.nl", "123456789012345678901", "password"));
+        assertNull(accountUsername);
     }
 
     /*
     Case 3: correct username
      */
-    //@Test
+    @Test
     public void usernameTest3() throws Exception {
-        transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "user@mail.com", "username", "password"));
-        assertEquals(account, dao.findByUsername(account.getUsername()));
-        transaction.commit();
+        Account accountUsername = dao.create(new Account(Role.USER, "user@mail.com", "username", "password"));
+        assertEquals(accountUsername, dao.findByUsername(accountUsername.getUsername()));
     }
 
     /*
     Case 4: don't allow emails without proper format
      */
-    //@Test(expected=AccountException.class)
+    @Test(expected=AccountException.class)
     public void emailTest1() throws Exception {
-        transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "mail", "username", "password"));
-        assertNull(account);
-        transaction.commit();
+        Account accountEmail = dao.create(new Account(Role.USER, "mail", "username", "password"));
+        assertNull(accountEmail);
     }
 
     /*
     Case 5: don't allow empty email
      */
-    //@Test(expected=AccountException.class)
+    @Test(expected=AccountException.class)
     public void emailTest2() throws Exception {
-        transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "", "username", "password"));
-        assertNull(account);
-        transaction.commit();
+        Account accountEmail = dao.create(new Account(Role.USER, "", "username", "password"));
+        assertNull(accountEmail);
     }
 
     /*
@@ -136,20 +122,16 @@ public class AccountDaoJPATest {
      */
     //@Test
     public void emailTest3() throws Exception {
-        transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "user@mail.nl", "username", "password"));
-        assertEquals(account, dao.findByEmail(account.getEmail()));
-        transaction.commit();
+        Account accountEmail = dao.create(new Account(Role.USER, "user@mail.nl", "username", "password"));
+        assertEquals(accountEmail, dao.findByEmail("user@mail.nl"));
     }
     
     /*
-    Case 8: new following and get following/follwoers
+    Case 7: new following and get following/followers
      */
     @Test
     public void followingTest1() throws Exception {
         // Test via list
-        transaction.begin();
-
         System.out.println(accountEmma.getFollowers());
         
         assertEquals("bart", dao.findByUsername(accountEmma.getFollowing().get(0).getUsername()).getUsername());
@@ -157,6 +139,5 @@ public class AccountDaoJPATest {
         
         assertEquals(2, dao.findByUsername(accountEmma.getUsername()).getFollowing().size());
         assertEquals(1, dao.findByUsername(accountBart.getUsername()).getFollowers().size());
-        transaction.commit();
-    }    
+    }
 }
