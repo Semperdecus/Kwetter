@@ -10,6 +10,8 @@ import exceptions.AccountException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
@@ -21,14 +23,22 @@ import models.Account;
  *
  * @author teren
  */
-public class AccountDaoJPA extends Facade<Account> implements IAccountDao {
+@JPA
+@Stateless
+public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDao {
 
-    @PersistenceContext(unitName = "KwetterPU")
+    @PersistenceContext(unitName = "kwetterPU")
     private EntityManager entityManager;
     private EntityTransaction transaction;
 
+    public AccountDaoJPA() {
+        super();
+        setClassObj(Account.class);
+    }
+
     public AccountDaoJPA(EntityManager entityManager) {
-        super(Account.class);
+        super();
+        setClassObj(Account.class);
         this.entityManager = entityManager;
         transaction = entityManager.getTransaction();
     }
@@ -119,10 +129,5 @@ public class AccountDaoJPA extends Facade<Account> implements IAccountDao {
             return false;
         }
         return pat.matcher(email).matches();
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return entityManager;
     }
 }

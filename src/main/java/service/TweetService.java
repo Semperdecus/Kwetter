@@ -24,12 +24,10 @@ import models.Tweet;
  */
 public class TweetService {
 
-    @Inject
-    @JPA
+    @Inject @JPA
     private ITweetDao tweetDao;
 
-    @Inject
-    @JPA
+    @Inject @JPA
     private IAccountDao accountDao;
 
     public TweetService() {

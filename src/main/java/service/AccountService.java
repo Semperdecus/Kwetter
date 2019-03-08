@@ -22,11 +22,11 @@ import models.Account;
 @Stateless
 public class AccountService {
 
-    @Inject
-    @JPA
+    @Inject @JPA
     private IAccountDao accountDao;
 
     public AccountService() {
+        super();
     }
 
     @PermitAll

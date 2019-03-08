@@ -10,6 +10,7 @@ import exceptions.AccountException;
 import exceptions.TweetException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
@@ -24,14 +25,23 @@ import models.Tweet;
  *
  * @author teren
  */
-public class TweetDaoJPA extends Facade<Tweet> implements ITweetDao {
+@JPA
+@Stateless
+public class TweetDaoJPA extends AbstractJPADao<Tweet> implements ITweetDao {
 
-    @PersistenceContext(unitName = "KwetterPU")
+    @PersistenceContext(unitName = "kwetterPU")
     private EntityManager entityManager;
     private EntityTransaction transaction;
 
+    public TweetDaoJPA() {
+        super();
+        setClassObj(Tweet.class);
+    }
+
     public TweetDaoJPA(EntityManager entityManager) {
-        super(Tweet.class);
+        super();
+        setClassObj(Tweet.class);
+
         this.entityManager = entityManager;
         transaction = entityManager.getTransaction();
     }
@@ -117,10 +127,5 @@ public class TweetDaoJPA extends Facade<Tweet> implements ITweetDao {
         if (entity.getMessage().length() < 0 || entity.getMessage().isEmpty() || entity.getMessage().length() > 140) {
             throw new TweetException("Tweet has invalid length");
         }
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

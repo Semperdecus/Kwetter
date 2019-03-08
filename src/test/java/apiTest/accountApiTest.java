@@ -24,7 +24,7 @@ public class accountApiTest {
     // @Path("/{id}")
     // public User getById(@PathParam("id") long id);
     // Case 1 - Test existing User
-    //@Test
+    @Test
     public void userGetTest1() throws Exception {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(baseUrl + "/user/" + 1);

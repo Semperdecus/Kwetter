@@ -23,6 +23,9 @@ public class StartUp {
     @Inject
     private AccountService accountService;
 
+    @Inject
+    private TweetService tweetService;
+
     @PostConstruct
     public void initData() {
         try {
