@@ -30,7 +30,6 @@ public class TweetDaoJPA extends AbstractJPADao<Tweet> implements ITweetDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
-    private EntityTransaction transaction;
 
     public TweetDaoJPA() {
         super();
@@ -42,57 +41,46 @@ public class TweetDaoJPA extends AbstractJPADao<Tweet> implements ITweetDao {
         setClassObj(Tweet.class);
 
         this.entityManager = entityManager;
-        transaction = entityManager.getTransaction();
     }
 
     @Override
     public Tweet findById(long id) {
-        transaction.begin();
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findById", Tweet.class);
         query.setParameter("id", id);
         List<Tweet> result = query.getResultList();
         System.out.println("count: " + result.size());
-        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public List<Tweet> findByMessage(String message) {
-        transaction.begin();
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findByMessage", Tweet.class);
         query.setParameter("message", message);
         List<Tweet> result = query.getResultList();
         System.out.println("count: " + result.size());
-        transaction.commit();
         return result;
     }
 
     @Override
     public List<Tweet> findByUsername(String username) {
-        transaction.begin();
         TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findByUsername", Tweet.class);
         query.setParameter("username", username);
         List<Tweet> result = query.getResultList();
         System.out.println("count: " + result.size());
-        transaction.commit();
         return result;
     }
 
     @Override
     public List<Tweet> findAll() {
-        transaction.begin();
         Query query = entityManager.createQuery("SELECT t FROM Tweet t");
         List<Tweet> result = query.getResultList();
-        transaction.commit();
         return result;
     }
 
     @Override
     public Tweet create(Tweet entity) throws TweetException {
-        transaction.begin();
         checkCreate(entity);
         entityManager.persist(entity);
-        transaction.commit();
         return entity;
     }
 
@@ -114,9 +102,7 @@ public class TweetDaoJPA extends AbstractJPADao<Tweet> implements ITweetDao {
     @Override
     public void delete(Tweet entity, Account adminAccount) throws TweetException {
         if (adminAccount.getRole() == Role.ADMIN) {
-            transaction.begin();
             entityManager.remove(entityManager.merge(entity));
-            transaction.commit();
         } else {
             throw new TweetException("Account does not have permissions to delete tweet");
         }

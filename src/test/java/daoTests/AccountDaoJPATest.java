@@ -29,6 +29,7 @@ public class AccountDaoJPATest {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("kwetterTestPU");
     private EntityManager entityManager;
+    private EntityTransaction transaction;
     private AccountDaoJPA dao;
 
     private Account account;
@@ -43,8 +44,10 @@ public class AccountDaoJPATest {
     @Before
     public void setUp() {
         entityManager = entityManagerFactory.createEntityManager();
+        transaction = entityManager.getTransaction();
 
         if (!isInitialized) {
+            transaction.begin();
             dao = new AccountDaoJPA(entityManager);
 
             accountBart = new Account(Role.USER, "bart@mail.nl", "bart", "password");
@@ -63,6 +66,7 @@ public class AccountDaoJPATest {
             entityManager.persist(accountEmma);
             entityManager.persist(accountBart);
 
+            transaction.commit();
             isInitialized = true;
         }
     }
@@ -74,9 +78,8 @@ public class AccountDaoJPATest {
     /*
     Case 1: Don't allow empty username
      */
-    @Test(expected=AccountException.class)
+    @Test(expected = AccountException.class)
     public void usernameTest1() throws Exception {
-        // TODO - Don't allow empty username
         Account accountUsername = dao.create(new Account(Role.USER, "user@mail.nl", "", "password"));
         assertNull(accountUsername);
     }
@@ -84,7 +87,7 @@ public class AccountDaoJPATest {
     /*
     Case 2: Don't allow strings longer than 20 characters
      */
-    @Test(expected=AccountException.class)
+    @Test(expected = AccountException.class)
     public void usernameTest2() throws Exception {
         Account accountUsername = dao.create(new Account(Role.USER, "user@mail.nl", "123456789012345678901", "password"));
         assertNull(accountUsername);
@@ -95,14 +98,16 @@ public class AccountDaoJPATest {
      */
     @Test
     public void usernameTest3() throws Exception {
-        Account accountUsername = dao.create(new Account(Role.USER, "user@mail.com", "username", "password"));
-        assertEquals(accountUsername, dao.findByUsername(accountUsername.getUsername()));
+        transaction.begin();
+        Account account = dao.create(new Account(Role.USER, "user@mail.com", "username", "password"));
+        assertEquals(account, dao.findByUsername(account.getUsername()));
+        transaction.commit();
     }
 
     /*
     Case 4: don't allow emails without proper format
      */
-    @Test(expected=AccountException.class)
+    @Test(expected = AccountException.class)
     public void emailTest1() throws Exception {
         Account accountEmail = dao.create(new Account(Role.USER, "mail", "username", "password"));
         assertNull(accountEmail);
@@ -111,7 +116,7 @@ public class AccountDaoJPATest {
     /*
     Case 5: don't allow empty email
      */
-    @Test(expected=AccountException.class)
+    @Test(expected = AccountException.class)
     public void emailTest2() throws Exception {
         Account accountEmail = dao.create(new Account(Role.USER, "", "username", "password"));
         assertNull(accountEmail);
@@ -120,12 +125,14 @@ public class AccountDaoJPATest {
     /*
     Case 6: proper email
      */
-    //@Test
+    @Test
     public void emailTest3() throws Exception {
-        Account accountEmail = dao.create(new Account(Role.USER, "user@mail.nl", "username", "password"));
-        assertEquals(accountEmail, dao.findByEmail("user@mail.nl"));
+        transaction.begin();
+        Account account = dao.create(new Account(Role.USER, "user@gmail.nl", "username", "password"));
+        assertEquals(account, dao.findByEmail(account.getEmail()));
+        transaction.commit();
     }
-    
+
     /*
     Case 7: new following and get following/followers
      */
@@ -133,10 +140,10 @@ public class AccountDaoJPATest {
     public void followingTest1() throws Exception {
         // Test via list
         System.out.println(accountEmma.getFollowers());
-        
+
         assertEquals("bart", dao.findByUsername(accountEmma.getFollowing().get(0).getUsername()).getUsername());
         assertEquals("user@mail.nl", dao.findByUsername(accountEmma.getFollowing().get(dao.findByUsername("user").getId().intValue()).getUsername()).getEmail());
-        
+
         assertEquals(2, dao.findByUsername(accountEmma.getUsername()).getFollowing().size());
         assertEquals(1, dao.findByUsername(accountBart.getUsername()).getFollowers().size());
     }

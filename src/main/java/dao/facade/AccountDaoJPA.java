@@ -31,7 +31,6 @@ public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDa
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
-    private EntityTransaction transaction;
 
     public AccountDaoJPA() {
         super();
@@ -42,57 +41,46 @@ public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDa
         super();
         setClassObj(Account.class);
         this.entityManager = entityManager;
-        transaction = entityManager.getTransaction();
     }
 
     @Override
     public Account findById(long id) {
-        transaction.begin();
         TypedQuery<Account> query = entityManager.createNamedQuery("account.findById", Account.class);
         query.setParameter("id", id);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
-        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public Account findByEmail(String email) {
-        transaction.begin();
         TypedQuery<Account> query = entityManager.createNamedQuery("account.findByEmail", Account.class);
         query.setParameter("email", email);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
-        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public Account findByUsername(String username) {
-        transaction.begin();
         TypedQuery<Account> query = entityManager.createNamedQuery("account.findByUsername", Account.class);
         query.setParameter("username", username);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
-        transaction.commit();
         return result.get(0);
     }
 
     @Override
     public List<Account> findAll() {
-        transaction.begin();
         Query query = entityManager.createQuery("SELECT a FROM Account a");
         List<Account> result = query.getResultList();
-        transaction.commit();
         return result;
     }
 
     @Override
     public Account create(Account entity) throws AccountException {
-        transaction.begin();
         checkCreate(entity);
         entityManager.persist(entity);
-        transaction.commit();
         return entity;
     }
 
