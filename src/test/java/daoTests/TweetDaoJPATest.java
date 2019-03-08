@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import models.Account;
 import models.Role;
 import models.Tweet;
@@ -32,7 +33,7 @@ public class TweetDaoJPATest {
     private Account accountBart;
     private Account accountEmma;
     private Account accountAdmin;
-    
+
     private boolean isInitialized = false;
 
     public TweetDaoJPATest() {
@@ -67,10 +68,10 @@ public class TweetDaoJPATest {
     public void createTest1() throws Exception {
         // Arrange
         Tweet tweet = new Tweet("Tweet message", account);
-        
+
         // Act
         Tweet daoTweet = dao.create(tweet);
-        
+
         // Assert 
         assertEquals("Tweet message", daoTweet.getMessage());
     }
@@ -187,15 +188,15 @@ public class TweetDaoJPATest {
         // 1 Tweet found
         List<Tweet> tweetFound = dao.findAll();
         assertEquals(1, tweetFound.size());
-        
+
         // Delete tweet
         dao.deleteById(tweet.getId(), accountAdmin);
-        
+
         // 0 Tweets found
         List<Tweet> tweetNotFound = dao.findAll();
         assertEquals(0, tweetNotFound.size());
     }
-    
+
     /*
     Case 10: Test link between Tweet and Account tables
      */
@@ -220,10 +221,10 @@ public class TweetDaoJPATest {
 
         // Find by username "emma" with 1 tweet
         dao.delete(deletableTweet, accountAdmin);
-        
+
         assertEquals(0, accountEmma.getTweets().size());
     }
-  
+
     /*
     Case 12: Delete tweet without adminaccount
      */

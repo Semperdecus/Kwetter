@@ -6,7 +6,7 @@
 package service;
 
 import dao.IAccountDao;
-import dao.facade.JPA;
+import dao.JPA;
 import exceptions.AccountException;
 import java.util.List;
 import javax.annotation.security.PermitAll;

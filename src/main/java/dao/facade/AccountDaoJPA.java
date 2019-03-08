@@ -5,19 +5,21 @@
  */
 package dao.facade;
 
+import dao.AbstractJPADao;
 import dao.IAccountDao;
+import dao.JPA;
 import exceptions.AccountException;
-import java.util.ArrayList;
+import models.Account;
+
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.ejb.Stateless;
-import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import models.Account;
 
 /**
  *
@@ -27,7 +29,7 @@ import models.Account;
 @Stateless
 public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDao {
 
-    @PersistenceContext(unitName = "kwetterPU")
+    @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
     private EntityTransaction transaction;
 
@@ -97,13 +99,6 @@ public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDa
     @Override
     public Account update(Account entity) {
         return entityManager.merge(entity);
-    }
-
-    @Override
-    public void delete(Account entity) {
-        transaction.begin();
-        entityManager.remove(entityManager.merge(entity));
-        transaction.commit();
     }
 
     private void checkCreate(Account entity) throws AccountException {

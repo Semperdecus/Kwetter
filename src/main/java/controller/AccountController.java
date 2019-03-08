@@ -32,7 +32,7 @@ import service.TweetService;
  * @author teren
  */
 @Stateless
-@Path("/user")
+@Path("/account")
 @Produces({MediaType.APPLICATION_JSON})
 public class AccountController {
 
@@ -40,14 +40,14 @@ public class AccountController {
     private SessionContext context;
 
     @Inject
-    private AccountService userService;
+    private AccountService accountService;
 
     @Inject
     private TweetService tweetService;
 
     @GET
     public List<Account> get() {
-        return userService.findAll();
+        return accountService.findAll();
     }
 
     @GET
@@ -59,7 +59,7 @@ public class AccountController {
     @GET
     @Path("/{id}")
     public Account getById(@PathParam("id") long id) {
-        Account user = userService.findById(id);
+        Account user = accountService.findById(id);
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -69,7 +69,7 @@ public class AccountController {
     @GET
     @Path("/username")
     public Account getByUsername(@QueryParam("username") String username) {
-        Account user = userService.findByUsername(username);
+        Account user = accountService.findByUsername(username);
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -79,7 +79,7 @@ public class AccountController {
     @GET
     @Path("/email")
     public Account getByEmail(@QueryParam("email") String email) {
-        Account user = userService.findByEmail(email);
+        Account user = accountService.findByEmail(email);
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -90,7 +90,7 @@ public class AccountController {
     public Account post(@QueryParam("email") String email,
             @QueryParam("username") String username,
             @QueryParam("password") String password) throws Exception {
-        Account user = userService.create(new Account(Role.USER, email, username, password));
+        Account user = accountService.create(new Account(Role.USER, email, username, password));
         if (user == null) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
@@ -101,7 +101,7 @@ public class AccountController {
     public void update(@QueryParam("location") String location,
             @QueryParam("websiteURL") String websiteURL,
             @QueryParam("bio") String bio) throws Exception {
-        Account user = userService.findByUsername(context.getCallerPrincipal().getName());
+        Account user = accountService.findByUsername(context.getCallerPrincipal().getName());
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -109,34 +109,34 @@ public class AccountController {
         user.setWebsiteUrl(websiteURL);
         user.setLocation(location);
 
-        userService.update(user);
+        accountService.update(user);
     }
 
     @PUT
     @Path("/{id}/username")
     public void updateUsername(@QueryParam("username") String username, @PathParam("id") long id) throws Exception {
-        Account user = userService.findById(id);
+        Account user = accountService.findById(id);
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        userService.updateUsername(username, user);
+        accountService.updateUsername(username, user);
     }
 
     @PUT
     @Path("{id}/following/{followingId}")
     public void updateFollowing(@PathParam("id") long id, @PathParam("followingId") long followingId) throws Exception {
-        userService.addFollowing(followingId, id);
+        accountService.addFollowing(followingId, id);
     }
 
     @PUT
     @Path("{id}/follower/{followerId}")
     public void updateFollower(@PathParam("id") long id, @PathParam("followerId") long followerId) throws Exception {
-        userService.removeFollowing(followerId, id);
+        accountService.removeFollowing(followerId, id);
     }
 
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") long id) throws Exception {
-        userService.delete(id);
+        accountService.delete(id);
     }
 }

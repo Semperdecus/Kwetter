@@ -5,10 +5,10 @@
  */
 package dao.facade;
 
+import dao.AbstractJPADao;
 import dao.ITweetDao;
-import exceptions.AccountException;
+import dao.JPA;
 import exceptions.TweetException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,7 +16,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transaction;
 import models.Account;
 import models.Role;
 import models.Tweet;
@@ -29,7 +28,7 @@ import models.Tweet;
 @Stateless
 public class TweetDaoJPA extends AbstractJPADao<Tweet> implements ITweetDao {
 
-    @PersistenceContext(unitName = "kwetterPU")
+    @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
     private EntityTransaction transaction;
 

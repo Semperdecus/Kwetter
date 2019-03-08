@@ -10,12 +10,16 @@ import exceptions.AccountException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.ejb.Stateful;
+import javax.enterprise.inject.Default;
 import models.Account;
 
 /**
  *
  * @author teren
  */
+@Default
+@Stateful
 public class AccountDaoColl implements IAccountDao{
 
     CopyOnWriteArrayList<Account> accounts = new CopyOnWriteArrayList<>();

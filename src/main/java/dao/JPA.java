@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao.facade;
+package dao;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -11,6 +11,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
@@ -19,7 +20,7 @@ import javax.inject.Qualifier;
  * @author frankcoenen
  */
 @Qualifier
-@Retention(RUNTIME)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
 public @interface JPA {
 }

@@ -10,6 +10,8 @@ import exceptions.TweetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.ejb.Stateful;
+import javax.enterprise.inject.Default;
 import models.Account;
 import models.Role;
 import models.Tweet;
@@ -18,6 +20,8 @@ import models.Tweet;
  *
  * @author teren
  */
+@Default
+@Stateful
 public class TweetDaoColl implements ITweetDao {
 
     CopyOnWriteArrayList<Tweet> tweets = new CopyOnWriteArrayList<>();

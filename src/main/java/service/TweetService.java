@@ -7,12 +7,13 @@ package service;
 
 import dao.IAccountDao;
 import dao.ITweetDao;
-import dao.facade.JPA;
+import dao.JPA;
 import exceptions.AccountException;
 import exceptions.TweetException;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
 import models.Role;
@@ -22,6 +23,7 @@ import models.Tweet;
  *
  * @author teren
  */
+@Stateless
 public class TweetService {
 
     @Inject @JPA

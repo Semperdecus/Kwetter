@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao.facade;
+package dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,14 +14,17 @@ import javax.persistence.PersistenceContext;
  *
  * @author teren
  */
+
 public abstract class AbstractJPADao<T extends Serializable> {
-    
+
     private Class<T> classObj;
 
-    @PersistenceContext(unitName ="KwetterPU")
+    @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
 
-    public void setEntityManager(EntityManager entityManager) { this.entityManager = entityManager; }
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     public final void setClassObj(final Class<T> classObjToSet) {
         this.classObj = classObjToSet;
