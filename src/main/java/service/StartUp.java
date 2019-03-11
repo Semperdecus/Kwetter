@@ -29,8 +29,8 @@ public class StartUp {
     @PostConstruct
     public void initData() {
         try {
-            accountService.create(new Account(Role.USER, "user@mail.com", "user", "password"));
-            accountService.create(new Account(Role.ADMIN, "user@admin.com", "admin", "password"));
+            accountService.create(new Account(Role.USER, "userStartUp@mail.com", "userStartUp", "password"));
+            accountService.create(new Account(Role.ADMIN, "adminStartUp@admin.com", "adminStartUp", "password"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -18,17 +18,33 @@ import javax.ws.rs.core.Response;
  */
 public class accountApiTest {
 
-    private static String baseUrl = "http://localhost:8080/kwetter/api";
+    private static String baseUrl = "http://localhost:8080/Kwetter/api";
 
-    // @GET
-    // @Path("/{id}")
-    // public User getById(@PathParam("id") long id);
     // Case 1 - Test existing User
     @Test
     public void userGetTest1() throws Exception {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(baseUrl + "/user/" + 1);
+        WebTarget target = client.target(baseUrl + "/account/" + 1);
         Response response = target.request().get();
+        System.out.println(response.toString());
+
+        try {
+            Assert.assertEquals(200, response.getStatus());
+        } finally {
+            response.close();
+            client.close();
+        }
+    }
+
+    // Case 2 - non-existing email and username
+    @Test
+    public void userPost1Test() throws Exception {
+        String input = "";
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(baseUrl + "/account/?email=user1@mail.com&username=user1&password=password");
+        Invocation.Builder builder = target.request();
+
+        Response response = builder.post(Entity.json(input));
         System.out.println(response.toString());
 
         try {

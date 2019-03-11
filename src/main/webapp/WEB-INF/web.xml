@@ -8,11 +8,6 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-
-    <persistence-context-ref>
-        <persistence-context-ref-name>persistence/kwetterPU</persistence-context-ref-name>
-        <persistence-unit-name>kwetterPU</persistence-unit-name>
-    </persistence-context-ref>
     
     <security-constraint>
         <web-resource-collection>
@@ -29,15 +24,11 @@
     </security-constraint>
 
     <security-role>
-        <role-name>ADMINISTRATOR</role-name>
+        <role-name>ADMIN</role-name>
     </security-role>
 
     <security-role>
         <role-name>USER</role-name>
-    </security-role>
-
-    <security-role>
-        <role-name>MODERATOR</role-name>
     </security-role>
 
     <login-config>

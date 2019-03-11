@@ -22,7 +22,8 @@ import models.Account;
 @Stateless
 public class AccountService {
 
-    @Inject @JPA
+    @Inject
+    @JPA
     private IAccountDao accountDao;
 
     public AccountService() {
@@ -31,11 +32,7 @@ public class AccountService {
 
     @PermitAll
     public Account create(Account entity) throws AccountException {
-        if (accountDao.findByUsername(entity.getUsername()) == null
-                && accountDao.findByEmail(entity.getEmail()) == null) {
-            return accountDao.create(entity);
-        }
-        return null;
+        return accountDao.create(entity);
     }
 
     @RolesAllowed({"ADMIN"})

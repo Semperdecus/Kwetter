@@ -27,19 +27,17 @@ import javax.persistence.TypedQuery;
  */
 @JPA
 @Stateless
-public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDao {
+public class AccountDaoJPA implements IAccountDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
 
     public AccountDaoJPA() {
         super();
-        setClassObj(Account.class);
     }
 
     public AccountDaoJPA(EntityManager entityManager) {
         super();
-        setClassObj(Account.class);
         this.entityManager = entityManager;
     }
 
@@ -112,5 +110,10 @@ public class AccountDaoJPA extends AbstractJPADao<Account> implements IAccountDa
             return false;
         }
         return pat.matcher(email).matches();
+    }
+
+    @Override
+    public void delete(Account entity) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

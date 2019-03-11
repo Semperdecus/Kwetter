@@ -26,20 +26,17 @@ import models.Tweet;
  */
 @JPA
 @Stateless
-public class TweetDaoJPA extends AbstractJPADao<Tweet> implements ITweetDao {
+public class TweetDaoJPA implements ITweetDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
 
     public TweetDaoJPA() {
         super();
-        setClassObj(Tweet.class);
     }
 
     public TweetDaoJPA(EntityManager entityManager) {
         super();
-        setClassObj(Tweet.class);
-
         this.entityManager = entityManager;
     }
 
