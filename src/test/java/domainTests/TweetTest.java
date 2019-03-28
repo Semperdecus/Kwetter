@@ -135,7 +135,6 @@ public class TweetTest {
         
         Tweet instanceWithAccount = new Tweet("message", testAccount);
         assertEquals(testAccount, instanceWithAccount.getAccount());
-
     }
 
     /**

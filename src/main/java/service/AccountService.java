@@ -41,7 +41,7 @@ public class AccountService {
         accountDao.delete(entity);
     }
 
-    @RolesAllowed({"USER", "ADMIN", "MODERATOR"})
+    @RolesAllowed({"USER", "ADMIN"})
     public void update(Account entity) throws Exception {
         Account user = accountDao.findById(entity.getId());
         accountDao.update(user);

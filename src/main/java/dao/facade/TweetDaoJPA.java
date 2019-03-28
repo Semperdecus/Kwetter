@@ -9,6 +9,7 @@ import dao.AbstractJPADao;
 import dao.ITweetDao;
 import dao.JPA;
 import exceptions.TweetException;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,7 +27,7 @@ import models.Tweet;
  */
 @JPA
 @Stateless
-public class TweetDaoJPA implements ITweetDao {
+public class TweetDaoJPA extends AbstractJPADao<Serializable> implements ITweetDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
@@ -35,6 +36,7 @@ public class TweetDaoJPA implements ITweetDao {
         super();
     }
 
+    // Extra constructor to define entitymanager to test DAO layer in mySQL test database
     public TweetDaoJPA(EntityManager entityManager) {
         super();
         this.entityManager = entityManager;

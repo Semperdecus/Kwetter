@@ -9,6 +9,8 @@ import dao.AbstractJPADao;
 import dao.IAccountDao;
 import dao.JPA;
 import exceptions.AccountException;
+import exceptions.TweetException;
+import java.io.Serializable;
 import models.Account;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import models.Role;
 
 /**
  *
@@ -27,7 +30,7 @@ import javax.persistence.TypedQuery;
  */
 @JPA
 @Stateless
-public class AccountDaoJPA implements IAccountDao {
+public class AccountDaoJPA extends AbstractJPADao<Serializable> implements IAccountDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
@@ -36,6 +39,7 @@ public class AccountDaoJPA implements IAccountDao {
         super();
     }
 
+    // Extra constructor to define entitymanager to test DAO layer in mySQL test database
     public AccountDaoJPA(EntityManager entityManager) {
         super();
         this.entityManager = entityManager;
@@ -114,6 +118,6 @@ public class AccountDaoJPA implements IAccountDao {
 
     @Override
     public void delete(Account entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        entityManager.remove(entityManager.merge(entity));
     }
 }

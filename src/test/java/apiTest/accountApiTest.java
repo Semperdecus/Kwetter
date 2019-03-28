@@ -20,7 +20,7 @@ public class accountApiTest {
 
     private static String baseUrl = "http://localhost:8080/Kwetter/api";
 
-    // Case 1 - Test existing User
+    // Case 1 - Get user by id
     @Test
     public void userGetTest1() throws Exception {
         Client client = ClientBuilder.newClient();
@@ -35,10 +35,26 @@ public class accountApiTest {
             client.close();
         }
     }
-
-    // Case 2 - non-existing email and username
+    
+    // Case 2 - Get user by username
     @Test
-    public void userPost1Test() throws Exception {
+    public void userGetTest2() throws Exception {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(baseUrl + "/?username=userStartUp");
+        Response response = target.request().get();
+        System.out.println(response.toString());
+
+        try {
+            Assert.assertEquals(200, response.getStatus());
+        } finally {
+            response.close();
+            client.close();
+        }
+    }
+
+    // Case 3 - post non-existing email and username
+    @Test
+    public void userPostTest1() throws Exception {
         String input = "";
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(baseUrl + "/account/?email=user1@mail.com&username=user1&password=password");
@@ -54,4 +70,5 @@ public class accountApiTest {
             client.close();
         }
     }
+    
 }

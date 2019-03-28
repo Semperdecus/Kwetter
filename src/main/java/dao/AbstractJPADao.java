@@ -6,12 +6,11 @@
 package dao;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Basic functionality of each JPA DAO implementation
  * @author teren
  */
 
@@ -32,11 +31,6 @@ public abstract class AbstractJPADao<T extends Serializable> {
 
     public T findById(final long id) {
         return entityManager.find(classObj, id);
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<T> findAll() {
-        return entityManager.createQuery("from " + classObj.getName()).getResultList();
     }
 
     public void delete(final T entity) {

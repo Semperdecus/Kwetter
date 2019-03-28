@@ -74,5 +74,4 @@ public class AccountDaoColl implements IAccountDao{
     public void delete(Account entity) {
         accounts.remove(entity);
     }
-
 }

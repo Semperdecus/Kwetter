@@ -13,7 +13,7 @@ import models.Account;
 import models.Role;
 
 /**
- *
+ * Init for database and tests
  * @author teren
  */
 @Singleton

@@ -60,7 +60,6 @@ public class AccountTest {
         Long expResult = null;
         Long result = instance.getId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         assertEquals(expResult, testAccount.getId());
     }
 
@@ -74,7 +73,7 @@ public class AccountTest {
         Account instance = new Account();
         Long expResult = null;
         instance.setId(id);
-        // TODO review the generated test code and remove the default call to fail.
+
         assertEquals(expResult, instance.getId());
         testAccount.setId(1L);
         expResult = 1L;
@@ -316,8 +315,6 @@ public class AccountTest {
         Account instance = new Account();
         instance.setBio(bio);
 
-
-        
         testAccount.setBio(longString);
         assertEquals(longString, testAccount.getBio());
         

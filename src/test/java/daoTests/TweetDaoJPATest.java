@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import models.Account;
 import models.Role;
 import models.Tweet;
@@ -49,6 +48,7 @@ public class TweetDaoJPATest {
 
     @Before
     public void setUp() {
+        // Set up basic data for database to test DAO layer
         entityManager = entityManagerFactory.createEntityManager();
         transaction = entityManager.getTransaction();
 
