@@ -73,8 +73,8 @@ public class Account implements Serializable {
      * @param username
      * @param password
      */
-    public Account(Role role, String email, String username, String password) {
-        this.accountRole = role;
+    public Account(String email, String username, String password) {
+        this.accountRole = new Role("USER");
         this.email = email;
         this.username = username;
         this.accountPassword = password;
@@ -101,13 +101,7 @@ public class Account implements Serializable {
      * @return
      */
     public Role getRole() {
-        if (accountRole == Role.USER) {
-            return Role.USER;
-        } else if (accountRole == Role.ADMIN) {
-            return Role.ADMIN;
-        } else {
-            return Role.USER;
-        }
+        return this.accountRole;
     }
 
     /**

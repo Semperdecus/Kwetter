@@ -14,17 +14,25 @@ import javax.persistence.Id;
  * @author teren
  */
 @Entity
-public class Role {
+public class Permission {
+    
     @Id
     @GeneratedValue
     private Long id;
     
-    private String role_name;
+    private String name;
 
-    public Role(String role_name) {
-        this.role_name = role_name;
+    public String getName() {
+        return name;
     }
-    
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Permission() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -32,14 +40,7 @@ public class Role {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getRole_name() {
-        return role_name;
-    }
-
-    public void setRole_name(String role_name) {
-        this.role_name = role_name;
-    }
+    
     
     
 }
