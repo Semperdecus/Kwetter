@@ -53,7 +53,7 @@ public class TweetServiceTest {
     @Test
     public void createTest() throws Exception {
         // Case 1 - Existing User
-        Account user = new Account(Role.USER, "email@mail.com", "username", "password");
+        Account user = new Account("email@mail.com", "username", "password");
         when(accountDao.findById(1l)).thenReturn(user);
         user.setId(1l);
         tweetService.create(new Tweet("message", user));
@@ -65,7 +65,7 @@ public class TweetServiceTest {
     @Test
     public void createTest2() throws Exception {
         // Case 2 - Non-existing User
-        Account user = new Account(Role.USER, "email@mail.com", "username", "password");
+        Account user = new Account("email@mail.com", "username", "password");
         when(accountDao.findById(1l)).thenReturn(null);
         user.setId(1l);
         tweetService.create(new Tweet("message", user));
@@ -77,7 +77,7 @@ public class TweetServiceTest {
     @Test
     public void deleteTest() throws Exception {
         // Case 1 - Existing User
-        Account user = new Account(Role.USER, "email@mail.com", "username", "password");
+        Account user = new Account("email@mail.com", "username", "password");
         Tweet tweet = new Tweet("message", user);
         user.setId(1l);
         tweet.setId(1l);
@@ -92,7 +92,7 @@ public class TweetServiceTest {
     @Test(expected = AccountException.class)
     public void deleteTest2() throws Exception {
         // Case 2 - Non-existing User
-        Account user = new Account(Role.USER, "email@mail.com", "username", "password");
+        Account user = new Account("email@mail.com", "username", "password");
         Tweet tweet = new Tweet("message", user);
         user.setId(1l);
         tweet.setId(1l);

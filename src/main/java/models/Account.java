@@ -6,7 +6,11 @@
 package models;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,15 +41,13 @@ public class Account implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Role accountRole;
-
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false, unique = true, length = 20)
     private String username;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 1024)
     private String accountPassword;
     private String location;
     private String website;
@@ -74,10 +76,13 @@ public class Account implements Serializable {
      * @param password
      */
     public Account(String email, String username, String password) {
-        this.accountRole = new Role("USER");
         this.email = email;
         this.username = username;
-        this.accountPassword = password;
+        try{
+            this.accountPassword = generateSha256(password);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -94,22 +99,6 @@ public class Account implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Role getRole() {
-        return this.accountRole;
-    }
-
-    /**
-     *
-     * @param role
-     */
-    public void setRole(Role role) {
-        this.accountRole = role;
     }
 
     /**
@@ -293,5 +282,13 @@ public class Account implements Serializable {
      */
     public void setFollowers(List<Account> followers) {
         this.followers = followers;
+    }
+
+    private String generateSha256(String text) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
+        String encoded = Base64.getEncoder().encodeToString(hash); // Java 8 feature
+
+        return encoded;
     }
 }

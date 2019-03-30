@@ -5,7 +5,6 @@
  */
 package dao.facade;
 
-import dao.AbstractJPADao;
 import dao.IAccountDao;
 import dao.JPA;
 import exceptions.AccountException;
@@ -30,7 +29,7 @@ import models.Role;
  */
 @JPA
 @Stateless
-public class AccountDaoJPA extends AbstractJPADao<Serializable> implements IAccountDao {
+public class AccountDaoJPA implements IAccountDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
@@ -94,10 +93,6 @@ public class AccountDaoJPA extends AbstractJPADao<Serializable> implements IAcco
     private void checkCreate(Account entity) throws AccountException {
         if (entity.getUsername().length() > 20 || entity.getUsername().length() < 0 || entity.getUsername().isEmpty()) {
             throw new AccountException("Username has an invalid length");
-        }
-
-        if (entity.getPassword().length() > 20 || entity.getPassword().length() < 0 || entity.getPassword().isEmpty()) {
-            throw new AccountException("Password has an invalid length");
         }
 
         if (!isValidEmail(entity.getEmail()) || entity.getEmail().isEmpty() || entity.getEmail().length() < 0) {

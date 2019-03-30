@@ -22,6 +22,8 @@ public class StartUp {
 
     @Inject
     private AccountService accountService;
+    @Inject
+    private RoleService roleService;
 
     @Inject
     private TweetService tweetService;
@@ -29,11 +31,10 @@ public class StartUp {
     @PostConstruct
     public void initData() {
         try {
-            Account adminAccount = new Account("adminStartUp@admin.com", "adminStartUp", "password");
-            adminAccount.setRole(new Role("ADMIN"));
-            accountService.create(new Account("userStartUp@mail.com", "userStartUp", "password"));
-            accountService.create(adminAccount);
-            
+            roleService.create(new Role("Admin"));
+            roleService.create(new Role("User"));
+            accountService.create(new Account("userStartUp@mail.com", "user", "password"));
+            accountService.create(new Account("adminStartUp@admin.com", "admin", "password"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

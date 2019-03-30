@@ -91,10 +91,6 @@ public class TweetDaoColl implements ITweetDao {
 
     @Override
     public void delete(Tweet entity, Account adminAccount) throws TweetException {
-        if (adminAccount.getRole().getRole_name() == "ADMIN") {
-            tweets.remove(entity);
-        } else {
-            throw new TweetException("Account does not have permissions to delete tweet");
-        }
+        tweets.remove(entity);
     }
 }
