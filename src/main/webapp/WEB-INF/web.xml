@@ -16,19 +16,55 @@
     </servlet-mapping>
     
     <welcome-file-list>
-        <welcome-file>faces/login.xhtml</welcome-file>
+        <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
     
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>KwetterRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.xhtml</form-login-page>
+            <form-error-page>/error.xhtml</form-error-page>
+        </form-login-config>
     </login-config>
     <security-role>
-        <description/>
         <role-name>User</role-name>
     </security-role>
     <security-role>
-        <description/>
         <role-name>Admin</role-name>
     </security-role>
+    
+    <!-- user pages -->
+    <security-constraint>
+        <display-name>User</display-name>
+        <web-resource-collection>
+            <web-resource-name>Secure Pages</web-resource-name>
+            <description>user</description>
+            <url-pattern>/pages/user/profile.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>user_role</role-name>
+            <role-name>admin_role</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <!-- admin pages -->
+    <security-constraint>
+        <display-name>User</display-name>
+        <web-resource-collection>
+            <web-resource-name>Secure Pages Admin</web-resource-name>
+            <description>admin</description>
+            <url-pattern>/pages/admin/dashboard.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>admin_role</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <context-param>
+        <param-name>facelets.REFRESH_PERIOD</param-name>
+        <param-value>-1</param-value>
+    </context-param>
 </web-app>

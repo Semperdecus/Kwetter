@@ -1,19 +1,49 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>login</title>
-    </h:head>
-    <h:body>
-        <form action="j_security_check" method="POST">
-            <h:outputLabel for="j_username">Username</h:outputLabel>
-            <h:inputText id="j_username" size="20" />
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/template/template.xhtml">
 
-            <h:outputLabel for="j_password">Password</h:outputLabel>
-            <h:inputSecret id="j_password" size="20"/>
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{loginBean.init()}"/>
+    </f:metadata>
 
-            <input type="submit" value="#{bundle['login.submit']}" />
-        </form>
-    </h:body>
-</html>
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="growl" showDetail="true"/>
+
+            <div id="content">
+                <p:panelGrid columns="2">
+
+                    <div class="form-group">
+                    <p:inputText
+                            id="username"
+                            placeholder="username"
+                            required="true"
+                            requiredMessage="Fill in your username"
+                            styleClass="form-control"
+                            value="#{loginBean.username}"/>
+                    </div>
+
+                    <div class="form-group">
+                    <p:password id="password"
+                                placeholder="password"
+                                required="true"
+                                requiredMessage="Fill in your password"
+                                styleClass="form-control"
+                                value="#{loginBean.password}"/>
+                    </div>
+
+                    <div class="form-group">
+                    <p:commandButton
+                            value="Inloggen"
+                            actionListener="#{loginBean.login}"
+                            update="growl"/>
+                    </div>
+                </p:panelGrid>
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -6,12 +6,20 @@
 package bean;
 
 import java.io.Serializable;
+import java.security.Principal;
+import java.security.Security;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.security.auth.Subject;
+import javax.security.jacc.PolicyContext;
+import javax.security.jacc.PolicyContextException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import models.Account;
@@ -42,7 +50,7 @@ public class LoginBean implements Serializable {
 
         System.out.println(username);
         System.out.println(password);
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
@@ -55,13 +63,24 @@ public class LoginBean implements Serializable {
         Account user = this.accountService.findByUsername(request.getRemoteUser());
         sessionBean.setLoggedInUser(user);
 
-        boolean isRegular = request.isUserInRole("regular_role");
-        boolean isAdmin = request.isUserInRole("admin_role");
+        System.out.println(request.getUserPrincipal().getName());
 
-        if (isRegular) {
-            RedirectUtil.redirect("/pages/profile/profile.xhtml");
+        boolean isUser = request.isUserInRole("USER");
+        boolean isAdmin = request.isUserInRole("admin");
+
+        System.out.println(isUser);
+        System.out.println(isAdmin);
+
+        if (isUser) {
+            RedirectUtil.redirect("/pages/user/profile.xhtml");
         } else if (isAdmin) {
-            RedirectUtil.redirect("/pages/admin/admin.xhtml");
+            RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
+        }
+
+        try {
+            request.logout();
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
     }
 
