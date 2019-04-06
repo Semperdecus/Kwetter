@@ -11,11 +11,6 @@ body {
     padding-top: 50px;
 }
 
-.form-group {
-    padding: 40px 15px;
-    text-align: center;
-}
-
-.form-control {
-    color: red;
+.padding {
+    margin: 20px;
 }

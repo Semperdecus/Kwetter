@@ -41,7 +41,7 @@
         <display-name>User</display-name>
         <web-resource-collection>
             <web-resource-name>Secure Pages</web-resource-name>
-            <description>user</description>
+            <description>User</description>
             <url-pattern>/pages/user/profile.xhtml</url-pattern>
         </web-resource-collection>
         <auth-constraint>
@@ -57,7 +57,7 @@
         <web-resource-collection>
             <web-resource-name>Secure Pages Admin</web-resource-name>
             <description>admin</description>
-            <url-pattern>/pages/admin/dashboard.xhtml</url-pattern>
+            <url-pattern>/pages/admin/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -69,4 +69,22 @@
         <param-name>facelets.REFRESH_PERIOD</param-name>
         <param-value>-1</param-value>
     </context-param>
+    
+    
+
+    <context-param>
+        <param-name>primefaces.FONT_AWESOME</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+
+    
+    <!-- primeface style -->
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>admin</param-value>
+    </context-param>
+    <!-- primeface style -->
+
+
 </web-app>
