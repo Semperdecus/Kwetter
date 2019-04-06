@@ -6,6 +6,8 @@
 package service;
 
 import dao.IAccountDao;
+import dao.IRoleDao;
+import dao.ITweetDao;
 import dao.JPA;
 import exceptions.AccountException;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
+import models.Role;
 
 /**
  *
@@ -26,13 +29,32 @@ public class AccountService {
     @JPA
     private IAccountDao accountDao;
 
+    @Inject
+    private RoleService roleService;
+
+    @Inject
+    @JPA
+    private IRoleDao roleDao;
+
     public AccountService() {
         super();
     }
 
     @PermitAll
     public Account create(Account entity) throws AccountException {
-        return accountDao.create(entity);
+        System.out.println("ENTITY ROLE = " + entity.getRole());
+        if (entity.getRole() == null) {
+            Role role = roleService.getRoleByName("User");
+            role.addAccount(entity);
+            roleDao.update(role);
+            entity.setRole(role);
+            System.out.println("ENTITY ROLE = " + entity.getRole());
+            accountDao.create(entity);
+            return entity;
+        } else {
+            accountDao.create(entity);
+            return entity;
+        }
     }
 
     @RolesAllowed({"ADMIN"})

@@ -5,33 +5,38 @@
  */
 package service;
 
+import dao.IAccountDao;
 import dao.IRoleDao;
 import dao.JPA;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.JsonObject;
+import models.Account;
 import models.Role;
 
 /**
  *
  * @author teren
  */
+@Stateless
 public class RoleService {
 
     @Inject
     @JPA
     private IRoleDao roleDao;
 
-    public RoleService() {
-    }
+    @Inject
+    @JPA
+    private IAccountDao accountDao;
 
-    public RoleService(IRoleDao roleDao) {
-        this.roleDao = roleDao;
+    public RoleService() {
+        super();
     }
 
     public Role create(Role role) {
-        return this.roleDao.add(role);
+        return this.roleDao.create(role);
     }
 
     public void remove(Role role) {
@@ -42,15 +47,12 @@ public class RoleService {
         return this.roleDao.getAll();
     }
 
-    public List<Role> getAllAccountsWithRole(String roleName) {
-        return this.roleDao.getAccountsWithRole(roleName);
+    public Role getRoleByName(String roleName) {
+        return this.roleDao.getRoleByName(roleName);
     }
 
-    public List<JsonObject> convertAllToJson(List<Role> roles) {
-        List<JsonObject> convertedObjects = new ArrayList<>();
-        for (Role role : roles) {
-            convertedObjects.add(role.convertToJson());
-        }
-        return convertedObjects;
+    public void update(Role entity) throws Exception {
+        Role role = roleDao.findById(entity.getId());
+        roleDao.update(role);
     }
 }

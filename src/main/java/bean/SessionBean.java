@@ -16,7 +16,7 @@ import org.omnifaces.util.Faces;
 import static org.omnifaces.util.Faces.invalidateSession;
 
 /**
- *
+ * logout bean
  * @author teren
  */
 @Named(value = "sessionBean")

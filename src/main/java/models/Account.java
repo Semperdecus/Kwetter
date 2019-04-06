@@ -15,10 +15,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -65,12 +68,14 @@ public class Account implements Serializable {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
     private List<Account> followers = new ArrayList<>();
 
+    @ManyToOne
+    private Role role;
+
     public Account() {
     }
 
     /**
      *
-     * @param role
      * @param email
      * @param username
      * @param password
@@ -78,9 +83,9 @@ public class Account implements Serializable {
     public Account(String email, String username, String password) {
         this.email = email;
         this.username = username;
-        try{
+        try {
             this.accountPassword = generateSha256(password);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -282,6 +287,22 @@ public class Account implements Serializable {
      */
     public void setFollowers(List<Account> followers) {
         this.followers = followers;
+    }
+
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+    public void setAccountPassword(String accountPassword) {
+        this.accountPassword = accountPassword;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     private String generateSha256(String text) throws NoSuchAlgorithmException {

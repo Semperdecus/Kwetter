@@ -32,7 +32,7 @@ public class CrudDaoJPA<T> implements ICrudDao<T> {
     }
 
     @Override
-    public T add(T object) {
+    public T create(T object) {
         this.em.persist(object);
         return object;
     }

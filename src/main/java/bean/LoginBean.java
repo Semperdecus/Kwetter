@@ -6,20 +6,11 @@
 package bean;
 
 import java.io.Serializable;
-import java.security.Principal;
 import java.security.Security;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.security.auth.Subject;
-import javax.security.jacc.PolicyContext;
-import javax.security.jacc.PolicyContextException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import models.Account;
@@ -57,19 +48,14 @@ public class LoginBean implements Serializable {
         try {
             request.login(username, this.password);
         } catch (ServletException e) {
+            RedirectUtil.redirect("/error.xhtml");
             e.printStackTrace();
         }
 
-        Account user = this.accountService.findByUsername(request.getRemoteUser());
-        sessionBean.setLoggedInUser(user);
-
         System.out.println(request.getUserPrincipal().getName());
 
-        boolean isUser = request.isUserInRole("USER");
-        boolean isAdmin = request.isUserInRole("admin");
-
-        System.out.println(isUser);
-        System.out.println(isAdmin);
+        boolean isUser = request.isUserInRole("User");
+        boolean isAdmin = request.isUserInRole("Admin");
 
         if (isUser) {
             RedirectUtil.redirect("/pages/user/profile.xhtml");

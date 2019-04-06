@@ -36,8 +36,8 @@ public class TweetService {
         super();
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
     public Tweet create(Tweet tweet) throws AccountException, TweetException {
+        System.out.println(tweet.getAccount().getId()); // null
         Account account = accountDao.findById(tweet.getAccount().getId());
         if (account != null) {
             tweet = tweetDao.create(tweet);
@@ -48,7 +48,6 @@ public class TweetService {
         return null;
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
     public void delete(long id, Account account) throws TweetException, AccountException {
         Tweet entity = tweetDao.findById(id);
         if (entity != null) {

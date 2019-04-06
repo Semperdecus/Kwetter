@@ -22,11 +22,13 @@ import models.Role;
 @JPA
 public class RoleDaoJPA extends CrudDaoJPA<Role> implements IRoleDao {
 
-    public List<Role> getAccountsWithRole(String RoleName) {
-        TypedQuery<Role> query = em.createNamedQuery("role.accountsWithRole", Role.class);
+    @Override
+    public Role getRoleByName(String RoleName) {
+        TypedQuery<Role> query = em.createNamedQuery("role.getRoleByName", Role.class);
         query.setParameter("name", RoleName);
         List<Role> result = query.getResultList();
-        return result;
+        System.out.println("ROLE FOUND: " + result.get(0));
+        return result.get(0);
     }
 
     @Override

@@ -27,6 +27,8 @@
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    
+    <!-- security roles -->
     <security-role>
         <role-name>User</role-name>
     </security-role>
@@ -44,8 +46,8 @@
         </web-resource-collection>
         <auth-constraint>
             <description/>
-            <role-name>user_role</role-name>
-            <role-name>admin_role</role-name>
+            <role-name>User</role-name>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
     
@@ -59,7 +61,7 @@
         </web-resource-collection>
         <auth-constraint>
             <description/>
-            <role-name>admin_role</role-name>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
 

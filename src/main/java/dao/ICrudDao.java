@@ -11,7 +11,7 @@ package dao;
  */
 public interface ICrudDao<T> {
 
-    T add(T object);
+    T create(T object);
 
     T update(T t);
 

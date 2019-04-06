@@ -11,9 +11,11 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import models.Account;
 import models.Role;
+import models.Tweet;
 
 /**
  * Init for database and tests
+ *
  * @author teren
  */
 @Singleton
@@ -31,10 +33,21 @@ public class StartUp {
     @PostConstruct
     public void initData() {
         try {
-            roleService.create(new Role("Admin"));
-            roleService.create(new Role("User"));
-            accountService.create(new Account("userStartUp@mail.com", "user", "password"));
-            accountService.create(new Account("adminStartUp@admin.com", "admin", "password"));
+            Account testUser = new Account("user@mail.com", "user", "password");
+            Account testAdmin = new Account("admin@mail.com", "admin", "password");
+            Role roleAdmin = new Role("Admin");
+            Role roleUser = new Role("User");
+//            roleAdmin.addAccount(testAdmin);
+//            roleUser.addAccount(testUser);
+
+
+            roleService.create(roleAdmin);
+            roleService.create(roleUser);
+            testUser.setRole(roleService.getRoleByName("User"));
+            testAdmin.setRole(roleService.getRoleByName("Admin"));
+            
+            accountService.create(testUser);
+            accountService.create(testAdmin);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

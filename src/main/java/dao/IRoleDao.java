@@ -14,7 +14,7 @@ import models.Role;
  * @author teren
  */
 public interface IRoleDao extends ICrudDao<Role>{
-    List<Role> getAccountsWithRole(String Rolename);
+    Role getRoleByName(String Rolename);
     
     ArrayList<Role> getAll();
     

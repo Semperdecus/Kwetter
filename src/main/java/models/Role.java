@@ -6,13 +6,17 @@
 package models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -21,7 +25,7 @@ import javax.persistence.OneToMany;
  * @author teren
  */
 @Entity
-@NamedQuery(name = "role.accountsWithRole", query = "SELECT r.AccountsWithThisRole FROM Role r WHERE r.name = :name")
+@NamedQuery(name = "role.getRoleByName", query = "SELECT r FROM Role r WHERE r.name = :name")
 public class Role implements Serializable {
 
     @Id
@@ -30,8 +34,8 @@ public class Role implements Serializable {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Account> AccountsWithThisRole;
+    @OneToMany(mappedBy = "role")
+    private List<Account> account = new ArrayList<>();
 
     public Role() {
 
@@ -39,6 +43,7 @@ public class Role implements Serializable {
 
     public Role(String name) {
         this.name = name;
+        
     }
 
     public Long getId() {
@@ -57,20 +62,16 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public List<Account> getAccountsWithThisRole() {
-        return AccountsWithThisRole;
+    public List<Account> getAccounts() {
+        return account;
     }
 
-    public void setAccountsWithThisRole(List<Account> AccountsWithThisRole) {
-        this.AccountsWithThisRole = AccountsWithThisRole;
+    public void setAccounts(List<Account> accounts) {
+        this.account = accounts;
     }
 
-    public JsonObject convertToJson() {
-        return Json.createObjectBuilder()
-                .add("id", this.id)
-                .add("name", this.name)
-                .add("accountswiththisrole", this.AccountsWithThisRole.size())
-                .build();
+    public void addAccount(Account account) {
+        this.account.add(account);
     }
 
 }
