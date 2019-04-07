@@ -42,6 +42,7 @@
             <artifactId>cucumber-core</artifactId>
             <version>2.3.1</version>
         </dependency>
+
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
@@ -152,10 +153,25 @@
             <version>1.0.0</version>
             <classifier>dev</classifier>
         </dependency>
-
         <!-- Primefaces style library -->
 
 
+        <!-- Selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>htmlunit-driver</artifactId>
+            <scope>test</scope>
+            <version>2.34.0</version>
+        </dependency>
+        <!-- Selenium -->
+        
+        
     </dependencies>
 
     <build>

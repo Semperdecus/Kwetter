@@ -44,11 +44,7 @@ public class AccountService {
     public Account create(Account entity) throws AccountException {
         System.out.println("ENTITY ROLE = " + entity.getRole());
         if (entity.getRole() == null) {
-            Role role = roleService.getRoleByName("User");
-            role.addAccount(entity);
-            roleDao.update(role);
-            entity.setRole(role);
-            System.out.println("ENTITY ROLE = " + entity.getRole());
+            entity.setRole(roleService.getRoleByName("User"));
             accountDao.create(entity);
             return entity;
         } else {
@@ -57,19 +53,19 @@ public class AccountService {
         }
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"Admin", "Moderator"})
     public void delete(long id) throws AccountException {
         Account entity = accountDao.findById(id);
         accountDao.delete(entity);
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void update(Account entity) throws Exception {
         Account user = accountDao.findById(entity.getId());
         accountDao.update(user);
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void updateUsername(String username, Account user) throws AccountException {
         if (accountDao.findByUsername(username) == null && !username.isEmpty()) {
             user.setUsername(username);
@@ -92,7 +88,7 @@ public class AccountService {
         return accountDao.findByEmail(email);
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void addFollowing(long followingId, long id) throws AccountException {
         if (followingId != id) {
             Account account = accountDao.findById(id);
@@ -108,7 +104,7 @@ public class AccountService {
         }
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void removeFollowing(long followingId, long id) throws AccountException {
         if (followingId != id) {
             Account user = accountDao.findById(id);

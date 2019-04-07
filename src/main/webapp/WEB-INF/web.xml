@@ -69,15 +69,11 @@
         <param-name>facelets.REFRESH_PERIOD</param-name>
         <param-value>-1</param-value>
     </context-param>
-    
-    
 
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
-
-
     
     <!-- primeface style -->
     <context-param>
@@ -85,6 +81,4 @@
         <param-value>admin</param-value>
     </context-param>
     <!-- primeface style -->
-
-
 </web-app>

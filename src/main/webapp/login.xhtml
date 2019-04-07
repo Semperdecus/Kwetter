@@ -14,7 +14,7 @@
     <ui:define name="content">
         <h:form>
             <p:growl id="growl"/>
-            <div class="card">
+            <div class="card card-container">
                 <div class ="padding">
                     <h:panelGrid columns="2">
                         <h:outputLabel for="username" value="Username:" />
@@ -35,6 +35,7 @@
 
                         <f:facet name="footer">
                             <p:commandButton 
+                                id="login"
                                 value="Login" 
                                 update="growl" 
                                 action="#{loginBean.login}"/>

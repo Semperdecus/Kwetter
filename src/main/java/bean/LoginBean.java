@@ -33,14 +33,19 @@ public class LoginBean implements Serializable {
     private String username;
     private String password;
 
-    public void init() {
+    public void init() throws ServletException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        if (request.getUserPrincipal() == null) {
+            request.logout();
+        } else {
+            redirect(request);
+        }
     }
 
     public void login() {
         String username = this.username.toLowerCase();
-
-        System.out.println(username);
-        System.out.println(password);
 
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -52,21 +57,18 @@ public class LoginBean implements Serializable {
             e.printStackTrace();
         }
 
-        System.out.println(request.getUserPrincipal().getName());
+        redirect(request);
+    }
 
+    public void redirect(HttpServletRequest request) {
         boolean isUser = request.isUserInRole("User");
         boolean isAdmin = request.isUserInRole("Admin");
+        boolean isMod = request.isUserInRole("Moderator");
 
-        if (isUser) {
+        if (isUser || isMod) {
             RedirectUtil.redirect("/pages/user/profile.xhtml");
         } else if (isAdmin) {
             RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
-        }
-
-        try {
-            request.logout();
-        } catch (ServletException e) {
-            e.printStackTrace();
         }
     }
 

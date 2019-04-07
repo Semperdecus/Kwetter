@@ -8,9 +8,32 @@ and open the template in the editor.
     Author     : teren
 */
 body {
-    padding-top: 50px;
+    padding-top: 30px;
 }
 
 .padding {
-    margin: 20px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.card-container{
+    width: 50%;
+    left: 25%;
+    right: 25%;
+    min-width: 300px;
+}
+
+.logout-button{
+    float: right;
+}
+
+.body-background{
+    background-repeat: repeat;
+    background: 
+        /* top, transparent red, faked with gradient */ 
+        linear-gradient(
+        rgba(255, 255, 255, 0.85), 
+        rgba(255, 255, 255, 0.85)
+        ),
+        url("#{resource['img/background.png']}");
 }
