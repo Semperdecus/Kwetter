@@ -28,7 +28,7 @@ public class AccountTest {
     private String sentence;
 
     public AccountTest() {
-        testAccount = new Account(Role.USER, "user@gmail.com", "username", "password");
+        testAccount = new Account("user@gmail.com", "username", "password");
         longString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         shortString = "Hello";
         sentence = "hello world!";
@@ -78,38 +78,6 @@ public class AccountTest {
         testAccount.setId(1L);
         expResult = 1L;
         assertEquals(expResult, testAccount.getId());
-    }
-
-    /**
-     * Test of getRole method, of class Account.
-     */
-    @Test
-    public void testGetRole() {
-        System.out.println("getRole");
-        
-        Role expResult = Role.USER;
-        assertEquals(expResult, testAccount.getRole());
-    }
-
-    /**
-     * Test of setRole method, of class Account.
-     */
-    @Test
-    public void testSetRole() {
-        System.out.println("setRole");
-        Role role = null;
-        Account instance = new Account();
-        
-        instance.setRole(role);
-        Role expResult = Role.USER;
-        assertEquals(expResult, instance.getRole());
-        
-        expResult = Role.USER;
-        assertEquals(expResult, testAccount.getRole());
-       
-        testAccount.setRole(Role.ADMIN);
-        expResult = Role.ADMIN;
-        assertEquals(expResult, testAccount.getRole());        
     }
 
     /**

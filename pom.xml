@@ -42,6 +42,13 @@
             <artifactId>cucumber-core</artifactId>
             <version>2.3.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0</version>
+            <type>jar</type>
+        </dependency>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -126,14 +133,73 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>5.3</version>
+            <version>7.0</version>
         </dependency>
         <!-- PrimeFaces -->
+        
+        <!-- Omni Faces -->
+        <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>3.2</version>
+            <type>jar</type>
+        </dependency>
+        <!-- Omni Faces -->
 
+        <!-- Primefaces style library -->
+        <dependency>
+            <groupId>com.github.adminfaces</groupId>
+            <artifactId>admin-theme</artifactId>
+            <version>1.0.0</version>
+            <classifier>dev</classifier>
+        </dependency>
+        <!-- Primefaces style library -->
+
+
+        <!-- Selenium -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <scope>test</scope>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>htmlunit-driver</artifactId>
+            <scope>test</scope>
+            <version>2.34.0</version>
+        </dependency>
+        <!-- Selenium -->
+        
+        
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                  
+                        <configuration>
+                            <outputDirectory>${basedir}/target/Kwetter/resources
+                            </outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

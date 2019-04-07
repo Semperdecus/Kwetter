@@ -6,15 +6,22 @@
 package models;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,15 +44,13 @@ public class Account implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private Role accountRole;
-
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false, unique = true, length = 20)
     private String username;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 1024)
     private String accountPassword;
     private String location;
     private String website;
@@ -63,21 +68,26 @@ public class Account implements Serializable {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
     private List<Account> followers = new ArrayList<>();
 
+    @ManyToOne
+    private Role role;
+
     public Account() {
     }
 
     /**
      *
-     * @param role
      * @param email
      * @param username
      * @param password
      */
-    public Account(Role role, String email, String username, String password) {
-        this.accountRole = role;
+    public Account(String email, String username, String password) {
         this.email = email;
         this.username = username;
-        this.accountPassword = password;
+        try {
+            this.accountPassword = generateSha256(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -94,28 +104,6 @@ public class Account implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Role getRole() {
-        if (accountRole == Role.USER) {
-            return Role.USER;
-        } else if (accountRole == Role.ADMIN) {
-            return Role.ADMIN;
-        } else {
-            return Role.USER;
-        }
-    }
-
-    /**
-     *
-     * @param role
-     */
-    public void setRole(Role role) {
-        this.accountRole = role;
     }
 
     /**
@@ -299,5 +287,29 @@ public class Account implements Serializable {
      */
     public void setFollowers(List<Account> followers) {
         this.followers = followers;
+    }
+
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+    public void setAccountPassword(String accountPassword) {
+        this.accountPassword = accountPassword;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    private String generateSha256(String text) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
+        String encoded = Base64.getEncoder().encodeToString(hash); // Java 8 feature
+
+        return encoded;
     }
 }

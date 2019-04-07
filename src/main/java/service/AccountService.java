@@ -6,6 +6,8 @@
 package service;
 
 import dao.IAccountDao;
+import dao.IRoleDao;
+import dao.ITweetDao;
 import dao.JPA;
 import exceptions.AccountException;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
+import models.Role;
 
 /**
  *
@@ -26,28 +29,43 @@ public class AccountService {
     @JPA
     private IAccountDao accountDao;
 
+    @Inject
+    private RoleService roleService;
+
+    @Inject
+    @JPA
+    private IRoleDao roleDao;
+
     public AccountService() {
         super();
     }
 
     @PermitAll
     public Account create(Account entity) throws AccountException {
-        return accountDao.create(entity);
+        System.out.println("ENTITY ROLE = " + entity.getRole());
+        if (entity.getRole() == null) {
+            entity.setRole(roleService.getRoleByName("User"));
+            accountDao.create(entity);
+            return entity;
+        } else {
+            accountDao.create(entity);
+            return entity;
+        }
     }
 
-    @RolesAllowed({"ADMIN"})
+    @RolesAllowed({"Admin", "Moderator"})
     public void delete(long id) throws AccountException {
         Account entity = accountDao.findById(id);
         accountDao.delete(entity);
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void update(Account entity) throws Exception {
         Account user = accountDao.findById(entity.getId());
         accountDao.update(user);
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void updateUsername(String username, Account user) throws AccountException {
         if (accountDao.findByUsername(username) == null && !username.isEmpty()) {
             user.setUsername(username);
@@ -70,7 +88,7 @@ public class AccountService {
         return accountDao.findByEmail(email);
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void addFollowing(long followingId, long id) throws AccountException {
         if (followingId != id) {
             Account account = accountDao.findById(id);
@@ -86,7 +104,7 @@ public class AccountService {
         }
     }
 
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({"User", "Admin", "Moderator"})
     public void removeFollowing(long followingId, long id) throws AccountException {
         if (followingId != id) {
             Account user = accountDao.findById(id);

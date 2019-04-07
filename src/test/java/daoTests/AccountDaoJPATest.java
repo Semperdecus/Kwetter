@@ -50,9 +50,9 @@ public class AccountDaoJPATest {
             transaction.begin();
             dao = new AccountDaoJPA(entityManager);
 
-            accountBart = new Account(Role.USER, "bart@mail.nl", "bart", "password");
-            accountEmma = new Account(Role.USER, "emma@mail.nl", "emma", "password");
-            account = new Account(Role.USER, "user@mail.nl", "user", "password");
+            accountBart = new Account("bart@mail.nl", "bart", "password");
+            accountEmma = new Account("emma@mail.nl", "emma", "password");
+            account = new Account("user@mail.nl", "user", "password");
 
             accountEmma.addFollowing(accountBart);
             accountEmma.addFollowing(account);
@@ -80,7 +80,7 @@ public class AccountDaoJPATest {
      */
     @Test(expected = AccountException.class)
     public void usernameTest1() throws Exception {
-        Account accountUsername = dao.create(new Account(Role.USER, "user@mail.nl", "", "password"));
+        Account accountUsername = dao.create(new Account("user@mail.nl", "", "password"));
         assertNull(accountUsername);
     }
 
@@ -89,7 +89,7 @@ public class AccountDaoJPATest {
      */
     @Test(expected = AccountException.class)
     public void usernameTest2() throws Exception {
-        Account accountUsername = dao.create(new Account(Role.USER, "user@mail.nl", "123456789012345678901", "password"));
+        Account accountUsername = dao.create(new Account("user@mail.nl", "123456789012345678901", "password"));
         assertNull(accountUsername);
     }
 
@@ -99,7 +99,7 @@ public class AccountDaoJPATest {
     @Test
     public void usernameTest3() throws Exception {
         transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "user@mail.com", "username", "password"));
+        Account account = dao.create(new Account("user@mail.com", "username", "password"));
         assertEquals(account, dao.findByUsername(account.getUsername()));
         transaction.commit();
     }
@@ -109,7 +109,7 @@ public class AccountDaoJPATest {
      */
     @Test(expected = AccountException.class)
     public void emailTest1() throws Exception {
-        Account accountEmail = dao.create(new Account(Role.USER, "mail", "username", "password"));
+        Account accountEmail = dao.create(new Account("mail", "username", "password"));
         assertNull(accountEmail);
     }
 
@@ -118,7 +118,7 @@ public class AccountDaoJPATest {
      */
     @Test(expected = AccountException.class)
     public void emailTest2() throws Exception {
-        Account accountEmail = dao.create(new Account(Role.USER, "", "username", "password"));
+        Account accountEmail = dao.create(new Account("", "username", "password"));
         assertNull(accountEmail);
     }
 
@@ -128,7 +128,7 @@ public class AccountDaoJPATest {
     @Test
     public void emailTest3() throws Exception {
         transaction.begin();
-        Account account = dao.create(new Account(Role.USER, "user@gmail.nl", "username", "password"));
+        Account account = dao.create(new Account("user@gmail.nl", "username", "password"));
         assertEquals(account, dao.findByEmail(account.getEmail()));
         transaction.commit();
     }

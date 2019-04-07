@@ -5,7 +5,6 @@
  */
 package dao.facade;
 
-import dao.AbstractJPADao;
 import dao.ITweetDao;
 import dao.JPA;
 import exceptions.TweetException;
@@ -27,7 +26,7 @@ import models.Tweet;
  */
 @JPA
 @Stateless
-public class TweetDaoJPA extends AbstractJPADao<Serializable> implements ITweetDao {
+public class TweetDaoJPA implements ITweetDao {
 
     @PersistenceContext(name = "persistence/kwetterPU", unitName = "kwetterPU")
     private EntityManager entityManager;
@@ -100,11 +99,7 @@ public class TweetDaoJPA extends AbstractJPADao<Serializable> implements ITweetD
 
     @Override
     public void delete(Tweet entity, Account adminAccount) throws TweetException {
-        if (adminAccount.getRole() == Role.ADMIN) {
-            entityManager.remove(entityManager.merge(entity));
-        } else {
-            throw new TweetException("Account does not have permissions to delete tweet");
-        }
+        entityManager.remove(entityManager.merge(entity));
     }
 
     private void checkCreate(Tweet entity) throws TweetException {

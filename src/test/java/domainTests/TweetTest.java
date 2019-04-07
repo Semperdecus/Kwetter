@@ -24,7 +24,7 @@ public class TweetTest {
     private Account testAccount;
     
     public TweetTest() {
-        testAccount = new Account(Role.USER, "user@gmail.com", "username", "password");
+        testAccount = new Account("user@gmail.com", "username", "password");
     }
     
     @BeforeClass

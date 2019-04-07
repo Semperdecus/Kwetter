@@ -90,7 +90,7 @@ public class AccountController {
     public Account post(@QueryParam("email") String email,
             @QueryParam("username") String username,
             @QueryParam("password") String password) throws Exception {
-        Account user = accountService.create(new Account(Role.USER, email, username, password));
+        Account user = accountService.create(new Account(email, username, password));
         if (user == null) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }

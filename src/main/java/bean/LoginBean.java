@@ -5,22 +5,86 @@
  */
 package bean;
 
+import java.io.Serializable;
+import java.security.Security;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import models.Account;
+import service.AccountService;
+import utils.RedirectUtil;
 
 /**
- * @RequestScope: Beans are created for the duration of the request 
+ * @RequestScope: Beans are created for the duration of the request
  * @author teren
  */
 @Named(value = "loginBean")
-@RequestScoped
-public class LoginBean {
+@SessionScoped
+public class LoginBean implements Serializable {
 
-    /**
-     * Creates a new instance of LoginBean
-     */
-    public LoginBean() {
-        
+    @Inject
+    private AccountService accountService;
+    @Inject
+    private SessionBean sessionBean;
+
+    private String username;
+    private String password;
+
+    public void init() throws ServletException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        if (request.getUserPrincipal() == null) {
+            request.logout();
+        } else {
+            redirect(request);
+        }
     }
-    
+
+    public void login() {
+        String username = this.username.toLowerCase();
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+        try {
+            request.login(username, this.password);
+        } catch (ServletException e) {
+            RedirectUtil.redirect("/error.xhtml");
+            e.printStackTrace();
+        }
+
+        redirect(request);
+    }
+
+    public void redirect(HttpServletRequest request) {
+        boolean isUser = request.isUserInRole("User");
+        boolean isAdmin = request.isUserInRole("Admin");
+        boolean isMod = request.isUserInRole("Moderator");
+
+        if (isUser || isMod) {
+            RedirectUtil.redirect("/pages/user/profile.xhtml");
+        } else if (isAdmin) {
+            RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
+        }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
