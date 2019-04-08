@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import utils.RedirectUtil;
 
 /**
@@ -18,7 +19,6 @@ import utils.RedirectUtil;
  * @author teren
  */
 @Named(value = "redirectBean")
-@ManagedBean
 public class RedirectBean implements Serializable{
 
     public void createAccounts() {

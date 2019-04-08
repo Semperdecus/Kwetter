@@ -35,6 +35,7 @@ public class StartUp {
         try {
             Account testUser = new Account("user@mail.com", "user", "password");
             Account testAdmin = new Account("admin@mail.com", "admin", "password");
+            Account testMod = new Account("mod@mail.com", "mod", "password");
             Role roleAdmin = new Role("Admin");
             Role roleUser = new Role("User");
             Role roleModerator = new Role("Moderator");
@@ -45,6 +46,11 @@ public class StartUp {
 
             testUser.setRole(roleService.getRoleByName("User"));
             testAdmin.setRole(roleService.getRoleByName("Admin"));
+            testMod.setRole(roleService.getRoleByName("Moderator"));
+            accountService.create(testUser);
+            accountService.create(new Account("bas.de.zot@gmail.com", "bassie", "password"));
+            accountService.create(testAdmin);
+            accountService.create(testMod);
 
 //            accountService.create(new Account("user2@mail.com", "user2", "password"));
 //            accountService.create(new Account("user24@mail.com", "user23", "password"));
@@ -65,8 +71,6 @@ public class StartUp {
 //            accountService.create(new Account("user2513245@mail.com", "use213r231", "password"));
 //            accountService.create(new Account("user2351254@mail.com", "us52er242", "password"));
 //            accountService.create(new Account("user235266@mail.com", "us3256er253", "password"));
-            accountService.create(testUser);
-            accountService.create(testAdmin);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

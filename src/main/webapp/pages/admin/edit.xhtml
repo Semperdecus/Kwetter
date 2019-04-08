@@ -23,7 +23,7 @@
         <header class="card">
             <div class="padding">
                 <h:outputLabel value="Welcome admin"/>
-                <h5 class="text-muted">Create a new account</h5>
+                <h5 class="text-muted">Editing account: #{editAccountBean.account.username}</h5>
             </div>
         </header>
         <div class="card">
@@ -36,7 +36,7 @@
                                      required="true"
                                      requiredMessage="Fill in username"
                                      styleClass="form-control"
-                                     value="#{createAccountBean.username}"/>
+                                     value="#{editAccountBean.username}"/>
                     </div>
 
                     <div class="form-group">
@@ -46,7 +46,7 @@
                                      requiredMessage="Fill in email"
                                      styleClass="form-control"
                                      type="email"
-                                     value="#{createAccountBean.email}"/>
+                                     value="#{editAccountBean.email}"/>
                     </div>
 
                     <div class="form-group">
@@ -56,12 +56,32 @@
                                      requiredMessage="Fill in password"
                                      styleClass="form-control"
                                      type="password"
-                                     value="#{createAccountBean.password}"/>
+                                     value="#{editAccountBean.password}"/>
                     </div>
 
+                    <div class="form-group">
+                        <p:inputText id="location"
+                                     placeholder="Location"
+                                     styleClass="form-control"
+                                     value="#{editAccountBean.location}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <p:inputText id="bio"
+                                     placeholder="Biography"
+                                     styleClass="form-control"
+                                     value="#{editAccountBean.bio}"/>
+                    </div> 
+
+                    <div class="form-group">
+                        <p:selectOneMenu immediate="true" id="role" value="#{editAccountBean.role}">
+                            <f:selectItem itemLabel="User" itemValue="User" />
+                            <f:selectItem itemLabel="Moderator" itemValue="Moderator" />
+                        </p:selectOneMenu>
+                    </div>
                     <p:commandButton 
-                        value="Register"
-                        actionListener="#{createAccountBean.createAccount()}"/>
+                        value="Update"
+                        actionListener="#{editAccountBean.editAccount()}"/>
                 </h:form>
             </div>
         </div>

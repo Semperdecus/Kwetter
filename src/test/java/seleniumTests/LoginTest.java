@@ -31,7 +31,7 @@ public class LoginTest extends FunctionalTest {
         ProfilePage profilePage = loginPage.loginUser();
         assertTrue(profilePage.isInitialized());
 
-        assertEquals("Frontend for user will be made in Angular soon!", profilePage.confirmationHeader());
+        assertEquals("Your role is insufficient to access this dashboard.", profilePage.confirmationHeader());
     }
     
     @Test

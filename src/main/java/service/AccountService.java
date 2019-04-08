@@ -53,7 +53,7 @@ public class AccountService {
         }
     }
 
-    @RolesAllowed({"Admin", "Moderator"})
+    @RolesAllowed({"Admin"})
     public void delete(long id) throws AccountException {
         Account entity = accountDao.findById(id);
         accountDao.delete(entity);
@@ -61,8 +61,7 @@ public class AccountService {
 
     @RolesAllowed({"User", "Admin", "Moderator"})
     public void update(Account entity) throws Exception {
-        Account user = accountDao.findById(entity.getId());
-        accountDao.update(user);
+        accountDao.update(entity);
     }
 
     @RolesAllowed({"User", "Admin", "Moderator"})
