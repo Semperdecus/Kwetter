@@ -15,9 +15,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -58,14 +56,14 @@ public class Account implements Serializable {
     @Column(length = 160)
     private String bio;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "account")
     private List<Tweet> tweets = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "followers_following")
     private List<Account> following = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "following")
     private List<Account> followers = new ArrayList<>();
 
     @ManyToOne
@@ -85,7 +83,7 @@ public class Account implements Serializable {
         this.username = username;
         try {
             this.accountPassword = generateSha256(password);
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }

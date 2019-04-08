@@ -26,10 +26,12 @@ import models.Tweet;
 @Stateless
 public class TweetService {
 
-    @Inject @JPA
+    @Inject
+    @JPA
     private ITweetDao tweetDao;
 
-    @Inject @JPA
+    @Inject
+    @JPA
     private IAccountDao accountDao;
 
     public TweetService() {
@@ -37,7 +39,6 @@ public class TweetService {
     }
 
     public Tweet create(Tweet tweet) throws AccountException, TweetException {
-        System.out.println(tweet.getAccount().getId()); // null
         Account account = accountDao.findById(tweet.getAccount().getId());
         if (account != null) {
             tweet = tweetDao.create(tweet);
@@ -48,11 +49,17 @@ public class TweetService {
         return null;
     }
 
-    public void delete(long id, Account account) throws TweetException, AccountException {
+    @RolesAllowed({"Admin", "Moderator"})
+    public void delete(Tweet tweet) throws TweetException {
+        tweetDao.delete(tweet);
+
+    }
+
+    public void deleteOwnTweet(long id, Account account) throws TweetException, AccountException {
         Tweet entity = tweetDao.findById(id);
         if (entity != null) {
             if (entity.getAccount().getId().equals(account.getId())) {
-                tweetDao.delete(entity, entity.getAccount());
+                tweetDao.delete(entity);
                 return;
             }
         }

@@ -69,7 +69,7 @@ public class TweetDaoColl implements ITweetDao {
     }
 
     @Override
-    public void deleteById(long id, Account adminAccount) throws TweetException {
+    public void deleteById(long id) throws TweetException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -90,7 +90,7 @@ public class TweetDaoColl implements ITweetDao {
     }
 
     @Override
-    public void delete(Tweet entity, Account adminAccount) throws TweetException {
+    public void delete(Tweet entity) throws TweetException {
         tweets.remove(entity);
     }
 }

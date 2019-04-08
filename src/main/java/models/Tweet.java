@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "tweet.findById", query = "SELECT t FROM Tweet t WHERE t.id = :id"),
     @NamedQuery(name = "tweet.findByMessage", query = "SELECT t FROM Tweet t WHERE t.message = :message"),
-    @NamedQuery(name = "tweet.findByUsername", query = "SELECT t FROM Account a, Tweet t WHERE a.id = t.account AND a.username = :username")
+    @NamedQuery(name = "tweet.findByUsername", query = "SELECT t FROM Account a, Tweet t WHERE a.username = :username")
 })
 public class Tweet implements Serializable {
     @Id

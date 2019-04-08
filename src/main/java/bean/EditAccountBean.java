@@ -126,7 +126,7 @@ public class EditAccountBean implements Serializable {
         RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
     }
 
-    public void editAccounts(String username) {
+    public void redirectEditAccount(String username) {
         RedirectUtil.redirect("/pages/admin/edit.xhtml");
         this.findAccount(username);
     }

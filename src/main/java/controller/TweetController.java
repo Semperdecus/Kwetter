@@ -73,6 +73,6 @@ public class TweetController {
         if (user == null) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        tweetService.delete(id, user);
+        tweetService.deleteOwnTweet(id, user);
     }
 }

@@ -73,7 +73,7 @@ public class TweetServiceTest {
     }
 
     // @RolesAllowed({"USER","ADMINISTRATOR", "MODERATOR"})
-    // public void delete(long id, long userId) throws Exception;
+    // public void deleteOwnTweet(long id, long userId) throws Exception;
     @Test
     public void deleteTest() throws Exception {
         // Case 1 - Existing User
@@ -83,12 +83,12 @@ public class TweetServiceTest {
         tweet.setId(1l);
 
         when(tweetDao.findById(tweet.getId())).thenReturn(tweet);
-        tweetService.delete(1l, user);
-        verify(tweetDao, atLeastOnce()).delete(tweet, tweet.getAccount());
+        tweetService.deleteOwnTweet(1l, user);
+        verify(tweetDao, atLeastOnce()).delete(tweet);
     }
 
     // @RolesAllowed({"USER","ADMINISTRATOR", "MODERATOR"})
-    // public void delete(long id, long userId) throws Exception;
+    // public void deleteOwnTweet(long id, long userId) throws Exception;
     @Test(expected = AccountException.class)
     public void deleteTest2() throws Exception {
         // Case 2 - Non-existing User
@@ -98,7 +98,7 @@ public class TweetServiceTest {
         tweet.setId(1l);
 
         when(tweetDao.findById(tweet.getId())).thenReturn(null);
-        tweetService.delete(1l, user);
-        verify(tweetDao, never()).delete(tweet, tweet.getAccount());
+        tweetService.deleteOwnTweet(1l, user);
+        verify(tweetDao, never()).delete(tweet);
     }
 }

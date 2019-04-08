@@ -87,18 +87,18 @@ public class TweetDaoJPA implements ITweetDao {
         return entityManager.merge(entity);
     }
 
-    public void deleteById(long id, Account adminAccount) throws TweetException {
+    public void deleteById(long id) throws TweetException {
         final Tweet entity = findById(id);
 
         if (entity == null) {
             throw new TweetException("Tweet is not found.");
         } else {
-            delete(entity, adminAccount);
+            delete(entity);
         }
     }
 
     @Override
-    public void delete(Tweet entity, Account adminAccount) throws TweetException {
+    public void delete(Tweet entity) throws TweetException {
         entityManager.remove(entityManager.merge(entity));
     }
 

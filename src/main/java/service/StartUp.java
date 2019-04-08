@@ -26,16 +26,16 @@ public class StartUp {
     private AccountService accountService;
     @Inject
     private RoleService roleService;
-
     @Inject
     private TweetService tweetService;
 
     @PostConstruct
     public void initData() {
         try {
-            Account testUser = new Account("user@mail.com", "user", "password");
+            Account testUser = new Account("bas.de.zot@gmail.com", "user", "password");
             Account testAdmin = new Account("admin@mail.com", "admin", "password");
             Account testMod = new Account("mod@mail.com", "mod", "password");
+            Tweet userTweet = new Tweet("offensive tweet!!!", testUser);
             Role roleAdmin = new Role("Admin");
             Role roleUser = new Role("User");
             Role roleModerator = new Role("Moderator");
@@ -47,10 +47,12 @@ public class StartUp {
             testUser.setRole(roleService.getRoleByName("User"));
             testAdmin.setRole(roleService.getRoleByName("Admin"));
             testMod.setRole(roleService.getRoleByName("Moderator"));
+            
             accountService.create(testUser);
-            accountService.create(new Account("bas.de.zot@gmail.com", "bassie", "password"));
             accountService.create(testAdmin);
             accountService.create(testMod);
+            
+            tweetService.create(userTweet);
 
 //            accountService.create(new Account("user2@mail.com", "user2", "password"));
 //            accountService.create(new Account("user24@mail.com", "user23", "password"));

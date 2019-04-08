@@ -42,7 +42,7 @@ public interface ITweetDao {
      * @param id, adminAccount
      * @return
      */
-    public void deleteById(long id, Account adminAccount) throws TweetException;
+    public void deleteById(long id) throws TweetException;
     
     /**
      *
@@ -68,5 +68,5 @@ public interface ITweetDao {
      *
      * @param entity, adminAccount
      */
-    void delete(Tweet entity, Account adminAccount) throws TweetException;
+    void delete(Tweet entity) throws TweetException;
 }

@@ -54,7 +54,7 @@ public class AccountService {
     }
 
     @RolesAllowed({"Admin"})
-    public void delete(long id) throws AccountException {
+    public void deleteById(long id) throws AccountException {
         Account entity = accountDao.findById(id);
         accountDao.delete(entity);
     }

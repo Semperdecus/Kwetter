@@ -137,6 +137,6 @@ public class AccountController {
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") long id) throws Exception {
-        accountService.delete(id);
+        accountService.deleteById(id);
     }
 }

@@ -55,17 +55,14 @@ public class AccountBean implements Serializable {
         return account;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
     public void deleteAccount(Account account) throws AccountException, MessagingException, UnsupportedEncodingException {
         try {
-            accountService.delete(account.getId());
+            accountService.deleteById(account.getId());
             emailBean.sendEmail_AccountDeleted(account);
             RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
         } catch (AccessLocalException e) {
             System.out.println("NO PERMISSION");
+            e.printStackTrace();
         }
     }
 
