@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.json.bind.annotation.JsonbTransient;
@@ -47,6 +48,7 @@ public class Tweet implements Serializable {
 
     @ManyToOne
     @JsonbTransient
+    @JsonIgnore
     private Account account;
 
     /**

@@ -16,6 +16,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import models.Account;
 import service.AccountService;
+import utils.JwtUtil;
 
 /**
  *
@@ -32,15 +33,20 @@ public class AuthController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/login")
-    public Account login(LoginRequestObject request) {
+    public String login(LoginRequestObject request) {
         try {
-            Account response = accountService.login(request.getUsername(), request.getPassword());
+            Account account = accountService.login(request.getUsername(), request.getPassword());
 
-            if (response == null) {
+            if (account == null) {
                 return null;
             }
+            
+            JwtUtil jwtUtil = new JwtUtil();
+            String jwtBearerToken = jwtUtil.makeAccountJwtToken(account.getId().toString(), account.getUsername(), account);
 
-            return response;
+             // send the JWT back to the user
+             System.out.println(jwtBearerToken);
+            return jwtBearerToken;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -67,10 +68,12 @@ public class Account implements Serializable {
     @ManyToMany
     @JoinTable(name = "followers_following")
     @JsonbTransient
+    @JsonIgnore
     private List<Account> following = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, mappedBy = "following")
     @JsonbTransient
+    @JsonIgnore
     private List<Account> followers = new ArrayList<>();
 
     @ManyToOne
