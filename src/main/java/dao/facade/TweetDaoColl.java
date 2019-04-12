@@ -67,6 +67,22 @@ public class TweetDaoColl implements ITweetDao {
             return null;
         }
     }
+    
+    @Override
+    public List<Tweet> findByAccountId(Account account) {
+        List<Tweet> result = new ArrayList<>();
+        for (Tweet tweet : tweets) {
+            if (tweet.getAccount() == account) {
+                result.add(tweet);
+            }
+        }
+
+        if (result.size() > 0) {
+            return result;
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public void deleteById(long id) throws TweetException {

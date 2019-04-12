@@ -77,8 +77,13 @@ public class TweetService {
     }
 
     @PermitAll
-    public List<Tweet> findByUser(String username) {
+    public List<Tweet> findByUsername(String username) {
         return tweetDao.findByUsername(username);
+    }
+
+    @PermitAll
+    public List<Tweet> findByAccountId(Account account) {
+        return tweetDao.findByAccountId(account);
     }
 
     @PermitAll

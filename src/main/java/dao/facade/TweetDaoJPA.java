@@ -67,6 +67,15 @@ public class TweetDaoJPA implements ITweetDao {
         System.out.println("count: " + result.size());
         return result;
     }
+    
+    @Override
+    public List<Tweet> findByAccountId(Account account) {
+        TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findByAccount", Tweet.class);
+        query.setParameter("account", account);
+        List<Tweet> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
 
     @Override
     public List<Tweet> findAll() {

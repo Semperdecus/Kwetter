@@ -7,6 +7,7 @@ package models;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -23,15 +25,19 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "tweet.findById", query = "SELECT t FROM Tweet t WHERE t.id = :id"),
-    @NamedQuery(name = "tweet.findByMessage", query = "SELECT t FROM Tweet t WHERE t.message = :message"),
-    @NamedQuery(name = "tweet.findByUsername", query = "SELECT t FROM Account a, Tweet t WHERE a.username = :username")
-})
+    @NamedQuery(name = "tweet.findById", query = "SELECT t FROM Tweet t WHERE t.id = :id")
+    ,
+    @NamedQuery(name = "tweet.findByMessage", query = "SELECT t FROM Tweet t WHERE t.message = :message")
+    ,
+    @NamedQuery(name = "tweet.findByAccount", query = "SELECT t FROM Tweet t WHERE t.account = :account")
+    ,
+ @NamedQuery(name = "tweet.findByUsername", query = "SELECT t FROM Account a, Tweet t WHERE a.username = :username")})
 public class Tweet implements Serializable {
+
     @Id
     @GeneratedValue
     private Long id;
-    
+
     @Column(length = 140, nullable = false)
     private String message;
 
@@ -40,6 +46,7 @@ public class Tweet implements Serializable {
     private Date date;
 
     @ManyToOne
+    @JsonbTransient
     private Account account;
 
     /**
@@ -122,6 +129,5 @@ public class Tweet implements Serializable {
     public void setAccount(Account account) {
         this.account = account;
     }
-    
-    
+
 }

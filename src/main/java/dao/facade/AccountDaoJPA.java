@@ -68,7 +68,12 @@ public class AccountDaoJPA implements IAccountDao {
         query.setParameter("username", username);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
-        return result.get(0);
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            System.out.println("No user found for: " + username);
+            return null;
+        }
     }
 
     @Override

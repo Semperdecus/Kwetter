@@ -53,7 +53,7 @@ public class AccountController {
     @GET
     @Path("/{username}/tweet")
     public List<Tweet> getTweetsByUser(@PathParam("username") String username) {
-        return tweetService.findByUser(username);
+        return tweetService.findByUsername(username);
     }
 
     @GET

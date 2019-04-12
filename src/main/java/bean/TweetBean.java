@@ -63,13 +63,12 @@ public class TweetBean implements Serializable {
     public void showTweets(String username) {
         this.findAccount(username);
         RedirectUtil.redirect("/pages/admin/usertweet.xhtml");
-
     }
 
     public void findAccount(String username) {
         Account a = accountService.findByUsername(username);
         this.account = a;
-        this.tweets = this.tweetService.findByUser(account.getUsername());
+        this.tweets = this.tweetService.findByAccountId(account);
     }
 
     public void deleteTweet(Tweet tweet) throws TweetException, MessagingException, UnsupportedEncodingException {
@@ -77,6 +76,7 @@ public class TweetBean implements Serializable {
             this.tweetService.delete(tweet);
             emailBean.sendEmail_tweetDeleted(tweet.getAccount());
             RedirectUtil.redirect("/pages/admin/usertweet.xhtml");
+            this.tweets = this.tweetService.findByAccountId(account);
         } catch (AccessLocalException e) {
             System.out.println("NO PERMISSION");
             e.printStackTrace();

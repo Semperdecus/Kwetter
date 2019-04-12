@@ -10,13 +10,17 @@ import dao.IRoleDao;
 import dao.ITweetDao;
 import dao.JPA;
 import exceptions.AccountException;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.AccessLocalException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
 import models.Role;
+import utils.PasswordSecurity;
 
 /**
  *
@@ -87,7 +91,7 @@ public class AccountService {
         return accountDao.findByEmail(email);
     }
 
-    @RolesAllowed({"User", "Admin", "Moderator"})
+    @PermitAll
     public void addFollowing(long followingId, long id) throws AccountException {
         if (followingId != id) {
             Account account = accountDao.findById(id);
@@ -121,5 +125,21 @@ public class AccountService {
     @PermitAll
     public List<Account> findAll() {
         return accountDao.findAll();
+    }
+
+    @PermitAll
+    public Account login(String username, String password) throws NoSuchAlgorithmException {
+        System.out.println(username);
+        System.out.println(password);
+        Account getAccountByUsername = this.accountDao.findByUsername(username);
+        System.out.println(getAccountByUsername);
+        String passwordCheck = PasswordSecurity.generateSha256(password);
+        System.out.println(passwordCheck);
+        System.out.println(getAccountByUsername.getAccountPassword());
+        if (passwordCheck.equals(getAccountByUsername.getAccountPassword())) {
+            return getAccountByUsername;
+        } else {
+            return null;
+        }
     }
 }
