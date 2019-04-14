@@ -10,6 +10,7 @@ import {AuthService} from '../_services';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  returnUrl: string;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.authService.logout();
+    this.returnUrl =  '';
   }
 
   login() {
@@ -35,7 +37,8 @@ export class LoginComponent implements OnInit {
             if (data && data.token) {
               localStorage.setItem('currentUser', data.token);
 
-              // this.router.navigateByUrl('/user');
+              console.log('navigating');
+              this.router.navigateByUrl('/home');
             }
           }
         );

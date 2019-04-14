@@ -4,20 +4,30 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CustomMaterialModule } from './core/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import {MatGridListModule} from '@angular/material/grid-list';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import {AuthService} from './_services';
 import {HttpClientModule} from '@angular/common/http';
-import { TimelineComponent } from './timeline/timeline.component';
+import { TweetComponent } from './tweet/tweet.component';
+import { NewTweetComponent } from './new-tweet/new-tweet.component';
+import { ProfileCardComponent } from './profile-card/profile-card.component';
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { HomeComponent } from './home/home.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserComponent,
-    TimelineComponent
+    TweetComponent,
+    NewTweetComponent,
+    ProfileCardComponent,
+    NavigationBarComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +37,9 @@ import { TimelineComponent } from './timeline/timeline.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatGridListModule,
+    NgbModule,
+    MatIconModule,
   ],
   providers: [
     AuthService,
