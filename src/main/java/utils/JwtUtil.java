@@ -19,9 +19,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gherkin.deps.com.google.gson.JsonObject;
 import static io.jsonwebtoken.security.Keys.secretKeyFor;
 import java.io.IOException;
 import javax.crypto.spec.SecretKeySpec;
+import javax.json.JsonArray;
 
 /**
  *
@@ -61,9 +63,12 @@ public class JwtUtil {
             Date exp = new Date(expMillis);
             builder.setExpiration(exp);
         }
+        
+        JsonObject token = new JsonObject();
+        token.addProperty("token", builder.compact());
 
         //Builds the JWT and serializes it to a compact, URL-safe string
-        return builder.compact();
+        return token.toString();
     }
 
     public String apiKey() throws IOException {

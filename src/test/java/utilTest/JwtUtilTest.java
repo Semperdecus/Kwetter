@@ -5,6 +5,7 @@
  */
 package utilTest;
 
+import gherkin.deps.com.google.gson.JsonObject;
 import java.io.IOException;
 import models.Account;
 import models.Tweet;
@@ -63,8 +64,6 @@ public class JwtUtilTest {
         assertTrue(result.contains("accountPassword"));
         assertTrue(result.contains("id"));
         assertTrue(result.contains("email"));
-        assertTrue(result.contains("mod"));
-        assertTrue(result.contains("admin@mail.com"));
         assertTrue(result.contains("testpicture"));
         assertTrue(result.contains("bas.de.zot@gmail.com"));
     }

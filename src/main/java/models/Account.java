@@ -77,6 +77,8 @@ public class Account implements Serializable {
     private List<Account> followers = new ArrayList<>();
 
     @ManyToOne
+    @JsonbTransient
+    @JsonIgnore
     private Role role;
 
     /**
