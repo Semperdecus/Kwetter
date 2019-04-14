@@ -8,14 +8,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
-import {AuthService} from './_services/auth.service';
+import {AuthService} from './_services';
 import {HttpClientModule} from '@angular/common/http';
+import { TimelineComponent } from './timeline/timeline.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    TimelineComponent
   ],
   imports: [
     BrowserModule,

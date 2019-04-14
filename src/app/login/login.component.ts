@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {AuthService} from '../_services/auth.service';
+import {AuthService} from '../_services';
 
 @Component({
   selector: 'app-login',
@@ -32,12 +32,10 @@ export class LoginComponent implements OnInit {
       this.authService.login(val.username, val.password)
         .subscribe(
           (data) => {
-            console.log(data);
-
             if (data && data.token) {
-              localStorage.setItem('currentUser', JSON.stringify(data));
+              localStorage.setItem('currentUser', data.token);
 
-              this.router.navigateByUrl('/user');
+              // this.router.navigateByUrl('/user');
             }
           }
         );

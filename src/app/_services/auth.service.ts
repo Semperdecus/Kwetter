@@ -1,13 +1,15 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient) {
+  }
 
   login(username: string, password: string) {
-    // TODO make login api call
-    return this.http.post<any>('http://localhost:8080/Kwetter/api/auth/login', { username, password });
+    return this.http.post<any>('http://localhost:8080/Kwetter/api/auth/login',
+      {username, password});
   }
 
   logout() {
