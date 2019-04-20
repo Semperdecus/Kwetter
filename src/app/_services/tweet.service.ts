@@ -15,6 +15,14 @@ export class TweetService {
     return this.http.get<Tweet[]>(this.BASE_URL);
   }
 
+  getFollowingTweet() {
+    if (this.authService.isLoggedIn() === false) {
+      return null;
+    } else {
+      return this.http.get<Tweet[]>(this.BASE_URL + 'following/?username=' + this.authService.getUser());
+    }
+  }
+
   post(tweet) {
     if (this.authService.isLoggedIn() === false) {
       return null;
@@ -22,7 +30,7 @@ export class TweetService {
       return this.http.post<Tweet>(
         this.BASE_URL + '?message=' + tweet + '&username=' + this.authService.getUser(),
         {}).subscribe(
-        (res) => {
+        () => {
           this.router.navigateByUrl('/home');
         });
     }

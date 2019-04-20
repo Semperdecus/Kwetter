@@ -1,4 +1,5 @@
-import { Role } from './role';
+import {Role} from './role';
+import {Tweet} from './tweet';
 
 export class Account {
   public id: number;
@@ -10,4 +11,5 @@ export class Account {
   public picture: string;
   public bio: string;
   public role: Role;
+  public tweet: Tweet;
 }

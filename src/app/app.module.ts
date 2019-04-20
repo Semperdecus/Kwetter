@@ -20,6 +20,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatIconModule} from '@angular/material/icon';
 import {DatexPipe} from './_utils/datePipe';
 import {AuthGuard} from './_guards';
+import {FollowingFollowersComponent} from './following-followers/following-followers.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {AuthGuard} from './_guards';
     NavigationBarComponent,
     HomeComponent,
     DatexPipe,
+    FollowingFollowersComponent,
   ],
   imports: [
     BrowserModule,
