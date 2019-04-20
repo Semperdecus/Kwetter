@@ -1,12 +1,12 @@
-
-.navbar-icon {
-  position: relative;
-  top: 4px;
+.margin {
+  margin-bottom: 25px;
+}
+.btn-logout {
+  color: red;
 }
 
 .active-link {
   position: relative;
   border-bottom: cornflowerblue 5px solid;
-  padding-left: 5px;
-  padding-right: 5px;
+  margin-bottom: -5px;
 }

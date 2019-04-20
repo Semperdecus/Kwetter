@@ -31,12 +31,14 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     localStorage.removeItem('expires_at');
+    this.router.navigateByUrl('/login');
+
   }
 
   // methods to see if user is logged in
   public isLoggedIn() {
     console.log(this.getExpiration());
-    console.log(moment())
+    console.log(moment());
     return moment().isBefore(this.getExpiration());
   }
 

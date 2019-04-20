@@ -21,6 +21,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {DatexPipe} from './_utils/datePipe';
 import {AuthGuard} from './_guards';
 import {FollowingFollowersComponent} from './following-followers/following-followers.component';
+import {AccountSettingsComponent} from './account-settings/account-settings.component';
+import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import {FollowingFollowersComponent} from './following-followers/following-follo
     HomeComponent,
     DatexPipe,
     FollowingFollowersComponent,
+    AccountSettingsComponent,
+    ProfileMenuComponent,
   ],
   imports: [
     BrowserModule,
