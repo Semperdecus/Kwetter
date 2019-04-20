@@ -30,9 +30,9 @@ import javax.json.JsonArray;
  * @author teren
  */
 public class JwtUtil {
+
     /**
-     * Expiration time of JWT token in milliseconds
-     * 604 800 000 = 1 week
+     * Expiration time of JWT token in milliseconds 604 800 000 = 1 week
      */
     private final long EXPIRATIONTIME = 604800000;
 
@@ -42,14 +42,14 @@ public class JwtUtil {
     public String makeAccountJwtToken(String id, String issuer, Account account) throws IOException {
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-        
+
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
 
         //We will sign our JWT with our ApiKey secret
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(apiKey());        
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(apiKey());
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-        
+
         //Let's set the JWT Claims
         JwtBuilder builder = Jwts.builder().setId(id)
                 .setIssuedAt(now)
@@ -57,15 +57,18 @@ public class JwtUtil {
                 .setIssuer(issuer)
                 .signWith(signatureAlgorithm, signingKey);
 
+        Date exp;
+
         //if it has been specified, let's add the expiration
         if (EXPIRATIONTIME >= 0) {
             long expMillis = nowMillis + EXPIRATIONTIME;
-            Date exp = new Date(expMillis);
+            exp = new Date(expMillis);
             builder.setExpiration(exp);
         }
-        
+
         JsonObject token = new JsonObject();
         token.addProperty("token", builder.compact());
+        token.addProperty("expiresIn", exp.toString());
 
         //Builds the JWT and serializes it to a compact, URL-safe string
         return token.toString();
@@ -73,8 +76,8 @@ public class JwtUtil {
 
     public String apiKey() throws IOException {
         String apiKey = null;
-	InputStream inputStream = null;
-        
+        InputStream inputStream = null;
+
         try {
             Properties prop = new Properties();
             String propFileName = "config.properties";
@@ -103,7 +106,7 @@ public class JwtUtil {
 
     public String createJSONAccount(Account account) {
         String jsonInString = "";
-        
+
         ObjectMapper mapper = new ObjectMapper();
         try {
             // Convert object to JSON string
@@ -112,13 +115,39 @@ public class JwtUtil {
 
             // Convert object to JSON string and pretty print
             //jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(account);
-
         } catch (JsonMappingException e) {
             e.printStackTrace();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        
+
         return jsonInString;
+    }
+
+    public boolean validateJwt(String jwsString) throws IOException {
+        System.out.println(jwsString);
+        
+        //The JWT signature algorithm we will be using to sign the token
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+        //We will sign our JWT with our ApiKey secret
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(apiKey());
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+        Jws<Claims> jws;
+
+        try {
+            jws = Jwts.parser() 
+                    .setSigningKey(signingKey) 
+                    .parseClaimsJws(jwsString); 
+
+            System.out.println(jws);
+            return true;
+        } catch (JwtException ex) { 
+            ex.printStackTrace();
+            // we *cannot* use the JWT as intended by its creator
+        }
+        
+        return false;
     }
 }

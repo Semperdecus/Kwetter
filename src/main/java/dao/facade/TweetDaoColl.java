@@ -109,4 +109,9 @@ public class TweetDaoColl implements ITweetDao {
     public void delete(Tweet entity) throws TweetException {
         tweets.remove(entity);
     }
+
+    @Override
+    public List<Tweet> getFollowingTweets(Long id) {
+        throw new UnsupportedOperationException("Not supported yet - TweetDaoColl."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

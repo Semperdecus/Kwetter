@@ -32,6 +32,10 @@ import javax.persistence.Transient;
     ,
     @NamedQuery(name = "tweet.findByAccount", query = "SELECT t FROM Tweet t WHERE t.account = :account")
     ,
+    @NamedQuery(name = "tweet.getFollowingTweets", query = "SELECT t FROM Tweet t JOIN t.account a JOIN a.following f WHERE f.id = :id")
+    ,
+    @NamedQuery(name = "tweetdao.search", query = "SELECT t FROM  Tweet t where t.message like :message ORDER BY t.date desc")
+    ,
  @NamedQuery(name = "tweet.findByUsername", query = "SELECT t FROM Account a, Tweet t WHERE a.username = :username")})
 public class Tweet implements Serializable {
 
@@ -47,7 +51,6 @@ public class Tweet implements Serializable {
     private Date date;
 
     @ManyToOne
-    @JsonbTransient
     @JsonIgnore
     private Account account;
 

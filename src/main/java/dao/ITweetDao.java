@@ -76,4 +76,6 @@ public interface ITweetDao {
      * @param entity, adminAccount
      */
     void delete(Tweet entity) throws TweetException;
+
+    public List<Tweet> getFollowingTweets(Long id);
 }

@@ -24,7 +24,7 @@ public class accountApiTest {
     @Test
     public void userGetTest1() throws Exception {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(baseUrl + "/account/" + 3);
+        WebTarget target = client.target(baseUrl + "/account/" + 4);
         Response response = target.request().get();
         System.out.println(response.toString());
 
@@ -40,7 +40,7 @@ public class accountApiTest {
     @Test
     public void userGetTest2() throws Exception {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(baseUrl + "/?username=user");
+        WebTarget target = client.target(baseUrl + "/account/username/?username=user");
         Response response = target.request().get();
         System.out.println(response.toString());
 

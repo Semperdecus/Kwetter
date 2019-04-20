@@ -38,6 +38,9 @@ public class StartUp {
             Tweet userTweet = new Tweet("offensive tweet!!!", testUser);
             Tweet userTweet2 = new Tweet("offensive tweet2!!!", testUser);
             Tweet userTweet3 = new Tweet("offensive tweet3!!!", testUser);
+            Tweet adminTweet = new Tweet("I am admin", testAdmin);
+            Tweet modTweet = new Tweet("I am el moderator.", testMod);
+
             Role roleAdmin = new Role("Admin");
             Role roleUser = new Role("User");
             Role roleModerator = new Role("Moderator");
@@ -49,15 +52,17 @@ public class StartUp {
             testUser.setRole(roleService.getRoleByName("User"));
             testAdmin.setRole(roleService.getRoleByName("Admin"));
             testMod.setRole(roleService.getRoleByName("Moderator"));
-            
+
             accountService.create(testUser);
             accountService.create(testAdmin);
             accountService.create(testMod);
-            
+
             tweetService.create(userTweet);
             tweetService.create(userTweet2);
             tweetService.create(userTweet3);
-            
+            tweetService.create(adminTweet);
+            tweetService.create(modTweet);
+
             accountService.addFollowing(testUser.getId(), testAdmin.getId());
             accountService.addFollowing(testUser.getId(), testMod.getId());
             accountService.addFollowing(testMod.getId(), testUser.getId());

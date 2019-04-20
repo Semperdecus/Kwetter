@@ -16,7 +16,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
-import models.Role;
 import models.Tweet;
 
 /**
@@ -52,7 +51,6 @@ public class TweetService {
     @RolesAllowed({"Admin", "Moderator"})
     public void delete(Tweet tweet) throws TweetException {
         tweetDao.delete(tweet);
-
     }
 
     public void deleteOwnTweet(long id, Account account) throws TweetException, AccountException {
@@ -89,5 +87,10 @@ public class TweetService {
     @PermitAll
     public List<Tweet> findAll() {
         return tweetDao.findAll();
+    }
+    
+    @PermitAll
+    public List<Tweet> getFollowingTweets(Long id) {
+        return tweetDao.getFollowingTweets(id);
     }
 }

@@ -58,8 +58,8 @@ public class TweetController {
     }
 
     @POST
-    public Tweet post(@QueryParam("message") String message) throws Exception {
-        Account user = userService.findByUsername(context.getCallerPrincipal().getName());
+    public Tweet post(@QueryParam("message") String message, @QueryParam("username") String username) throws Exception {
+        Account user = userService.findByUsername(username);
         if (user == null) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
@@ -74,5 +74,15 @@ public class TweetController {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
         tweetService.deleteOwnTweet(id, user);
+    }
+
+    @GET
+    @Path("/following")
+    public List<Tweet> getFollowingTweets(@QueryParam("username") String username) {
+        Account user = userService.findByUsername(username);
+        if (user == null) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+        return tweetService.getFollowingTweets(user.getId());
     }
 }

@@ -40,12 +40,13 @@ public class AuthController {
             if (account == null) {
                 return null;
             }
-            
+
             JwtUtil jwtUtil = new JwtUtil();
             String jwtBearerToken = jwtUtil.makeAccountJwtToken(account.getId().toString(), account.getUsername(), account);
 
-             // send the JWT back to the user
-             System.out.println(jwtBearerToken);
+            // send the JWT back to the user
+            System.out.println(jwtBearerToken);
+            
             return jwtBearerToken;
         } catch (Exception e) {
             e.printStackTrace();

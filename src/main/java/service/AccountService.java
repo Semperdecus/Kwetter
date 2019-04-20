@@ -7,19 +7,15 @@ package service;
 
 import dao.IAccountDao;
 import dao.IRoleDao;
-import dao.ITweetDao;
 import dao.JPA;
 import exceptions.AccountException;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.AccessLocalException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
-import models.Role;
 import utils.PasswordSecurity;
 
 /**
@@ -46,15 +42,16 @@ public class AccountService {
 
     @PermitAll
     public Account create(Account entity) throws AccountException {
-        System.out.println("ENTITY ROLE = " + entity.getRole());
         if (entity.getRole() == null) {
             entity.setRole(roleService.getRoleByName("User"));
-            accountDao.create(entity);
-            return entity;
-        } else {
-            accountDao.create(entity);
-            return entity;
+        } 
+        
+        if (entity.getPicture() == null) {
+            entity.setPicture("https://i.pinimg.com/originals/9f/81/2d/9f812d4cf313e887ef99d8722229eee1.jpg");
         }
+        
+        accountDao.create(entity);
+        return entity;
     }
 
     @RolesAllowed({"Admin"})
@@ -129,13 +126,8 @@ public class AccountService {
 
     @PermitAll
     public Account login(String username, String password) throws NoSuchAlgorithmException {
-        System.out.println(username);
-        System.out.println(password);
         Account getAccountByUsername = this.accountDao.findByUsername(username);
-        System.out.println(getAccountByUsername);
         String passwordCheck = PasswordSecurity.generateSha256(password);
-        System.out.println(passwordCheck);
-        System.out.println(getAccountByUsername.getAccountPassword());
         if (passwordCheck.equals(getAccountByUsername.getAccountPassword())) {
             return getAccountByUsername;
         } else {
