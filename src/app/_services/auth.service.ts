@@ -17,7 +17,6 @@ export class AuthService {
         localStorage.setItem('currentUser', username);
         this.setSession(res);
         this.router.navigateByUrl('/home');
-
       }
     );
   }
@@ -36,6 +35,8 @@ export class AuthService {
 
   // methods to see if user is logged in
   public isLoggedIn() {
+    console.log(this.getExpiration());
+    console.log(moment())
     return moment().isBefore(this.getExpiration());
   }
 
@@ -46,6 +47,10 @@ export class AuthService {
   getExpiration() {
     const expiration = localStorage.getItem('expires_at');
     const expiresAt = JSON.parse(expiration);
-    return moment(expiresAt);
+    return moment(expiresAt).add(7, 'days');
+  }
+
+  getUser() {
+    return localStorage.getItem('currentUser');
   }
 }

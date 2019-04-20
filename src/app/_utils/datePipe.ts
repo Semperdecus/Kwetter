@@ -7,7 +7,6 @@ import * as moment from 'moment';
 export class DatexPipe implements PipeTransform {
   transform(value: any, format: string = ''): string {
     // Try and parse the passed value.
-    console.log(value);
     const formatted = moment(value, 'YYYY-MM-DDTHH:mm:ss.SSSZ');
     const momentDate = moment(formatted);
 

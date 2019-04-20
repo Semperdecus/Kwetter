@@ -2,10 +2,20 @@
   <div class="card-body">
     <h5 class="card-text">New tweet</h5>
   </div>
-  <div class="input-group mb-8" style="padding: 10px;">
-    <div class="input-group-prepend">
-      <span class="input-group-text">#</span>
+  <div class="input-group mb-8" class="input-container">
+
+    <div class="input-group mb-3">
+      <input
+        [(ngModel)]='tweet' name='searchBar' [value]='tweet' (keyup.enter)='postTweet($event)'
+        type="text" class="form-control" placeholder="What's happening?" aria-label="What's happening?"
+        aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <button
+          (click)='postTweet()'
+          class="btn btn-outline-secondary" type="button">
+          Tweet
+        </button>
+      </div>
     </div>
-    <input type="text" class="form-control" placeholder="What's happening?">
   </div>
 </div>

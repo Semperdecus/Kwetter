@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {TweetService} from '../_services';
 
 @Component({
   selector: 'app-new-tweet',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewTweetComponent implements OnInit {
 
-  constructor() { }
+  public tweet;
+
+  constructor(private tweetService: TweetService) {
+  }
 
   ngOnInit() {
   }
 
+  postTweet() {
+    console.log(this.tweet);
+
+    if (this.tweet) {
+      this.tweetService.post(this.tweet);
+    }
+  }
 }

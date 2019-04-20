@@ -1,6 +1,6 @@
 import { Role } from './role';
 
-class Account {
+export class Account {
   public id: number;
   public username: string;
   public password: string;
@@ -10,6 +10,4 @@ class Account {
   public picture: string;
   public bio: string;
   public role: Role;
-
-
 }

@@ -2,14 +2,14 @@
 <div *ngFor="let tweet of tweets" class="card" style="margin-bottom: 10px">
   <div class="row no-gutters">
     <div class="col-auto">
-      <img src="https://www.allesoverhondenrassen.nl/wp-content/uploads/2018/11/collie.jpg"
+      <img [src]="tweet?.account?.picture"
            alt="profile image" style="border: lightgrey 1px solid; object-fit: cover; width: 100px;  height: 100px; border-top-left-radius: 3px">
     </div>
     <div class="col">
       <div class="card-block px-2">
-        <p class="card-text"><strong>{{tweet.account.username}} </strong> |
-          {{tweet.date | datex:'MMM Do' }}</p>
-        <p class="card-text">{{tweet.message}}</p>
+        <p class="card-text"><strong>{{tweet?.account?.username}} </strong> |
+          {{tweet?.date | datex:'MMM Do' }}</p>
+        <p class="card-text">{{tweet?.message}}</p>
       </div>
     </div>
   </div>
