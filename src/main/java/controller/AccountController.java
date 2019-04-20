@@ -147,7 +147,7 @@ public class AccountController {
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        return accountService.getFollowers(user.getId());
+        return accountService.getFollowing(user.getId());
     }
     
     @GET

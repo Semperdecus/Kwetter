@@ -44,12 +44,12 @@ public class AccountService {
     public Account create(Account entity) throws AccountException {
         if (entity.getRole() == null) {
             entity.setRole(roleService.getRoleByName("User"));
-        } 
-        
+        }
+
         if (entity.getPicture() == null) {
             entity.setPicture("https://i.pinimg.com/originals/9f/81/2d/9f812d4cf313e887ef99d8722229eee1.jpg");
         }
-        
+
         accountDao.create(entity);
         return entity;
     }
@@ -134,9 +134,14 @@ public class AccountService {
             return null;
         }
     }
-    
+
     @PermitAll
     public List<Account> getFollowers(Long id) {
+        return accountDao.findFollowers(id);
+    }
+
+    @PermitAll
+    public List<Account> getFollowing(Long id) {
         return accountDao.findFollowing(id);
     }
 }
