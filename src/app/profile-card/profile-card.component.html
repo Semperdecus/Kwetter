@@ -1,10 +1,24 @@
 <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="https://www.allesoverhondenrassen.nl/wp-content/uploads/2018/11/collie.jpg" alt="Card image cap">
+  <img
+    class="card-img-top profile-picture"
+    *ngIf="account?.picture"
+    [src]="account?.picture"
+    alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title">Username</h5>
-    <p class="card-text">Biography text</p>
+    <h5 class="card-title">
+      {{account?.username}}
+    </h5>
+    <p *ngIf="account?.bio" class="card-text">
+      {{account?.bio}}
+    </p>
 
-    <p class="card-text"><mat-icon>web</mat-icon> website</p>
-    <p class="card-text"><mat-icon>location_on</mat-icon> location</p>
+    <p *ngIf="account?.website" class="card-text">
+      <mat-icon class="icon">web</mat-icon>
+      {{account?.website }}
+    </p>
+    <p *ngIf="account?.location" class="card-text">
+      <mat-icon class="icon">location_on</mat-icon>
+      {{account?.location}}
+    </p>
   </div>
 </div>

@@ -1,4 +1,5 @@
-<div class="card">
+
+<div *ngFor="let tweet of tweets" class="card" style="margin-bottom: 10px">
   <div class="row no-gutters">
     <div class="col-auto">
       <img src="https://www.allesoverhondenrassen.nl/wp-content/uploads/2018/11/collie.jpg"
@@ -6,12 +7,10 @@
     </div>
     <div class="col">
       <div class="card-block px-2">
-        <p class="card-text"><strong>Username </strong> | April 12 </p>
-        <p class="card-text">I wrote this very offensive tweet</p>
+        <p class="card-text"><strong>{{tweet.account.username}} </strong> |
+          {{tweet.date | datex:'MMM Do' }}</p>
+        <p class="card-text">{{tweet.message}}</p>
       </div>
     </div>
-  </div>
-  <div class="card-footer w-100 text-muted">
-    Footer stating cats are CUTE little animals
   </div>
 </div>

@@ -31,17 +31,7 @@ export class LoginComponent implements OnInit {
     const val = this.loginForm.value;
     console.log('Logging in');
     if (val.username && val.password) {
-      this.authService.login(val.username, val.password)
-        .subscribe(
-          (data) => {
-            if (data && data.token) {
-              localStorage.setItem('currentUser', data.token);
-
-              console.log('navigating');
-              this.router.navigateByUrl('/home');
-            }
-          }
-        );
+      this.authService.login(val.username, val.password);
     }
   }
 }

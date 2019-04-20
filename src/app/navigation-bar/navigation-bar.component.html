@@ -1,3 +1,18 @@
-<p>
-  navigation-bar works!
-</p>
+<nav class="navbar navbar-light justify-content-between bg-white shadow">
+  <div class="container">
+    <form class="form-inline">
+      <a [routerLinkActive]="['active-link']" [routerLink]="['/home']" class="navbar-brand">
+        <mat-icon class="navbar-icon">home</mat-icon>
+        Home
+      </a>
+      <a [routerLinkActive]="['active-link']" [routerLink]="['/profile']" class="navbar-brand">
+        <mat-icon class="navbar-icon">settings</mat-icon>
+        Profile
+      </a>
+    </form>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>

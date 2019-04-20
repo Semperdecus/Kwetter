@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  background:
+    /* top, transparent red, faked with gradient */
+    linear-gradient(
+        rgba(255, 255, 255, 0.85),
+        rgba(255, 255, 255, 0.85)
+    ),
+    url('assets/img/background.png') repeat !important;
+}

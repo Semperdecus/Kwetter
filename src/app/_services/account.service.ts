@@ -2,18 +2,16 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class AuthService {
+export class AccountService {
 
   constructor(private http: HttpClient) {
   }
 
-  login(username: string, password: string) {
-    return this.http.post<any>('http://localhost:8080/Kwetter/api/auth/login',
-      {username, password});
+  getAll() {
+    return this.http.get<Account[]>('http://localhost:8080/Kwetter/api/account');
   }
 
-  logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+  getByUsername(username) {
+    return this.http.get<Account>('http://localhost:8080/Kwetter/api/account/username/?username=' + username);
   }
 }
