@@ -139,4 +139,24 @@ public class AccountController {
     public void delete(@PathParam("id") long id) throws Exception {
         accountService.deleteById(id);
     }
+
+    @GET
+    @Path("/following")
+    public List<Account> findFollowing(@QueryParam("username") String username) {
+        Account user = accountService.findByUsername(username);
+        if (user == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return accountService.getFollowers(user.getId());
+    }
+    
+    @GET
+    @Path("/followers")
+    public List<Account> findFollowers(@QueryParam("username") String username) {
+        Account user = accountService.findByUsername(username);
+        if (user == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return accountService.getFollowers(user.getId());
+    }
 }

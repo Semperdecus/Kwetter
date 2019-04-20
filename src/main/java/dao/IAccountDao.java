@@ -61,4 +61,17 @@ public interface IAccountDao {
      * @param entity
      */
     void delete(Account entity);
+    
+    /**
+     *
+     * @param entity
+     */
+    List<Account> findFollowing(long id);
+    
+        
+    /**
+     *
+     * @param entity
+     */
+    List<Account> findFollowers(long id);
 }

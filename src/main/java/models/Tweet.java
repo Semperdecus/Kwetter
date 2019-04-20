@@ -34,7 +34,7 @@ import javax.persistence.Transient;
     ,
     @NamedQuery(name = "tweet.getFollowingTweets", query = "SELECT t FROM Tweet t JOIN t.account a JOIN a.following f WHERE f.id = :id")
     ,
-    @NamedQuery(name = "tweetdao.search", query = "SELECT t FROM  Tweet t where t.message like :message ORDER BY t.date desc")
+    @NamedQuery(name = "tweetdao.search", query = "SELECT t FROM Tweet t where t.message like :message ORDER BY t.date desc")
     ,
  @NamedQuery(name = "tweet.findByUsername", query = "SELECT t FROM Account a, Tweet t WHERE a.username = :username")})
 public class Tweet implements Serializable {

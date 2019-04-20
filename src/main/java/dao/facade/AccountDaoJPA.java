@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import models.Role;
+import models.Tweet;
 
 /**
  *
@@ -119,5 +120,23 @@ public class AccountDaoJPA implements IAccountDao {
     @Override
     public void delete(Account entity) {
         entityManager.remove(entityManager.merge(entity));
+    }
+
+    @Override
+    public List<Account> findFollowing(long id) {
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findFollowing", Account.class);
+        query.setParameter("id", id);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
+    
+    @Override
+    public List<Account> findFollowers(long id) {
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findFollowers", Account.class);
+        query.setParameter("id", id);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
     }
 }

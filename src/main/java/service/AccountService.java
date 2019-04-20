@@ -134,4 +134,9 @@ public class AccountService {
             return null;
         }
     }
+    
+    @PermitAll
+    public List<Account> getFollowers(Long id) {
+        return accountDao.findFollowing(id);
+    }
 }

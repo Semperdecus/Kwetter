@@ -39,6 +39,10 @@ import utils.PasswordSecurity;
     @NamedQuery(name = "account.findByUsername", query = "SELECT a FROM Account a WHERE a.username = :username")
     ,
     @NamedQuery(name = "account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
+    ,
+    @NamedQuery(name = "account.findFollowing", query = "SELECT a FROM Account a JOIN a.following f WHERE f.id = :id ORDER BY a.username desc")
+    ,
+    @NamedQuery(name = "account.findFollowers", query = "SELECT a FROM Account a JOIN a.followers f WHERE f.id = :id ORDER BY a.username desc")
 })
 public class Account implements Serializable {
 

@@ -33,8 +33,15 @@ public class StartUp {
     public void initData() {
         try {
             Account testUser = new Account("bas.de.zot@gmail.com", "user", "password");
+            testUser.setBio("Test biography very cool sun 🐱");
+            testUser.setLocation("South");
+            testUser.setWebsiteUrl("http://www.ihatejsf.com/");
+            testUser.setPicture("https://images-na.ssl-images-amazon.com/images/I/51VmmRDO1EL._SX425_.jpg");
+            
             Account testAdmin = new Account("admin@mail.com", "admin", "password");
             Account testMod = new Account("mod@mail.com", "mod", "password");
+            testMod.setPicture("https://cutecatshq.com/wp-content/uploads/2013/09/This-Kitten-Is-Super-Super-Cute-.jpg");
+
             Tweet userTweet = new Tweet("offensive tweet!!!", testUser);
             Tweet userTweet2 = new Tweet("offensive tweet2!!!", testUser);
             Tweet userTweet3 = new Tweet("offensive tweet3!!!", testUser);
