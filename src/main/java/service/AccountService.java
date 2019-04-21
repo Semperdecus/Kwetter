@@ -144,4 +144,9 @@ public class AccountService {
     public List<Account> getFollowing(Long id) {
         return accountDao.findFollowing(id);
     }
+
+    @PermitAll
+    public List<Account> search(String username) {
+        return accountDao.search(username);
+    }
 }

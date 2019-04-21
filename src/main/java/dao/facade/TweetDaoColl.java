@@ -114,4 +114,9 @@ public class TweetDaoColl implements ITweetDao {
     public List<Tweet> getFollowingTweets(Long id) {
         throw new UnsupportedOperationException("Not supported yet - TweetDaoColl."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<Tweet> search(String message) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

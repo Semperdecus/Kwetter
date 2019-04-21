@@ -120,6 +120,15 @@ public class TweetDaoJPA implements ITweetDao {
         return result;
     }
     
+    @Override
+    public List<Tweet> search(String message) {
+        TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.search", Tweet.class);
+        query.setParameter("message", '%' + message + '%');
+        List<Tweet> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
+    
     private void checkCreate(Tweet entity) throws TweetException {
         if (entity.getMessage().length() < 0 || entity.getMessage().isEmpty() || entity.getMessage().length() > 140) {
             throw new TweetException("Tweet has invalid length");

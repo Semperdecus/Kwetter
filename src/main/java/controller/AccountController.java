@@ -159,4 +159,10 @@ public class AccountController {
         }
         return accountService.getFollowers(user.getId());
     }
+    
+    @GET
+    @Path("/search")
+    public List<Account> search(@QueryParam("username") String username) {
+        return accountService.search(username);
+    }
 }

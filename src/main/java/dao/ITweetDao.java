@@ -77,5 +77,17 @@ public interface ITweetDao {
      */
     void delete(Tweet entity) throws TweetException;
 
+        /**
+     *
+     * @param id
+     * @return
+     */
     public List<Tweet> getFollowingTweets(Long id);
+    
+        /**
+     *
+     * @param message
+     * @return
+     */
+    public List<Tweet> search(String message);
 }

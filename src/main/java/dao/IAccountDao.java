@@ -74,4 +74,10 @@ public interface IAccountDao {
      * @param entity
      */
     List<Account> findFollowers(long id);
+        
+    /**
+     *
+     * @param entity
+     */
+    List<Account> search(String username);
 }

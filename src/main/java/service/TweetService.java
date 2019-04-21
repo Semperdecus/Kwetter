@@ -92,5 +92,9 @@ public class TweetService {
     @PermitAll
     public List<Tweet> getFollowingTweets(Long id) {
         return tweetDao.getFollowingTweets(id);
+    }    
+    @PermitAll
+    public List<Tweet> search(String message) {
+        return tweetDao.search(message);
     }
 }

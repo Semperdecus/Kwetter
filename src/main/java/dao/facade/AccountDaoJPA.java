@@ -139,4 +139,13 @@ public class AccountDaoJPA implements IAccountDao {
         System.out.println("count: " + result.size());
         return result;
     }
+    
+    @Override
+    public List<Account> search(String username) {
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.search", Account.class);
+        query.setParameter("username", '%' + username + '%');
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
 }

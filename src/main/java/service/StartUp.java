@@ -33,7 +33,7 @@ public class StartUp {
     public void initData() {
         try {
             Account testUser = new Account("bas.de.zot@gmail.com", "user", "password");
-            testUser.setBio("Test biography very cool sun 🐱");
+            testUser.setBio("I am a dog person but I preffer the cat emoji! 🐱 " );
             testUser.setLocation("South");
             testUser.setWebsiteUrl("http://www.ihatejsf.com/");
             testUser.setPicture("https://images-na.ssl-images-amazon.com/images/I/51VmmRDO1EL._SX425_.jpg");

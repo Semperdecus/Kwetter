@@ -85,4 +85,11 @@ public class TweetController {
         }
         return tweetService.getFollowingTweets(user.getId());
     }
+    
+    
+    @GET
+    @Path("/search")
+    public List<Tweet> search(@QueryParam("message") String message) {
+        return tweetService.search(message);
+    }
 }
