@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AccountService} from '../_services';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-profile-card',
@@ -7,15 +8,21 @@ import {AccountService} from '../_services';
   styleUrls: ['./profile-card.component.scss']
 })
 export class ProfileCardComponent implements OnInit {
-
+  private sub: any;
   public account;
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    const username = localStorage.getItem('currentUser');
-    this.getAccount(username);
+    this.sub = this.route.params.subscribe(params => {
+      if (params.username) {
+        this.getAccount(params.username);
+      } else {
+        const username = localStorage.getItem('currentUser');
+        this.getAccount(username);
+      }
+    });
   }
 
   getAccount(username) {
@@ -28,5 +35,4 @@ export class ProfileCardComponent implements OnInit {
       }
     );
   }
-
 }

@@ -24,6 +24,7 @@ import {FollowingFollowersComponent} from './following-followers/following-follo
 import {AccountSettingsComponent} from './account-settings/account-settings.component';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 import { SearchComponent } from './search/search.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { SearchComponent } from './search/search.component';
     AccountSettingsComponent,
     ProfileMenuComponent,
     SearchComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
