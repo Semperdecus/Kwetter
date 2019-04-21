@@ -4,6 +4,7 @@ import {LoginComponent} from './login/login.component';
 import {HomeComponent} from './home/home.component';
 import {AccountSettingsComponent} from './account-settings/account-settings.component';
 import {AuthGuard} from './_guards';
+import {SearchComponent} from './search/search.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },

@@ -23,4 +23,8 @@ export class AccountService {
   getFollowers(username) {
     return this.http.get<Account[]>('http://localhost:8080/Kwetter/api/account/followers/?username=' + username);
   }
+
+  search(username) {
+    return this.http.get<Account[]>('http://localhost:8080/Kwetter/api/account/search/?username=' + username);
+  }
 }

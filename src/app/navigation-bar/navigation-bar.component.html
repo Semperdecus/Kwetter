@@ -10,10 +10,21 @@
         Profile
       </a>
     </form>
-    <form class="form-inline" >
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form [formGroup]="searchForm" class="form-inline" >
+      <input formControlName="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)='open(content)'>Search</button>
     </form>
   </div>
-
 </nav>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Search results for: {{query}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body col-sm-12">
+    <app-search [tweetResults]="queryResultTweet" [accountResults]="queryResultAccount"></app-search>
+  </div>
+</ng-template>

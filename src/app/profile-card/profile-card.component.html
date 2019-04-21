@@ -14,7 +14,7 @@
 
     <p *ngIf="account?.website" class="card-text">
       <mat-icon class="icon">web</mat-icon>
-      {{account?.website }}
+      <a href="{{account?.website }}">{{account?.website }}</a>
     </p>
     <p *ngIf="account?.location" class="card-text">
       <mat-icon class="icon">location_on</mat-icon>

@@ -23,6 +23,7 @@ import {AuthGuard} from './_guards';
 import {FollowingFollowersComponent} from './following-followers/following-followers.component';
 import {AccountSettingsComponent} from './account-settings/account-settings.component';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
     FollowingFollowersComponent,
     AccountSettingsComponent,
     ProfileMenuComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

@@ -35,4 +35,8 @@ export class TweetService {
         });
     }
   }
+
+  search(message) {
+    return this.http.get<Tweet[]>('http://localhost:8080/Kwetter/api/tweet/search/?message=' + message);
+  }
 }

@@ -1,15 +1,15 @@
 import {Role} from './role';
 import {Tweet} from './tweet';
 
-export class Account {
-  public id: number;
-  public username: string;
-  public password: string;
-  public email: string;
-  public location: string;
-  public website: string;
-  public picture: string;
-  public bio: string;
-  public role: Role;
-  public tweet: Tweet;
+interface Account {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  location: string;
+  website: string;
+  picture: string;
+  bio: string;
+  role: Role;
+  tweet: Tweet;
 }

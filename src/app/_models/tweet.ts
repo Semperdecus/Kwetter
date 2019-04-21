@@ -1,4 +1,3 @@
-import { Account } from './account';
 
 export class Tweet {
   public id: number;
