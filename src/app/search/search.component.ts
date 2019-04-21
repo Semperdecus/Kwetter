@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Tweet} from '../_models/tweet';
+import {Account} from '../_models/account';
 
 @Component({
   selector: 'app-search',
@@ -6,8 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  @Input() accountResults: string;
-  @Input() tweetResults: string;
+  @Input() accountResults: Account[];
+  @Input() tweetResults: Tweet[];
   constructor() { }
 
   ngOnInit() {
