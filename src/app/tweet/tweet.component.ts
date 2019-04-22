@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {TweetService, AccountService} from '../_services';
+import {Component, Input, OnInit} from '@angular/core';
+import {TweetService, AccountService, AuthService} from '../_services';
 import {Tweet} from '../_models';
 import {ActivatedRoute} from '@angular/router';
 
@@ -9,21 +9,25 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./tweet.component.scss']
 })
 export class TweetComponent implements OnInit {
+  @Input() profileSettings;
   private sub: any;
-
   public tweets: Tweet[] = [];
 
   constructor(private tweetService: TweetService, private accountService: AccountService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      if (params.username) {
-        this.getTweet(params.username);
-      } else {
-        this.getFollowingTweets();
-      }
-    });
+    if (!this.profileSettings) {
+      this.sub = this.route.params.subscribe(params => {
+        if (params.username) {
+          this.getTweet(params.username);
+        } else {
+          this.getFollowingTweets();
+        }
+      });
+    } else {
+      this.getTweet(AuthService.getUser());
+    }
   }
 
   getTweet(username) {
