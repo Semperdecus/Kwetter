@@ -125,8 +125,9 @@ public class JwtUtil {
     }
 
     public boolean validateJwt(String jwsString) throws IOException {
-        System.out.println(jwsString);
-        
+        String[] splited = jwsString.split(" ");
+        int length = splited.length;
+       
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -139,9 +140,8 @@ public class JwtUtil {
         try {
             jws = Jwts.parser() 
                     .setSigningKey(signingKey) 
-                    .parseClaimsJws(jwsString); 
+                    .parseClaimsJws(splited[length -1]);
 
-            System.out.println(jws);
             return true;
         } catch (JwtException ex) { 
             ex.printStackTrace();

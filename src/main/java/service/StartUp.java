@@ -73,7 +73,7 @@ public class StartUp {
             accountService.addFollowing(testUser.getId(), testAdmin.getId());
             accountService.addFollowing(testUser.getId(), testMod.getId());
             accountService.addFollowing(testMod.getId(), testUser.getId());
-
+            accountService.removeFollowing(testUser.getId(), testAdmin.getId());
 //            accountService.create(new Account("user2@mail.com", "user2", "password"));
 //            accountService.create(new Account("user24@mail.com", "user23", "password"));
 //            accountService.create(new Account("user25@mail.com", "user24", "password"));

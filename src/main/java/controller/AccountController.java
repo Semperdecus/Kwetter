@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ import models.Role;
 import models.Tweet;
 import service.AccountService;
 import service.TweetService;
+import utils.JwtUtil;
 
 /**
  *
@@ -44,6 +46,8 @@ public class AccountController {
 
     @Inject
     private TweetService tweetService;
+
+    private JwtUtil jwtUtil = new JwtUtil();
 
     @GET
     public List<Account> get() {
@@ -124,14 +128,23 @@ public class AccountController {
 
     @PUT
     @Path("{id}/following/{followingId}")
-    public void updateFollowing(@PathParam("id") long id, @PathParam("followingId") long followingId) throws Exception {
-        accountService.addFollowing(followingId, id);
+    public void updateFollowing(@HeaderParam("Authorization") String bearer, @PathParam("id") long id, @PathParam("followingId") long followingId) throws Exception {
+        System.out.println(bearer);
+        if (jwtUtil.validateJwt(bearer)) {
+            accountService.addFollowing(followingId, id);
+        } else {
+            System.out.println("No valid jwt token");
+        }
     }
 
     @PUT
     @Path("{id}/follower/{followerId}")
-    public void updateFollower(@PathParam("id") long id, @PathParam("followerId") long followerId) throws Exception {
-        accountService.removeFollowing(followerId, id);
+    public void updateFollower(@HeaderParam("Authorization") String bearer, @PathParam("id") long id, @PathParam("followerId") long followerId) throws Exception {
+        if (jwtUtil.validateJwt(bearer)) {
+            accountService.removeFollowing(followerId, id);
+        } else {
+            System.out.println("No valid jwt token");
+        }
     }
 
     @DELETE
@@ -149,7 +162,7 @@ public class AccountController {
         }
         return accountService.getFollowing(user.getId());
     }
-    
+
     @GET
     @Path("/followers")
     public List<Account> findFollowers(@QueryParam("username") String username) {
@@ -159,7 +172,7 @@ public class AccountController {
         }
         return accountService.getFollowers(user.getId());
     }
-    
+
     @GET
     @Path("/search")
     public List<Account> search(@QueryParam("username") String username) {

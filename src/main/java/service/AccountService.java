@@ -9,6 +9,7 @@ import dao.IAccountDao;
 import dao.IRoleDao;
 import dao.JPA;
 import exceptions.AccountException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -16,6 +17,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
+import utils.JwtUtil;
 import utils.PasswordSecurity;
 
 /**
@@ -36,8 +38,11 @@ public class AccountService {
     @JPA
     private IRoleDao roleDao;
 
+    private JwtUtil jwt;
+
     public AccountService() {
         super();
+        jwt = new JwtUtil();
     }
 
     @PermitAll
@@ -89,12 +94,12 @@ public class AccountService {
     }
 
     @PermitAll
-    public void addFollowing(long followingId, long id) throws AccountException {
+    public void addFollowing(long followingId, long id) throws AccountException, IOException {
         if (followingId != id) {
             Account account = accountDao.findById(id);
             Account followingUser = accountDao.findById(followingId);
-            if (account != null && followingUser != null) {
 
+            if (account != null && followingUser != null) {
                 account.addFollowing(followingUser);
                 followingUser.addFollower(account);
 
@@ -104,16 +109,20 @@ public class AccountService {
         }
     }
 
-    @RolesAllowed({"User", "Admin", "Moderator"})
-    public void removeFollowing(long followingId, long id) throws AccountException {
-        if (followingId != id) {
-            Account user = accountDao.findById(id);
-            Account followingUser = accountDao.findById(followingId);
-            if (user != null && followingUser != null) {
-                user.removeFollowing(followingUser);
-                followingUser.removeFollower(user);
+    @PermitAll
+    public void removeFollowing(long followerId, long id) throws AccountException, IOException {
+        if (followerId != id) {
+            System.out.println("UNFOLLOWING 1");
+            Account account = accountDao.findById(id);
+            Account followingUser = accountDao.findById(followerId);
 
-                accountDao.update(user);
+            if (account != null && followingUser != null) {
+                System.out.println("UNFOLLOWING 2");
+
+                account.removeFollowing(followingUser);
+                followingUser.removeFollower(account);
+
+                accountDao.update(account);
                 accountDao.update(followingUser);
             }
         }
