@@ -12,7 +12,7 @@ export class FollowingFollowersComponent implements OnInit {
   public followerAmount = 0;
   public followingAmount = 0;
 
-  constructor(private accountService: AccountService, private authService: AuthService) {
+  constructor(private accountService: AccountService) {
   }
 
   ngOnInit() {
@@ -20,21 +20,18 @@ export class FollowingFollowersComponent implements OnInit {
   }
 
   private getFollowingFollowers() {
-    if (this.authService.isLoggedIn() === false) {
+    if (AuthService.isLoggedIn() === false) {
       return null;
     } else {
-      this.accountService.getFollowing(this.authService.getUser()).subscribe(
+      this.accountService.getFollowing(AuthService.getUser()).subscribe(
         (data) => {
-          console.log(data);
-          console.log(data.length);
           this.following = data;
           this.followingAmount = data.length;
 
-          this.accountService.getFollowers(this.authService.getUser()).subscribe(
+          this.accountService.getFollowers(AuthService.getUser()).subscribe(
             (data2) => {
               this.followers = data2;
               this.followerAmount = data2.length;
-
             },
             (error) => {
               console.log(error);

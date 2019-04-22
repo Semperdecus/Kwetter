@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TweetService, AccountService} from '../_services';
-import {Tweet} from '../_models/tweet';
+import {Tweet} from '../_models';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -27,9 +27,6 @@ export class TweetComponent implements OnInit {
   }
 
   getTweet(username) {
-    console.log(username);
-    console.log(username);
-    console.log(username);
     this.tweetService.getAll().subscribe(
       (data) => {
         data = data.filter(x => x.account.username === username);

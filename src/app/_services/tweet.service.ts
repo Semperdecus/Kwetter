@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Tweet} from '../_models/tweet';
+import {Tweet} from '../_models';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 
@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 export class TweetService {
   private BASE_URL = 'http://localhost:8080/Kwetter/api/tweet/';
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   getAll() {
@@ -16,19 +16,19 @@ export class TweetService {
   }
 
   getFollowingTweet() {
-    if (this.authService.isLoggedIn() === false) {
+    if (AuthService.isLoggedIn() === false) {
       return null;
     } else {
-      return this.http.get<Tweet[]>(this.BASE_URL + 'following/?username=' + this.authService.getUser());
+      return this.http.get<Tweet[]>(this.BASE_URL + 'following/?username=' + AuthService.getUser());
     }
   }
 
   post(tweet) {
-    if (this.authService.isLoggedIn() === false) {
+    if (AuthService.isLoggedIn() === false) {
       return null;
     } else {
       return this.http.post<Tweet>(
-        this.BASE_URL + '?message=' + tweet + '&username=' + this.authService.getUser(),
+        this.BASE_URL + '?message=' + tweet + '&username=' + AuthService.getUser(),
         {}).subscribe(
         () => {
           this.router.navigateByUrl('/home');

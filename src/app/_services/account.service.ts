@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class AccountService {
-
   constructor(private http: HttpClient) {
   }
 
@@ -26,5 +25,13 @@ export class AccountService {
 
   search(username) {
     return this.http.get<Account[]>('http://localhost:8080/Kwetter/api/account/search/?username=' + username);
+  }
+
+  addFollowing(followingId, id) {
+    return this.http.put<Account[]>('http://localhost:8080/Kwetter/api/account/' + id + '/following/' + followingId, '');
+  }
+
+  removeFollowing(followerId, id) {
+    return this.http.put<Account[]>('http://localhost:8080/Kwetter/api/account/' + id + '/follower/' + followerId, '');
   }
 }
