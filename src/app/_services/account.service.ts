@@ -35,8 +35,8 @@ export class AccountService {
     return this.http.put<Account[]>('http://localhost:8080/Kwetter/api/account/' + id + '/follower/' + followerId, '');
   }
 
-  update(location, website, bio, email, username) {
+  update(location, website, bio, email, picture, username) {
     return this.http.put<Account[]>('http://localhost:8080/Kwetter/api/account/update/?location=' + location +
-      '&website=' + website + '&bio=' + bio + '&email=' + email + '&username=' + username, '');
+      '&website=' + website + '&bio=' + bio + '&email=' + email + '&picture=' + picture + '&username=' + username, '');
   }
 }

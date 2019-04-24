@@ -1,4 +1,5 @@
-<ngb-alert (close)="staticAlertClosed = true" *ngIf="!staticAlertClosed" type="success">Account updated!</ngb-alert>
+<ngb-alert (close)="successAlert = true" *ngIf="!successAlert" type="success">Account updated!</ngb-alert>
+<ngb-alert (close)="warningAlert = true" *ngIf="!warningAlert" type="danger">Biography length exceeds 140 character length!</ngb-alert>
 <div class="card">
   <div class="card-body">
     <h3>Account Details</h3>
@@ -12,7 +13,8 @@
 
 
           <mat-form-field class="input-field">
-            <input formControlName="website" matInput placeholder="Website" name="website" value="{{loggedAccount?.website}}">
+            <input formControlName="website" matInput placeholder="Website" name="website"
+                   value="{{loggedAccount?.website}}">
           </mat-form-field>
         </div>
       </div>
@@ -20,20 +22,24 @@
       <div class="col-sm-6">
         <div class="row">
           <mat-form-field class="spacing">
-            <input formControlName="location" matInput placeholder="Location" name="location" value="{{loggedAccount?.location}}">
+            <input formControlName="location" matInput placeholder="Location" name="location"
+                   value="{{loggedAccount?.location}}">
+          </mat-form-field>
+          <mat-form-field class="spacing">
+            <input formControlName="picture" matInput placeholder="Picture" name="picture"
+                   value="{{loggedAccount?.picture}}">
           </mat-form-field>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="row">
 
-        <mat-form-field class="spacing" style="width: 100%;">
-          <input formControlName="bio" matInput placeholder="Biography" name="bio" value="{{loggedAccount?.bio}}">
-        </mat-form-field>
+          <mat-form-field class="spacing" style="width: 100%">
+            <input formControlName="bio" matInput placeholder="Biography" name="bio" value="{{loggedAccount?.bio}}">
+          </mat-form-field>
         </div>
 
       </div>
-
     </form>
     <button class="btn btn-primary" (click)="update()">Update</button>
   </div>

@@ -10,17 +10,20 @@ import {Account} from '../_models';
 })
 export class EditProfileComponent implements OnInit {
   accountForm: FormGroup;
-  staticAlertClosed: boolean;
+  successAlert: boolean;
+  warningAlert: boolean;
   loggedAccount: Account;
 
   constructor(private fb: FormBuilder,
               private accountService: AccountService) {
-    this.staticAlertClosed = true;
+    this.successAlert = true;
+    this.warningAlert = true;
     this.accountForm = this.fb.group({
       email: [''],
       location: [''],
       bio: [''],
-      website: ['']
+      website: [''],
+      picture: ['']
     });
   }
 
@@ -33,7 +36,8 @@ export class EditProfileComponent implements OnInit {
         email: [this.loggedAccount.email],
         location: [this.loggedAccount.location],
         bio: [this.loggedAccount.bio],
-        website: [this.loggedAccount.website]
+        website: [this.loggedAccount.website],
+        picture: [this.loggedAccount.picture]
       });
     });
   }
@@ -41,8 +45,13 @@ export class EditProfileComponent implements OnInit {
   update() {
     const val = this.accountForm.value;
     console.log(val);
-    this.accountService.update(val.location, val.website, val.bio, val.email, AuthService.getUser()).subscribe(() => {
-      this.staticAlertClosed = false;
-    });
+    if (val.bio.length > 140) {
+      this.warningAlert = false;
+    } else {
+      this.accountService.update(val.location, val.website, val.bio, val.email, val.picture, AuthService.getUser()).subscribe(() => {
+        this.successAlert = false;
+      });
+    }
+
   }
 }
