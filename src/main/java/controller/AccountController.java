@@ -108,12 +108,40 @@ public class AccountController {
         Account user = accountService.findByUsername(context.getCallerPrincipal().getName());
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
+
         }
+
         user.setBio(bio);
         user.setWebsiteUrl(websiteURL);
         user.setLocation(location);
 
         accountService.update(user);
+    }
+
+    @PUT
+    @Path("/update")
+    public void updateJWT(@HeaderParam("Authorization") String bearer,
+            @QueryParam("location") String location,
+            @QueryParam("website") String website,
+            @QueryParam("bio") String bio,
+            @QueryParam("email") String email,
+            @QueryParam("username") String username) throws Exception {
+        if (jwtUtil.validateJwt(bearer)) {
+            Account user = accountService.findByUsername(username);
+            if (user == null) {
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+            if (!email.isEmpty()) {
+                user.setEmail(email);
+            }
+            user.setBio(bio);
+            user.setWebsiteUrl(website);
+            user.setLocation(location);
+
+            accountService.update(user);
+        } else {
+            System.out.println("No valid jwt token");
+        }
     }
 
     @PUT

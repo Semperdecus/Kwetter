@@ -65,7 +65,7 @@ public class AccountService {
         accountDao.delete(entity);
     }
 
-    @RolesAllowed({"User", "Admin", "Moderator"})
+    @PermitAll
     public void update(Account entity) throws Exception {
         accountDao.update(entity);
     }
