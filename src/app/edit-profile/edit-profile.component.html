@@ -1,0 +1,40 @@
+<ngb-alert (close)="staticAlertClosed = true" *ngIf="!staticAlertClosed" type="success">Account updated!</ngb-alert>
+<div class="card">
+  <div class="card-body">
+    <h3>Account Details</h3>
+    <hr>
+    <form [formGroup]="accountForm">
+      <div class="col-sm-6">
+        <div class="row">
+          <mat-form-field class="spacing">
+            <input formControlName="email" matInput placeholder="Email" name="email" value="{{loggedAccount?.email}}">
+          </mat-form-field>
+
+
+          <mat-form-field class="input-field">
+            <input formControlName="website" matInput placeholder="Website" name="website" value="{{loggedAccount?.website}}">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="row">
+          <mat-form-field class="spacing">
+            <input formControlName="location" matInput placeholder="Location" name="location" value="{{loggedAccount?.location}}">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+
+        <mat-form-field class="spacing" style="width: 100%;">
+          <input formControlName="bio" matInput placeholder="Biography" name="bio" value="{{loggedAccount?.bio}}">
+        </mat-form-field>
+        </div>
+
+      </div>
+
+    </form>
+    <button class="btn btn-primary" (click)="update()">Update</button>
+  </div>
+</div>

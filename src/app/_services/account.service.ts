@@ -34,4 +34,9 @@ export class AccountService {
   removeFollowing(followerId, id) {
     return this.http.put<Account[]>('http://localhost:8080/Kwetter/api/account/' + id + '/follower/' + followerId, '');
   }
+
+  update(location, website, bio, email, username) {
+    return this.http.put<Account[]>('http://localhost:8080/Kwetter/api/account/update/?location=' + location +
+      '&website=' + website + '&bio=' + bio + '&email=' + email + '&username=' + username, '');
+  }
 }

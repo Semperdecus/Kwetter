@@ -27,6 +27,7 @@ import { SearchComponent } from './search/search.component';
 import { ProfileComponent } from './profile/profile.component';
 import { OptionBarComponent } from './option-bar/option-bar.component';
 import {AuthInterceptor} from './_guards/auth.interceptor';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {AuthInterceptor} from './_guards/auth.interceptor';
     SearchComponent,
     ProfileComponent,
     OptionBarComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
