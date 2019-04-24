@@ -22,12 +22,16 @@ import {DatexPipe} from './_utils/datePipe';
 import {AuthGuard} from './_guards';
 import {FollowingFollowersComponent} from './following-followers/following-followers.component';
 import {AccountSettingsComponent} from './account-settings/account-settings.component';
-import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
-import { SearchComponent } from './search/search.component';
-import { ProfileComponent } from './profile/profile.component';
-import { OptionBarComponent } from './option-bar/option-bar.component';
+import {ProfileMenuComponent} from './profile-menu/profile-menu.component';
+import {SearchComponent} from './search/search.component';
+import {ProfileComponent} from './profile/profile.component';
+import {OptionBarComponent} from './option-bar/option-bar.component';
 import {AuthInterceptor} from './_guards/auth.interceptor';
-import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import {EditProfileComponent} from './edit-profile/edit-profile.component';
+
+import {registerLocaleData} from '@angular/common';
+import localeNl from '@angular/common/locales/nl';
+registerLocaleData(localeNl, 'nl');
 
 @NgModule({
   declarations: [
@@ -60,7 +64,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     MatIconModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     AuthService,
     TweetService,
     AccountService,

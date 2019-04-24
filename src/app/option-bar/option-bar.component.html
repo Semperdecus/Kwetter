@@ -1,13 +1,13 @@
 <div class="card" style="margin-bottom: 10px">
   <div *ngIf="!hidden" class="card-body">
-    <div *ngIf="!following">
+    <div i18n *ngIf="!following">
       <button
         (click)='follow()'
         class="btn btn-primary" type="button">
         Follow
       </button>
     </div>
-    <div *ngIf="following">
+    <div i18n *ngIf="following">
       <button
         (click)='unfollow()'
         class="btn btn-outline-secondary" type="button">
@@ -15,7 +15,7 @@
       </button>
     </div>
   </div>
-  <div *ngIf="hidden" class="card-body">
+  <div i18n *ngIf="hidden" class="card-body">
     <a [routerLink]="['/login']">
       <button
         class="btn btn-outline-secondary" type="button">

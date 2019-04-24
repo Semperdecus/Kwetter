@@ -35,6 +35,13 @@
             "es5BrowserSupport": true
           },
           "configurations": {
+            "nl": {
+              "aot": true,
+              "outputPath": "dist/nl/",
+              "i18nFile": "src/locale/messages.nl.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "nl"
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -67,6 +74,9 @@
             "browserTarget": "kwetter:build"
           },
           "configurations": {
+            "nl": {
+              "browserTarget": "kwetter:build:nl"
+            },
             "production": {
               "browserTarget": "kwetter:build:production"
             }

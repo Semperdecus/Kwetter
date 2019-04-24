@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-6">
-    <h3>Accounts: {{accountResults.length}}</h3>
+    <h3 i18n>Accounts: {{accountResults.length}}</h3>
   <hr>
     <div *ngFor="let account of accountResults">
       <div class="row small-font">
@@ -16,14 +16,13 @@
     </div>
   </div>
   <div class="col-sm-6">
-    <h3>Tweets: {{tweetResults.length}}</h3>
+    <h3 i18n>Tweets: {{tweetResults.length}}</h3>
     <hr>
 
     <div *ngFor="let tweet of tweetResults">
       <div class="row small-font">
         <div class="col-sm-2">
-          <img [src]="tweet?.account?.picture"
-               alt="profile image" class="avatar">
+          <img [src]="tweet?.account?.picture" class="avatar">
         </div>
         <div class="col">
           <p class="card-text"><strong><a [routerLink]="['/profile', tweet?.account?.username]">{{tweet?.account?.username}}</a> </strong> |
