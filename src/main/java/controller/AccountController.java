@@ -124,7 +124,8 @@ public class AccountController {
             @QueryParam("location") String location,
             @QueryParam("website") String website,
             @QueryParam("bio") String bio,
-            @QueryParam("email") String email,
+            @QueryParam("email") String email,            
+            @QueryParam("picture") String picture,
             @QueryParam("username") String username) throws Exception {
         if (jwtUtil.validateJwt(bearer)) {
             Account user = accountService.findByUsername(username);
@@ -137,6 +138,7 @@ public class AccountController {
             user.setBio(bio);
             user.setWebsiteUrl(website);
             user.setLocation(location);
+            user.setPicture(picture);
 
             accountService.update(user);
         } else {
