@@ -54,11 +54,11 @@ public class AccountController {
         return accountService.findAll();
     }
 
-    @GET
-    @Path("/{username}/tweet")
-    public List<Tweet> getTweetsByUser(@PathParam("username") String username) {
-        return tweetService.findByUsername(username);
-    }
+//    @GET
+//    @Path("/{username}/tweet")
+//    public List<Tweet> getTweetsByUser(@PathParam("username") String username) {
+//        return tweetService.findByUsername(username);
+//    }
 
     @GET
     @Path("/{id}")

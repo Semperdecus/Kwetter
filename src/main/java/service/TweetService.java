@@ -53,15 +53,13 @@ public class TweetService {
         tweetDao.delete(tweet);
     }
 
-    public void deleteOwnTweet(long id, Account account) throws TweetException, AccountException {
+    @PermitAll
+    public void deleteOwnTweet(long id) throws TweetException {
         Tweet entity = tweetDao.findById(id);
         if (entity != null) {
-            if (entity.getAccount().getId().equals(account.getId())) {
-                tweetDao.delete(entity);
-                return;
-            }
+            tweetDao.delete(entity);
+            return;
         }
-        throw new AccountException("Account not found.");
     }
 
     @PermitAll
@@ -75,11 +73,6 @@ public class TweetService {
     }
 
     @PermitAll
-    public List<Tweet> findByUsername(String username) {
-        return tweetDao.findByUsername(username);
-    }
-
-    @PermitAll
     public List<Tweet> findByAccountId(Account account) {
         return tweetDao.findByAccountId(account);
     }
@@ -88,11 +81,12 @@ public class TweetService {
     public List<Tweet> findAll() {
         return tweetDao.findAll();
     }
-    
+
     @PermitAll
     public List<Tweet> getFollowingTweets(Long id) {
         return tweetDao.getFollowingTweets(id);
-    }    
+    }
+
     @PermitAll
     public List<Tweet> search(String message) {
         return tweetDao.search(message);

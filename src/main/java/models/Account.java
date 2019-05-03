@@ -17,6 +17,7 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
@@ -69,6 +70,7 @@ public class Account implements Serializable {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "account")
     @JsonbTransient
+    @JsonIgnore
     private List<Tweet> tweets = new ArrayList<>();
 
     @ManyToMany

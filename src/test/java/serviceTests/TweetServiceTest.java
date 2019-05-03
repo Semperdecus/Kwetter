@@ -83,7 +83,7 @@ public class TweetServiceTest {
         tweet.setId(1l);
 
         when(tweetDao.findById(tweet.getId())).thenReturn(tweet);
-        tweetService.deleteOwnTweet(1l, user);
+        tweetService.deleteOwnTweet(1l);
         verify(tweetDao, atLeastOnce()).delete(tweet);
     }
 
@@ -98,7 +98,7 @@ public class TweetServiceTest {
         tweet.setId(1l);
 
         when(tweetDao.findById(tweet.getId())).thenReturn(null);
-        tweetService.deleteOwnTweet(1l, user);
+        tweetService.deleteOwnTweet(1l);
         verify(tweetDao, never()).delete(tweet);
     }
 }

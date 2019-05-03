@@ -13,7 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
 import models.Account;
-import models.Role;
 import models.Tweet;
 
 /**
@@ -86,7 +85,12 @@ public class TweetDaoColl implements ITweetDao {
 
     @Override
     public void deleteById(long id) throws TweetException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(Tweet t : tweets){
+            if(t.getId() == id)
+            {
+                tweets.remove(t);
+            }
+        }
     }
 
     @Override
