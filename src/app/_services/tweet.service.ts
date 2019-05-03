@@ -23,6 +23,14 @@ export class TweetService {
     }
   }
 
+  getUserTweet(username) {
+    if (AuthService.isLoggedIn() === false) {
+      return null;
+    } else {
+      return this.http.get<Tweet[]>(this.BASE_URL + 'username/?username=' + username);
+    }
+  }
+
   post(tweet) {
     if (AuthService.isLoggedIn() === false) {
       return null;
@@ -37,6 +45,19 @@ export class TweetService {
   }
 
   search(message) {
-    return this.http.get<Tweet[]>('http://localhost:8080/Kwetter/api/tweet/search/?message=' + message);
+    return this.http.get<Tweet[]>(this.BASE_URL + 'search/?message=' + message);
+  }
+
+  delete(tweet) {
+    if (AuthService.isLoggedIn() === false) {
+      return null;
+    } else {
+      return this.http.delete<Tweet>(
+        this.BASE_URL + tweet.id,
+        {}).subscribe(
+        () => {
+          window.location.reload();
+        });
+    }
   }
 }

@@ -11,12 +11,14 @@ import {ActivatedRoute} from '@angular/router';
 export class TweetComponent implements OnInit {
   @Input() profileSettings;
   private sub: any;
+  private loggedInUser: string;
   public tweets: Tweet[] = [];
 
   constructor(private tweetService: TweetService, private accountService: AccountService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.loggedInUser = AuthService.getUser();
     if (!this.profileSettings) {
       this.sub = this.route.params.subscribe(params => {
         if (params.username) {
@@ -31,9 +33,8 @@ export class TweetComponent implements OnInit {
   }
 
   getTweet(username) {
-    this.tweetService.getAll().subscribe(
+    this.tweetService.getUserTweet(username).subscribe(
       (data) => {
-        data = data.filter(x => x.account.username === username);
         this.tweets = data;
       },
       (error) => {
@@ -46,11 +47,14 @@ export class TweetComponent implements OnInit {
     this.tweetService.getFollowingTweet().subscribe(
       (data) => {
         this.tweets = data;
-        console.log(data);
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  delete(tweet) {
+    this.tweetService.delete(tweet);
   }
 }
