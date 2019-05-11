@@ -38,11 +38,8 @@ public class AccountService {
     @JPA
     private IRoleDao roleDao;
 
-    private JwtUtil jwt;
-
     public AccountService() {
         super();
-        jwt = new JwtUtil();
     }
 
     @PermitAll

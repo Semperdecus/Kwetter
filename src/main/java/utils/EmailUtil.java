@@ -8,9 +8,6 @@ package utils;
 import java.io.UnsupportedEncodingException;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -18,7 +15,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import models.Account;
-import service.AccountService;
 
 /**
  *

@@ -7,6 +7,7 @@ package dao.facade;
 
 import dao.IRoleDao;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import models.Account;
 import models.Role;
@@ -56,7 +57,7 @@ public class RoleDaoColl implements IRoleDao {
 
     @Override
     public ArrayList<Role> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new ArrayList<>(roles);
     }
 
     @Override
@@ -67,7 +68,8 @@ public class RoleDaoColl implements IRoleDao {
 
     @Override
     public Role update(Role t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = roles.indexOf(t.getId());
+        return roles.set(index, t);
     }
 
     @Override
@@ -77,16 +79,30 @@ public class RoleDaoColl implements IRoleDao {
 
     @Override
     public void deleteById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Role role : roles) {
+            if (Objects.equals(id, role.getId())) {
+                roles.remove(role);
+            } 
+        }
     }
 
     @Override
     public Role findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Role role : roles) {
+            if (Objects.equals(role.getId(), id)) {
+                return role;
+            } 
+        }
+        return null;
     }
 
     @Override
     public Role findObject(Role object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Role role : roles) {
+            if (role == object) {
+                return role;
+            } 
+        }
+        return null;
     }
 }

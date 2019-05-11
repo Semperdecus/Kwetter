@@ -30,8 +30,9 @@ public class FunctionalTest {
         System.setProperty("webdriver.gecko.driver", "D:/Terence/Documents/NetBeansProjects/Kwetter/src/test/resources/geckodriver.exe");
         System.setProperty("webdriver.chrome.driver", "D:/Terence/Documents/NetBeansProjects/Kwetter/src/test/resources/chromedriver.exe");
 
-        driver = new HtmlUnitDriver(BrowserVersion.CHROME ,true);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//        driver = new HtmlUnitDriver(BrowserVersion.CHROME ,true);
+//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        //driver = new FirefoxDriver();
     }
 
     @After

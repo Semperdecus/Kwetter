@@ -9,6 +9,7 @@ import dao.ITweetDao;
 import exceptions.TweetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
@@ -66,7 +67,7 @@ public class TweetDaoColl implements ITweetDao {
             return null;
         }
     }
-    
+
     @Override
     public List<Tweet> findByAccountId(Account account) {
         List<Tweet> result = new ArrayList<>();
@@ -85,9 +86,8 @@ public class TweetDaoColl implements ITweetDao {
 
     @Override
     public void deleteById(long id) throws TweetException {
-        for(Tweet t : tweets){
-            if(t.getId() == id)
-            {
+        for (Tweet t : tweets) {
+            if (t.getId() == id) {
                 tweets.remove(t);
             }
         }
@@ -106,7 +106,8 @@ public class TweetDaoColl implements ITweetDao {
 
     @Override
     public Tweet update(Tweet entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = tweets.indexOf(entity.getId());
+        return tweets.set(index, entity);
     }
 
     @Override
@@ -116,11 +117,25 @@ public class TweetDaoColl implements ITweetDao {
 
     @Override
     public List<Tweet> getFollowingTweets(Long id) {
-        throw new UnsupportedOperationException("Not supported yet - TweetDaoColl."); //To change body of generated methods, choose Tools | Templates.
+        List<Tweet> result = new ArrayList<>();
+
+        for (Tweet tweet : tweets) {
+            if (Objects.equals(tweet.getAccount().getId(), id)) {
+                result.add(tweet);
+            }
+        }
+        return result;
     }
 
     @Override
     public List<Tweet> search(String message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Tweet> result = new ArrayList<>();
+
+        for (Tweet tweet : tweets) {
+            if (tweet.getMessage().contains(message)) {
+                result.add(tweet);
+            }
+        }
+        return result;
     }
 }
