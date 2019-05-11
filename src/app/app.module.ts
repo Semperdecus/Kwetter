@@ -7,7 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
-import {AuthService} from './_services';
+import {AuthService, WebsocketService} from './_services';
 import {AccountService} from './_services';
 import {TweetService} from './_services';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -68,6 +68,7 @@ registerLocaleData(localeNl, 'nl');
     AuthService,
     TweetService,
     AccountService,
+    WebsocketService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]

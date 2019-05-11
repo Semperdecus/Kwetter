@@ -11,16 +11,18 @@ export class NewTweetComponent implements OnInit {
   public tweet;
 
   constructor(private tweetService: TweetService) {
+
   }
 
   ngOnInit() {
   }
 
   postTweet() {
-    console.log(this.tweet);
-
     if (this.tweet) {
-      this.tweetService.post(this.tweet);
+      this.tweetService.post(this.tweet).subscribe(
+        (data) => {
+          this.tweetService.messages.next(data);
+        });
     }
   }
 }

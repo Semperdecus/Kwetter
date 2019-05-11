@@ -13,8 +13,15 @@ export class TweetComponent implements OnInit {
   private sub: any;
   private loggedInUser: string;
   public tweets: Tweet[] = [];
+  successAlert: boolean;
 
   constructor(private tweetService: TweetService, private accountService: AccountService, private route: ActivatedRoute) {
+    this.successAlert = true;
+
+    tweetService.messages.subscribe(msg => {
+      this.tweets.unshift(msg);
+      this.successAlert = false;
+    });
   }
 
   ngOnInit() {
