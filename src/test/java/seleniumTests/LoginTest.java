@@ -10,13 +10,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import seleniumTest.PageObjects.AdminDashboard;
-import seleniumTest.PageObjects.LoginPage;
+import seleniumTests.PageObjects.LoginPage;
 import seleniumTest.PageObjects.ProfilePage;
 /**
  *
  * @author teren
  */
-public class LoginTest extends FunctionalTest {
+public class LoginTest extends DriverSetup {
 
     @Test
     public void login_ExistingUser_RedirectToUserProfile(){
@@ -49,6 +49,5 @@ public class LoginTest extends FunctionalTest {
 
         assertEquals("List of all accounts", adminPage.confirmationHeader());
     }
-    
     
 }
