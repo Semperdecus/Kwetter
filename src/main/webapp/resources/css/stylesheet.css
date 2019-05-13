@@ -37,3 +37,7 @@ body {
         ),
         url("#{resource['img/background.png']}");
 }
+
+.btn-spacing{
+    margin-right: 10px;
+}

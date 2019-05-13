@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -12,12 +13,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -25,6 +26,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import utils.PasswordSecurity;
 
 /**
  *
@@ -37,6 +40,12 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "account.findByUsername", query = "SELECT a FROM Account a WHERE a.username = :username")
     ,
     @NamedQuery(name = "account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
+    ,
+    @NamedQuery(name = "account.findFollowing", query = "SELECT a FROM Account a JOIN a.following f WHERE f.id = :id ORDER BY a.username desc")
+    ,
+    @NamedQuery(name = "account.findFollowers", query = "SELECT a FROM Account a JOIN a.followers f WHERE f.id = :id ORDER BY a.username desc")
+    ,
+    @NamedQuery(name = "account.search", query = "SELECT a FROM Account a WHERE a.username LIKE :username ORDER BY a.username desc")
 })
 public class Account implements Serializable {
 
@@ -54,23 +63,35 @@ public class Account implements Serializable {
     private String accountPassword;
     private String location;
     private String website;
+    private String picture;
 
     @Column(length = 160)
     private String bio;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "account")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "account")
+    @JsonbTransient
+    @JsonIgnore
     private List<Tweet> tweets = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "followers_following")
+    @JsonbTransient
+    @JsonIgnore
     private List<Account> following = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH}, mappedBy = "following")
+    @JsonbTransient
+    @JsonIgnore
     private List<Account> followers = new ArrayList<>();
 
     @ManyToOne
+    @JsonbTransient
+    @JsonIgnore
     private Role role;
 
+    /**
+     *
+     */
     public Account() {
     }
 
@@ -84,8 +105,8 @@ public class Account implements Serializable {
         this.email = email;
         this.username = username;
         try {
-            this.accountPassword = generateSha256(password);
-        } catch (Exception e) {
+            this.accountPassword = PasswordSecurity.generateSha256(password);
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
@@ -289,27 +310,51 @@ public class Account implements Serializable {
         this.followers = followers;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getAccountPassword() {
         return accountPassword;
     }
 
+    /**
+     *
+     * @param accountPassword
+     */
     public void setAccountPassword(String accountPassword) {
         this.accountPassword = accountPassword;
     }
 
+    /**
+     *
+     * @return
+     */
     public Role getRole() {
         return role;
     }
 
+    /**
+     *
+     * @param role
+     */
     public void setRole(Role role) {
         this.role = role;
     }
 
-    private String generateSha256(String text) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
-        String encoded = Base64.getEncoder().encodeToString(hash); // Java 8 feature
+    /**
+     *
+     * @return
+     */
+    public String getPicture() {
+        return picture;
+    }
 
-        return encoded;
+    /**
+     *
+     * @param picture
+     */
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }

@@ -10,15 +10,12 @@
     <ui:define name="content">
         <ui:define name="title">Admin Dashboard</ui:define>
         <header>
-            <p:commandButton
-                value="View accounts"
-                actionListener="#{redirectBean.viewAccounts()}"/>
-            <p:commandButton
-                value="Create accounts"
-                actionListener="#{redirectBean.createAccounts()}"/>
+            <h:button styleClass="btn-spacing btn-info btn" value="View Accounts" outcome="dashboard" />
+            <h:button styleClass="btn-spacing btn btn-info" value="Create Accounts" outcome="create" />
             <p:commandButton
                 value="Log out"
-                styleClass="logout-button btn-danger"
+                immediate="true"
+                styleClass="btn logout-button btn-danger"
                 actionListener="#{sessionBean.logout()}"/>
 
         </header>

@@ -10,17 +10,12 @@
     <ui:define name="content">
         <ui:define name="title">Profile</ui:define>
         <header>
-            <p:commandButton
-                value="Log out"
-                styleClass="logout-button btn-danger"
-                actionListener="#{sessionBean.logout()}"/>
-
         </header>
 
         <header class="card">
             <div class="padding">
                 <h:outputLabel value="Welcome user"/>
-                <h5 class="text-muted">Frontend for user will be made in Angular soon!</h5>
+                <h5 class="text-muted">Your role is insufficient to access this dashboard.</h5>
             </div>
         </header>
     </ui:define>

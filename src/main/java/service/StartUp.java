@@ -26,15 +26,28 @@ public class StartUp {
     private AccountService accountService;
     @Inject
     private RoleService roleService;
-
     @Inject
     private TweetService tweetService;
 
     @PostConstruct
     public void initData() {
         try {
-            Account testUser = new Account("user@mail.com", "user", "password");
+            Account testUser = new Account("bas.de.zot@gmail.com", "user", "password");
+            testUser.setBio("I am a dog person but I preffer the cat emoji! 🐱 " );
+            testUser.setLocation("South");
+            testUser.setWebsiteUrl("http://www.ihatejsf.com/");
+            testUser.setPicture("https://images-na.ssl-images-amazon.com/images/I/51VmmRDO1EL._SX425_.jpg");
+            
             Account testAdmin = new Account("admin@mail.com", "admin", "password");
+            Account testMod = new Account("mod@mail.com", "mod", "password");
+            testMod.setPicture("https://cutecatshq.com/wp-content/uploads/2013/09/This-Kitten-Is-Super-Super-Cute-.jpg");
+
+            Tweet userTweet = new Tweet("offensive tweet!!!", testUser);
+            Tweet userTweet2 = new Tweet("offensive tweet2!!!", testUser);
+            Tweet userTweet3 = new Tweet("offensive tweet3!!!", testUser);
+            Tweet adminTweet = new Tweet("I am admin", testAdmin);
+            Tweet modTweet = new Tweet("I am el moderator.", testMod);
+
             Role roleAdmin = new Role("Admin");
             Role roleUser = new Role("User");
             Role roleModerator = new Role("Moderator");
@@ -45,7 +58,22 @@ public class StartUp {
 
             testUser.setRole(roleService.getRoleByName("User"));
             testAdmin.setRole(roleService.getRoleByName("Admin"));
+            testMod.setRole(roleService.getRoleByName("Moderator"));
 
+            accountService.create(testUser);
+            accountService.create(testAdmin);
+            accountService.create(testMod);
+
+            tweetService.create(userTweet);
+            tweetService.create(userTweet2);
+            tweetService.create(userTweet3);
+            tweetService.create(adminTweet);
+            tweetService.create(modTweet);
+
+            accountService.addFollowing(testUser.getId(), testAdmin.getId());
+            accountService.addFollowing(testUser.getId(), testMod.getId());
+            accountService.addFollowing(testMod.getId(), testUser.getId());
+            accountService.removeFollowing(testUser.getId(), testAdmin.getId());
 //            accountService.create(new Account("user2@mail.com", "user2", "password"));
 //            accountService.create(new Account("user24@mail.com", "user23", "password"));
 //            accountService.create(new Account("user25@mail.com", "user24", "password"));
@@ -65,8 +93,6 @@ public class StartUp {
 //            accountService.create(new Account("user2513245@mail.com", "use213r231", "password"));
 //            accountService.create(new Account("user2351254@mail.com", "us52er242", "password"));
 //            accountService.create(new Account("user235266@mail.com", "us3256er253", "password"));
-            accountService.create(testUser);
-            accountService.create(testAdmin);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

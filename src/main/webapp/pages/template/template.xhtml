@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Kwetter<ui:insert name="title"/></title>
@@ -15,10 +16,11 @@
         <!-- Custom CSS -->
         <h:outputStylesheet library = "css" name = "stylesheet.css" /> 
         <h:outputStylesheet library = "css" name = "materialize.css" /> 
+
+
     </h:head>
 
     <h:body styleClass="container body-background">
-
         <ui:insert name="content"/>
 
     </h:body>

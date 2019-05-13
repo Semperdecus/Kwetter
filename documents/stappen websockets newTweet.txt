@@ -1,0 +1,10 @@
+websockets:
+
+Angular
+- new-tweet.component.ts maakt tweet object en stuurt naar tweet.service.ts
+- Tweet.service.ts stuurt nieuwe tweet naar web socket
+- tweet.component.ts subscribed op messages die binnen komen (uit tweet.service.ts)
+Java
+- NewTweetWebsocket.java opent port en krijgt berichten naar welke sessies er een bericht binnenkomt.
+- Er wordt een hashmap bijgehouden met session en username
+- in @OnMessage er gekeken welke gebruiker deze verstuurd en welke volgers een actieve sessie hebben waar het bericht naar vertuurd wordt.

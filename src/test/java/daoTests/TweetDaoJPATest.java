@@ -202,7 +202,7 @@ public class TweetDaoJPATest {
 
         // Delete tweet
         transaction.begin();
-        dao.deleteById(tweet.getId(), accountAdmin);
+        dao.deleteById(tweet.getId());
         transaction.commit();
 
         // 3 Tweets found
@@ -232,7 +232,7 @@ public class TweetDaoJPATest {
     public void deleteTweetTest1() throws Exception {
         // Find by username "emma" with 1 tweet
         transaction.begin();
-        dao.delete(tweetEmma, accountAdmin);
+        dao.delete(tweetEmma);
         transaction.commit();
 
         assertEquals(0, accountEmma.getTweets().size());
@@ -248,6 +248,6 @@ public class TweetDaoJPATest {
         dao.create(deletableTweet);
 
         // Delete tweet 
-        dao.delete(deletableTweet, account);
+        dao.delete(deletableTweet);
     }
 }

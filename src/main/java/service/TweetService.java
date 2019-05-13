@@ -16,7 +16,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
-import models.Role;
 import models.Tweet;
 
 /**
@@ -26,10 +25,12 @@ import models.Tweet;
 @Stateless
 public class TweetService {
 
-    @Inject @JPA
+    @Inject
+    @JPA
     private ITweetDao tweetDao;
 
-    @Inject @JPA
+    @Inject
+    @JPA
     private IAccountDao accountDao;
 
     public TweetService() {
@@ -37,7 +38,6 @@ public class TweetService {
     }
 
     public Tweet create(Tweet tweet) throws AccountException, TweetException {
-        System.out.println(tweet.getAccount().getId()); // null
         Account account = accountDao.findById(tweet.getAccount().getId());
         if (account != null) {
             tweet = tweetDao.create(tweet);
@@ -48,15 +48,18 @@ public class TweetService {
         return null;
     }
 
-    public void delete(long id, Account account) throws TweetException, AccountException {
+    @RolesAllowed({"Admin", "Moderator"})
+    public void delete(Tweet tweet) throws TweetException {
+        tweetDao.delete(tweet);
+    }
+
+    @PermitAll
+    public void deleteOwnTweet(long id) throws TweetException {
         Tweet entity = tweetDao.findById(id);
         if (entity != null) {
-            if (entity.getAccount().getId().equals(account.getId())) {
-                tweetDao.delete(entity, entity.getAccount());
-                return;
-            }
+            tweetDao.delete(entity);
+            return;
         }
-        throw new AccountException("Account not found.");
     }
 
     @PermitAll
@@ -70,12 +73,22 @@ public class TweetService {
     }
 
     @PermitAll
-    public List<Tweet> findByUser(String username) {
-        return tweetDao.findByUsername(username);
+    public List<Tweet> findByAccountId(Account account) {
+        return tweetDao.findByAccountId(account);
     }
 
     @PermitAll
     public List<Tweet> findAll() {
         return tweetDao.findAll();
+    }
+
+    @PermitAll
+    public List<Tweet> getFollowingTweets(Long id) {
+        return tweetDao.getFollowingTweets(id);
+    }
+
+    @PermitAll
+    public List<Tweet> search(String message) {
+        return tweetDao.search(message);
     }
 }

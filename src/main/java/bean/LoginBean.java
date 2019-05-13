@@ -6,15 +6,15 @@
 package bean;
 
 import java.io.Serializable;
-import java.security.Security;
+import java.util.HashMap;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import models.Account;
 import service.AccountService;
+import utils.PrincipalRoles;
 import utils.RedirectUtil;
 
 /**
@@ -33,7 +33,10 @@ public class LoginBean implements Serializable {
     private String username;
     private String password;
 
+    private PrincipalRoles roles;
+
     public void init() throws ServletException {
+        this.roles = new PrincipalRoles();
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
@@ -44,7 +47,7 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public void login() {
+    public void login() throws ServletException {
         String username = this.username.toLowerCase();
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -54,21 +57,23 @@ public class LoginBean implements Serializable {
             request.login(username, this.password);
         } catch (ServletException e) {
             RedirectUtil.redirect("/error.xhtml");
-            e.printStackTrace();
+            request.logout();
         }
 
         redirect(request);
     }
 
-    public void redirect(HttpServletRequest request) {
-        boolean isUser = request.isUserInRole("User");
-        boolean isAdmin = request.isUserInRole("Admin");
-        boolean isMod = request.isUserInRole("Moderator");
+    public void redirect(HttpServletRequest request) throws ServletException {
+        HashMap<String, String> roles = this.roles.getRoles();
 
-        if (isUser || isMod) {
-            RedirectUtil.redirect("/pages/user/profile.xhtml");
-        } else if (isAdmin) {
-            RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
+        for (String role : roles.keySet()) {
+            if (request.isUserInRole(role)) {
+                if (roles.get(role).equals("Authorized")) {
+                    RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
+                } else if (roles.get(role).equals("Unauthorized")) {
+                    RedirectUtil.redirect("/pages/user/profile.xhtml");
+                }
+            }
         }
     }
 

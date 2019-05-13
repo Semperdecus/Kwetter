@@ -9,7 +9,6 @@ import dao.IAccountDao;
 import exceptions.AccountException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
 import models.Account;
@@ -20,9 +19,9 @@ import models.Account;
  */
 @Default
 @Stateful
-public class AccountDaoColl implements IAccountDao{
+public class AccountDaoColl implements IAccountDao {
 
-    CopyOnWriteArrayList<Account> accounts = new CopyOnWriteArrayList<>();
+    private List<Account> accounts = new ArrayList<>();
 
     @Override
     public Account findById(long id) {
@@ -66,12 +65,45 @@ public class AccountDaoColl implements IAccountDao{
     }
 
     @Override
-    public Account update(Account entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Account update(Account account) {
+        int index = accounts.indexOf(account.getId());
+        return accounts.set(index, account);
     }
 
     @Override
     public void delete(Account entity) {
         accounts.remove(entity);
+    }
+
+    @Override
+    public List<Account> findFollowing(long id) {
+        for (Account account : accounts) {
+            if (id == account.getId()) {
+                return account.getFollowing();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Account> findFollowers(long id) {
+        for (Account account : accounts) {
+            if (id == account.getId()) {
+                return account.getFollowers();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Account> search(String username) {
+        List<Account> result = new ArrayList<>();
+
+        for (Account account : accounts) {
+            if (account.getUsername().contains(username)) {
+                result.add(account);
+            }
+        }
+        return result;
     }
 }

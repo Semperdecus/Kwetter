@@ -67,6 +67,15 @@ public class TweetDaoJPA implements ITweetDao {
         System.out.println("count: " + result.size());
         return result;
     }
+    
+    @Override
+    public List<Tweet> findByAccountId(Account account) {
+        TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.findByAccount", Tweet.class);
+        query.setParameter("account", account);
+        List<Tweet> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
 
     @Override
     public List<Tweet> findAll() {
@@ -87,24 +96,43 @@ public class TweetDaoJPA implements ITweetDao {
         return entityManager.merge(entity);
     }
 
-    public void deleteById(long id, Account adminAccount) throws TweetException {
+    public void deleteById(long id) throws TweetException {
         final Tweet entity = findById(id);
 
         if (entity == null) {
             throw new TweetException("Tweet is not found.");
         } else {
-            delete(entity, adminAccount);
+            delete(entity);
         }
     }
 
     @Override
-    public void delete(Tweet entity, Account adminAccount) throws TweetException {
+    public void delete(Tweet entity) throws TweetException {
         entityManager.remove(entityManager.merge(entity));
     }
 
+    @Override
+    public List<Tweet> getFollowingTweets(Long id) {
+        TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.getFollowingTweets", Tweet.class);
+        query.setParameter("id", id);
+        List<Tweet> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
+    
+    @Override
+    public List<Tweet> search(String message) {
+        TypedQuery<Tweet> query = entityManager.createNamedQuery("tweet.search", Tweet.class);
+        query.setParameter("message", '%' + message + '%');
+        List<Tweet> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
+    
     private void checkCreate(Tweet entity) throws TweetException {
         if (entity.getMessage().length() < 0 || entity.getMessage().isEmpty() || entity.getMessage().length() > 140) {
             throw new TweetException("Tweet has invalid length");
         }
     }
+
 }

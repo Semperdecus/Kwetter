@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import models.Role;
+import models.Tweet;
 
 /**
  *
@@ -68,7 +69,12 @@ public class AccountDaoJPA implements IAccountDao {
         query.setParameter("username", username);
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
-        return result.get(0);
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            System.out.println("No user found for: " + username);
+            return null;
+        }
     }
 
     @Override
@@ -114,5 +120,32 @@ public class AccountDaoJPA implements IAccountDao {
     @Override
     public void delete(Account entity) {
         entityManager.remove(entityManager.merge(entity));
+    }
+
+    @Override
+    public List<Account> findFollowing(long id) {
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findFollowing", Account.class);
+        query.setParameter("id", id);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
+    
+    @Override
+    public List<Account> findFollowers(long id) {
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.findFollowers", Account.class);
+        query.setParameter("id", id);
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
+    }
+    
+    @Override
+    public List<Account> search(String username) {
+        TypedQuery<Account> query = entityManager.createNamedQuery("account.search", Account.class);
+        query.setParameter("username", '%' + username + '%');
+        List<Account> result = query.getResultList();
+        System.out.println("count: " + result.size());
+        return result;
     }
 }

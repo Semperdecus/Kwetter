@@ -9,11 +9,11 @@ import dao.ITweetDao;
 import exceptions.TweetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
 import models.Account;
-import models.Role;
 import models.Tweet;
 
 /**
@@ -69,8 +69,28 @@ public class TweetDaoColl implements ITweetDao {
     }
 
     @Override
-    public void deleteById(long id, Account adminAccount) throws TweetException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Tweet> findByAccountId(Account account) {
+        List<Tweet> result = new ArrayList<>();
+        for (Tweet tweet : tweets) {
+            if (tweet.getAccount() == account) {
+                result.add(tweet);
+            }
+        }
+
+        if (result.size() > 0) {
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void deleteById(long id) throws TweetException {
+        for (Tweet t : tweets) {
+            if (t.getId() == id) {
+                tweets.remove(t);
+            }
+        }
     }
 
     @Override
@@ -86,11 +106,36 @@ public class TweetDaoColl implements ITweetDao {
 
     @Override
     public Tweet update(Tweet entity) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int index = tweets.indexOf(entity.getId());
+        return tweets.set(index, entity);
     }
 
     @Override
-    public void delete(Tweet entity, Account adminAccount) throws TweetException {
+    public void delete(Tweet entity) throws TweetException {
         tweets.remove(entity);
+    }
+
+    @Override
+    public List<Tweet> getFollowingTweets(Long id) {
+        List<Tweet> result = new ArrayList<>();
+
+        for (Tweet tweet : tweets) {
+            if (Objects.equals(tweet.getAccount().getId(), id)) {
+                result.add(tweet);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Tweet> search(String message) {
+        List<Tweet> result = new ArrayList<>();
+
+        for (Tweet tweet : tweets) {
+            if (tweet.getMessage().contains(message)) {
+                result.add(tweet);
+            }
+        }
+        return result;
     }
 }

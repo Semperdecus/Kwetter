@@ -5,14 +5,18 @@
  */
 package bean;
 
+import utils.EmailUtil;
 import exceptions.AccountException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.AccessLocalException;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import models.Account;
 import service.AccountService;
 import utils.RedirectUtil;
@@ -27,6 +31,10 @@ public class AccountBean implements Serializable {
 
     @Inject
     private AccountService accountService;
+
+    @Inject
+    private EmailUtil emailBean;
+
     private List<Account> accounts;
     private Account account;
 
@@ -47,14 +55,15 @@ public class AccountBean implements Serializable {
         return account;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public void deleteAccount(Account account) throws AccountException {
-        accountService.delete(account.getId());
-        RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
-
+    public void deleteAccount(Account account) throws AccountException, MessagingException, UnsupportedEncodingException {
+        try {
+            accountService.deleteById(account.getId());
+            emailBean.sendEmail_AccountDeleted(account);
+            RedirectUtil.redirect("/pages/admin/dashboard.xhtml");
+        } catch (AccessLocalException e) {
+            System.out.println("NO PERMISSION");
+            e.printStackTrace();
+        }
     }
 
 }

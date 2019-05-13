@@ -35,25 +35,13 @@
     <security-role>
         <role-name>Admin</role-name>
     </security-role>
-    
-    <!-- user pages -->
-    <security-constraint>
-        <display-name>User</display-name>
-        <web-resource-collection>
-            <web-resource-name>Secure Pages</web-resource-name>
-            <description>User</description>
-            <url-pattern>/pages/user/profile.xhtml</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <description/>
-            <role-name>User</role-name>
-            <role-name>Admin</role-name>
-        </auth-constraint>
-    </security-constraint>
+    <security-role>
+        <role-name>Moderator</role-name>
+    </security-role>
     
     <!-- admin pages -->
     <security-constraint>
-        <display-name>User</display-name>
+        <display-name>Admin</display-name>
         <web-resource-collection>
             <web-resource-name>Secure Pages Admin</web-resource-name>
             <description>admin</description>
@@ -62,6 +50,7 @@
         <auth-constraint>
             <description/>
             <role-name>Admin</role-name>
+            <role-name>Moderator</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -81,4 +70,17 @@
         <param-value>admin</param-value>
     </context-param>
     <!-- primeface style -->
+    
+    <!-- CORSFilter for angular api calls -->
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>controller.CORSFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+    <!-- CORSFilter for angular api calls -->
+
+
 </web-app>

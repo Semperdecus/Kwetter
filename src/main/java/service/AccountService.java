@@ -7,16 +7,18 @@ package service;
 
 import dao.IAccountDao;
 import dao.IRoleDao;
-import dao.ITweetDao;
 import dao.JPA;
 import exceptions.AccountException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
-import models.Role;
+import utils.JwtUtil;
+import utils.PasswordSecurity;
 
 /**
  *
@@ -42,27 +44,27 @@ public class AccountService {
 
     @PermitAll
     public Account create(Account entity) throws AccountException {
-        System.out.println("ENTITY ROLE = " + entity.getRole());
         if (entity.getRole() == null) {
             entity.setRole(roleService.getRoleByName("User"));
-            accountDao.create(entity);
-            return entity;
-        } else {
-            accountDao.create(entity);
-            return entity;
         }
+
+        if (entity.getPicture() == null) {
+            entity.setPicture("https://i.pinimg.com/originals/9f/81/2d/9f812d4cf313e887ef99d8722229eee1.jpg");
+        }
+
+        accountDao.create(entity);
+        return entity;
     }
 
-    @RolesAllowed({"Admin", "Moderator"})
-    public void delete(long id) throws AccountException {
+    @RolesAllowed({"Admin"})
+    public void deleteById(long id) throws AccountException {
         Account entity = accountDao.findById(id);
         accountDao.delete(entity);
     }
 
-    @RolesAllowed({"User", "Admin", "Moderator"})
+    @PermitAll
     public void update(Account entity) throws Exception {
-        Account user = accountDao.findById(entity.getId());
-        accountDao.update(user);
+        accountDao.update(entity);
     }
 
     @RolesAllowed({"User", "Admin", "Moderator"})
@@ -88,13 +90,13 @@ public class AccountService {
         return accountDao.findByEmail(email);
     }
 
-    @RolesAllowed({"User", "Admin", "Moderator"})
-    public void addFollowing(long followingId, long id) throws AccountException {
+    @PermitAll
+    public void addFollowing(long followingId, long id) throws AccountException, IOException {
         if (followingId != id) {
             Account account = accountDao.findById(id);
             Account followingUser = accountDao.findById(followingId);
-            if (account != null && followingUser != null) {
 
+            if (account != null && followingUser != null) {
                 account.addFollowing(followingUser);
                 followingUser.addFollower(account);
 
@@ -104,16 +106,20 @@ public class AccountService {
         }
     }
 
-    @RolesAllowed({"User", "Admin", "Moderator"})
-    public void removeFollowing(long followingId, long id) throws AccountException {
-        if (followingId != id) {
-            Account user = accountDao.findById(id);
-            Account followingUser = accountDao.findById(followingId);
-            if (user != null && followingUser != null) {
-                user.removeFollowing(followingUser);
-                followingUser.removeFollower(user);
+    @PermitAll
+    public void removeFollowing(long followerId, long id) throws AccountException, IOException {
+        if (followerId != id) {
+            System.out.println("UNFOLLOWING 1");
+            Account account = accountDao.findById(id);
+            Account followingUser = accountDao.findById(followerId);
 
-                accountDao.update(user);
+            if (account != null && followingUser != null) {
+                System.out.println("UNFOLLOWING 2");
+
+                account.removeFollowing(followingUser);
+                followingUser.removeFollower(account);
+
+                accountDao.update(account);
                 accountDao.update(followingUser);
             }
         }
@@ -122,5 +128,31 @@ public class AccountService {
     @PermitAll
     public List<Account> findAll() {
         return accountDao.findAll();
+    }
+
+    @PermitAll
+    public Account login(String username, String password) throws NoSuchAlgorithmException {
+        Account getAccountByUsername = this.accountDao.findByUsername(username);
+        String passwordCheck = PasswordSecurity.generateSha256(password);
+        if (passwordCheck.equals(getAccountByUsername.getAccountPassword())) {
+            return getAccountByUsername;
+        } else {
+            return null;
+        }
+    }
+
+    @PermitAll
+    public List<Account> getFollowers(Long id) {
+        return accountDao.findFollowers(id);
+    }
+
+    @PermitAll
+    public List<Account> getFollowing(Long id) {
+        return accountDao.findFollowing(id);
+    }
+
+    @PermitAll
+    public List<Account> search(String username) {
+        return accountDao.search(username);
     }
 }
