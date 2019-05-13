@@ -23,8 +23,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import models.Account;
-import models.Role;
-import models.Tweet;
 import service.AccountService;
 import service.TweetService;
 import utils.JwtUtil;
