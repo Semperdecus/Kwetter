@@ -9,12 +9,8 @@ import dao.IAccountDao;
 import dao.ITweetDao;
 import exceptions.AccountException;
 import models.Account;
-import models.Role;
 import models.Tweet;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.mockito.InjectMocks;
@@ -48,57 +44,47 @@ public class TweetServiceTest {
         assertNotNull(tweetService);
     }
 
-    // @RolesAllowed({"USER","ADMINISTRATOR", "MODERATOR"})
-    // public Tweet create(Tweet tweet) throws Exception;
     @Test
-    public void createTest() throws Exception {
-        // Case 1 - Existing User
+    public void whenUserExists_shouldCreateTweet() throws Exception {
+        // arrange
         Account user = new Account("email@mail.com", "username", "password");
         when(accountDao.findById(1l)).thenReturn(user);
         user.setId(1l);
+        
+        // act
         tweetService.create(new Tweet("message", user));
+        
+        // assert
         verify(accountDao, atLeastOnce()).update(user);
     }
 
-    // @RolesAllowed({"USER","ADMINISTRATOR", "MODERATOR"})
-    // public Tweet create(Tweet tweet) throws Exception;
     @Test
-    public void createTest2() throws Exception {
-        // Case 2 - Non-existing User
+    public void whenUserDoesNotExist_shouldNeverCreateTweet() throws Exception {
+        // arrange
         Account user = new Account("email@mail.com", "username", "password");
         when(accountDao.findById(1l)).thenReturn(null);
         user.setId(1l);
+        
+        // act
         tweetService.create(new Tweet("message", user));
+        
+        // assert
         verify(accountDao, never()).update(user);
     }
 
-    // @RolesAllowed({"USER","ADMINISTRATOR", "MODERATOR"})
-    // public void deleteOwnTweet(long id, long userId) throws Exception;
     @Test
-    public void deleteTest() throws Exception {
-        // Case 1 - Existing User
+    public void whenOwnTweet_shouldDeleteTweet() throws Exception {
+        // arrange
         Account user = new Account("email@mail.com", "username", "password");
         Tweet tweet = new Tweet("message", user);
         user.setId(1l);
         tweet.setId(1l);
-
         when(tweetDao.findById(tweet.getId())).thenReturn(tweet);
+        
+        // act
         tweetService.deleteOwnTweet(1l);
+
+        // assert
         verify(tweetDao, atLeastOnce()).delete(tweet);
-    }
-
-    // @RolesAllowed({"USER","ADMINISTRATOR", "MODERATOR"})
-    // public void deleteOwnTweet(long id, long userId) throws Exception;
-    @Test(expected = AccountException.class)
-    public void deleteTest2() throws Exception {
-        // Case 2 - Non-existing User
-        Account user = new Account("email@mail.com", "username", "password");
-        Tweet tweet = new Tweet("message", user);
-        user.setId(1l);
-        tweet.setId(1l);
-
-        when(tweetDao.findById(tweet.getId())).thenReturn(null);
-        tweetService.deleteOwnTweet(1l);
-        verify(tweetDao, never()).delete(tweet);
     }
 }

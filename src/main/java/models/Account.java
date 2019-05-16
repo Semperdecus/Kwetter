@@ -7,17 +7,15 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
@@ -26,7 +24,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import utils.PasswordSecurity;
 
 /**
@@ -172,7 +169,11 @@ public class Account implements Serializable {
      * @param password
      */
     public void setPassword(String password) {
-        this.accountPassword = password;
+        try {
+            this.accountPassword = PasswordSecurity.generateSha256(password);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Account.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -220,7 +221,9 @@ public class Account implements Serializable {
      * @param bio
      */
     public void setBio(String bio) {
-        this.bio = bio;
+        if(bio.length() <= 160) {
+            this.bio = bio;
+        }
     }
 
     /**

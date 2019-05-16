@@ -37,5 +37,4 @@ public class RoleDaoJPA extends CrudDaoJPA<Role> implements IRoleDao {
         return new ArrayList<>(query.getResultList());
     }
 
-
 }

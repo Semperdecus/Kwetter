@@ -6,11 +6,13 @@
 package serviceTests;
 
 import dao.IAccountDao;
+import exceptions.AccountException;
 import models.Account;
 import models.Role;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
@@ -32,9 +34,6 @@ public class AccountServiceTest {
     @Mock
     private IAccountDao accountDao;
 
-    public AccountServiceTest() {
-    }
-
     @Before
     public void setUp() {
         initMocks(this);
@@ -45,88 +44,99 @@ public class AccountServiceTest {
         assertNotNull(accountService);
     }
 
-    /*
-    Case 1 - Existing Username
-     */
     @Test
-    public void createTest1() throws Exception {
-
+    public void shouldCreateAccount() throws Exception {
+        // arrange
         Account account = new Account("email@mail.com", "username", "password");
         account.setId(1l);
+        account.setRole(new Role("User"));
 
-        when(accountDao.findByUsername(account.getUsername())).thenReturn(null);
-        when(accountDao.findByEmail(account.getEmail())).thenReturn(null);
-
+        // act
         accountService.create(account);
+
+        // assert
         verify(accountDao, atLeastOnce()).create(account);
     }
 
-    /*
-    Case 2 - Existing Email
-     */
-    //@Test
-    public void createTest2() throws Exception {
+    @Test
+    public void givenEmailExists_shouldNotCreateAccount() throws Exception {
+        // arrange
         Account account = new Account("email@mail.com", "username", "password");
         account.setId(1l);
+        account.setRole(new Role("User"));
+        given(accountDao.findByEmail("email@mail.com"))
+                .willReturn(account);
 
-        when(accountDao.findByUsername(account.getUsername())).thenReturn(null);
-        when(accountDao.findByEmail(account.getEmail())).thenReturn(account);
+        // act
+        Account result = accountService.create(account);
 
-        accountService.create(account);
-        verify(accountDao, never()).create(account);
+        // assert
+        assertNotEquals(result, account);
     }
 
-    /*
-    Case 3 - Update username
-     */
+    @Test(expected = AccountException.class)
+    public void whenEmptyEmail_shouldThrowAccountException() throws Exception {
+        // arrange
+        Account account = new Account("", "username", "password");
+        account.setId(1l);
+        account.setRole(new Role("User"));
+
+        // act
+        accountService.create(account);
+    }
+
+    @Test(expected = AccountException.class)
+    public void whenEmptyUsername_shouldThrowAccountException() throws Exception {
+        // arrange
+        Account account = new Account("email@email.com", "", "password");
+        account.setId(1l);
+        account.setRole(new Role("User"));
+
+        // act
+        accountService.create(account);
+    }
+
     @Test
-    public void updateUsernameTest1() throws Exception {
+    public void shouldUpdateUsername() throws Exception {
+        // arrange
         Account user = new Account("user113@mail.com", "user113", "password");
         user.setId(1l);
         String newUsername = "username2";
 
-        when(accountDao.findById(1l)).thenReturn(user);
-        when(accountDao.findByUsername(newUsername)).thenReturn(null);
-
+        // act
         accountService.updateUsername(newUsername, user);
+
+        // assert
         verify(accountDao, atLeastOnce()).update(user);
     }
 
-    /*
-    Case 4 - Update empty username
-     */
     @Test
-    public void updateUsernameTest2() throws Exception {
+    public void givenEmptyUsername_shouldNotUpdateUsername() throws Exception {
         Account user = new Account("user113@mail.com", "user113", "password");
         user.setId(1l);
         String newUsername = "";
-
-        when(accountDao.findById(1l)).thenReturn(user);
-        when(accountDao.findByUsername(newUsername)).thenReturn(null);
 
         accountService.updateUsername(newUsername, user);
         verify(accountDao, never()).update(user);
     }
 
-    /*
-    Case 5 - Update to existing username
-     */
     @Test
-    public void updateUsernameTest3() throws Exception {
+    public void whenUsernameExist_shouldNotUpdateUsername() throws Exception {
+        // arrange
         Account user = new Account("user113@mail.com", "user113", "password");
         user.setId(1l);
-        String newUsername = "";
-
-        when(accountDao.findById(1l)).thenReturn(user);
+        String newUsername = "username2";
         when(accountDao.findByUsername(newUsername)).thenReturn(user);
 
+        // act
         accountService.updateUsername(newUsername, user);
+        
+        // assert
         verify(accountDao, never()).update(user);
     }
 
-    /*
-    Case 6 - add user to following
-     */
+    // Older tests
+    
     @Test
     public void addFollowingTest1() throws Exception {
         Account user1 = new Account("user500@mail.com", "user500", "password");
@@ -171,6 +181,7 @@ public class AccountServiceTest {
         accountService.addFollowing(user1.getId(), 3l);
         verify(accountDao, never()).update(user1);
     }
+
     /*
     Case 9 - remove follower
      */

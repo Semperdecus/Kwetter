@@ -13,7 +13,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import models.Account;
-import models.Role;
 import models.Tweet;
 import org.junit.Before;
 import org.junit.Test;

@@ -16,7 +16,7 @@ import org.primefaces.json.JSONObject;
 import utils.JwtUtil;
 
 /**
- *
+ * 
  * @author teren
  */
 public class JwtUtilTest {
@@ -111,6 +111,7 @@ public class JwtUtilTest {
         } catch (ExpiredJwtException e) {
             result = false;
         }
+        
         // assert
         assertFalse(result);
     }

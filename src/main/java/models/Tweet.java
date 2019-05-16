@@ -8,7 +8,6 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +17,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  *
@@ -98,7 +96,9 @@ public class Tweet implements Serializable {
      * @param message
      */
     public void setMessage(String message) {
-        this.message = message;
+        if (message.length() <= 140) {
+            this.message = message;
+        }
     }
 
     /**

@@ -12,12 +12,12 @@ import exceptions.AccountException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import models.Account;
-import utils.JwtUtil;
 import utils.PasswordSecurity;
 
 /**
@@ -44,6 +44,8 @@ public class AccountService {
 
     @PermitAll
     public Account create(Account entity) throws AccountException {
+        checkCreate(entity);
+        
         if (entity.getRole() == null) {
             entity.setRole(roleService.getRoleByName("User"));
         }
@@ -51,9 +53,8 @@ public class AccountService {
         if (entity.getPicture() == null) {
             entity.setPicture("https://i.pinimg.com/originals/9f/81/2d/9f812d4cf313e887ef99d8722229eee1.jpg");
         }
-
-        accountDao.create(entity);
-        return entity;
+        
+        return accountDao.create(entity);
     }
 
     @RolesAllowed({"Admin"})
@@ -109,13 +110,10 @@ public class AccountService {
     @PermitAll
     public void removeFollowing(long followerId, long id) throws AccountException, IOException {
         if (followerId != id) {
-            System.out.println("UNFOLLOWING 1");
             Account account = accountDao.findById(id);
             Account followingUser = accountDao.findById(followerId);
 
             if (account != null && followingUser != null) {
-                System.out.println("UNFOLLOWING 2");
-
                 account.removeFollowing(followingUser);
                 followingUser.removeFollower(account);
 
@@ -154,5 +152,27 @@ public class AccountService {
     @PermitAll
     public List<Account> search(String username) {
         return accountDao.search(username);
+    }
+    
+    
+    private void checkCreate(Account entity) throws AccountException {
+        if (entity.getUsername().length() > 20 || entity.getUsername().length() < 0 || entity.getUsername().isEmpty()) {
+            throw new AccountException("Username has an invalid length");
+        }
+
+        if (!isValidEmail(entity.getEmail()) || entity.getEmail().isEmpty() || entity.getEmail().length() < 0) {
+            throw new AccountException("Email has invalid format or invalid length");
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        System.out.println("email: " + email);
+        String emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null) {
+            return false;
+        }
+        return pat.matcher(email).matches();
     }
 }

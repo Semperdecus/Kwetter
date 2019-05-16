@@ -8,8 +8,6 @@ package dao.facade;
 import dao.IAccountDao;
 import dao.JPA;
 import exceptions.AccountException;
-import exceptions.TweetException;
-import java.io.Serializable;
 import models.Account;
 
 import java.util.List;
@@ -17,12 +15,9 @@ import java.util.regex.Pattern;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import models.Role;
-import models.Tweet;
 
 /**
  *
@@ -96,27 +91,6 @@ public class AccountDaoJPA implements IAccountDao {
         return entityManager.merge(entity);
     }
 
-    private void checkCreate(Account entity) throws AccountException {
-        if (entity.getUsername().length() > 20 || entity.getUsername().length() < 0 || entity.getUsername().isEmpty()) {
-            throw new AccountException("Username has an invalid length");
-        }
-
-        if (!isValidEmail(entity.getEmail()) || entity.getEmail().isEmpty() || entity.getEmail().length() < 0) {
-            throw new AccountException("Email has invalid format or invalid length");
-        }
-    }
-
-    private boolean isValidEmail(String email) {
-        System.out.println("email: " + email);
-        String emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-        if (email == null) {
-            return false;
-        }
-        return pat.matcher(email).matches();
-    }
-
     @Override
     public void delete(Account entity) {
         entityManager.remove(entityManager.merge(entity));
@@ -147,5 +121,26 @@ public class AccountDaoJPA implements IAccountDao {
         List<Account> result = query.getResultList();
         System.out.println("count: " + result.size());
         return result;
+    }
+    
+    private void checkCreate(Account entity) throws AccountException {
+        if (entity.getUsername().length() > 20 || entity.getUsername().length() < 0 || entity.getUsername().isEmpty()) {
+            throw new AccountException("Username has an invalid length");
+        }
+
+        if (!isValidEmail(entity.getEmail()) || entity.getEmail().isEmpty() || entity.getEmail().length() < 0) {
+            throw new AccountException("Email has invalid format or invalid length");
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        System.out.println("email: " + email);
+        String emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null) {
+            return false;
+        }
+        return pat.matcher(email).matches();
     }
 }
