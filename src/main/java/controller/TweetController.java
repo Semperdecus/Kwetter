@@ -5,14 +5,20 @@
  */
 package controller;
 
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import models.Account;
 import models.Tweet;
 import service.AccountService;
@@ -40,18 +46,36 @@ public class TweetController {
     private JwtUtil jwtUtil = new JwtUtil();
 
     @GET
-    public List<Tweet> get() {
-        return tweetService.findAll();
+    public Response get(@Context UriInfo uriInfo) {
+        List<Tweet> tweets = tweetService.findAll();
+        for (Tweet t : tweets) {
+            initLinks(t, uriInfo);
+        }
+
+        GenericEntity<List<Tweet>> genericEntity
+                = new GenericEntity<List<Tweet>>(tweets) {
+        };
+
+        Link self = Link.fromUriBuilder(uriInfo.getAbsolutePathBuilder())
+                .rel("self").build();
+
+        return Response.ok(genericEntity).links(self).build();
     }
 
     @GET
     @Path("/{id}")
-    public Tweet getById(@PathParam("id") long id) {
+    public Response getById(@PathParam("id") long id, @Context UriInfo uriInfo) {
+
         Tweet tweet = tweetService.findById(id);
+
+        Link self = Link.fromUriBuilder(uriInfo.getAbsolutePathBuilder())
+                .rel("self").build();
         if (tweet == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        return tweet;
+
+        return Response.ok(tweet)
+                .links(self).build();
     }
 
     @GET
@@ -106,5 +130,21 @@ public class TweetController {
     @Path("/search")
     public List<Tweet> search(@QueryParam("message") String message) {
         return tweetService.search(message);
+    }
+
+    /**
+     * create self link
+     *
+     * @param tweet
+     * @param uriInfo
+     */
+    private void initLinks(Tweet tweet, UriInfo uriInfo) {
+        UriBuilder uriBuilder = uriInfo.getRequestUriBuilder();
+        uriBuilder = uriBuilder.path(Long.toString(tweet.getId()));
+        Link.Builder linkBuilder = Link.fromUriBuilder(uriBuilder);
+        Link selfLink = linkBuilder.rel("self").build();
+        //also we can add other meta-data by using: linkBuilder.param(..),
+        // linkBuilder.type(..), linkBuilder.title(..)
+        tweet.setLinks(Arrays.asList(selfLink));
     }
 }

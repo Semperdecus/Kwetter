@@ -24,6 +24,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.ws.rs.core.Link;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import utils.PasswordSecurity;
 
 /**
@@ -50,6 +53,10 @@ public class Account implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
+    @Transient
+    private List<Link> links;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -58,6 +65,7 @@ public class Account implements Serializable {
 
     @Column(nullable = false, length = 1024)
     private String accountPassword;
+
     private String location;
     private String website;
     private String picture;
@@ -221,7 +229,7 @@ public class Account implements Serializable {
      * @param bio
      */
     public void setBio(String bio) {
-        if(bio.length() <= 160) {
+        if (bio.length() <= 160) {
             this.bio = bio;
         }
     }
@@ -360,4 +368,21 @@ public class Account implements Serializable {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    /**
+     * HATOAS
+     * @return 
+     */
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    /**
+     * HATOAS
+     * @param links 
+     */
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
 }

@@ -8,6 +8,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.ws.rs.core.Link;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -39,6 +43,10 @@ public class Tweet implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
+    @Transient
+    private List<Link> links;
+    
     @Column(length = 140, nullable = false)
     private String message;
 
@@ -131,6 +139,22 @@ public class Tweet implements Serializable {
      */
     public void setAccount(Account account) {
         this.account = account;
+    }
+    
+    /**
+     * HATOAS
+     * @return 
+     */
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    /**
+     * HATOAS
+     * @param links 
+     */
+    public void setLinks(List<Link> links) {
+        this.links = links;
     }
 
 }
