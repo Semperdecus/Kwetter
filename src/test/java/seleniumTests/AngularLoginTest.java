@@ -89,7 +89,7 @@ public class AngularLoginTest {
 
         // Check the sign up succeeded by checking that the randomized
         // email appears in the website's header bar.
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+        (new WebDriverWait(driver, 100)).until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver d) {
                 WebElement user = d.findElement(By.tagName("h5"));
