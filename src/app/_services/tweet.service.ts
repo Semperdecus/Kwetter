@@ -71,8 +71,6 @@ export class TweetService {
     }
   }
 
-
-
   search(message) {
     return this.http.get<Tweet[]>(this.BASE_URL + 'search/?message=' + message);
   }
