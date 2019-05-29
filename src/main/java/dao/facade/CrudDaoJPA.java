@@ -17,7 +17,6 @@ import javax.persistence.PersistenceContext;
  * @author teren
  * @param <T>
  */
-@Stateless
 @JPA
 public class CrudDaoJPA<T> implements ICrudDao<T> {
 

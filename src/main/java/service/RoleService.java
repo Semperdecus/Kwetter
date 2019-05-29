@@ -9,13 +9,8 @@ import dao.IAccountDao;
 import dao.IRoleDao;
 import dao.JPA;
 import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.json.JsonObject;
-import models.Account;
 import models.Role;
 
 /**

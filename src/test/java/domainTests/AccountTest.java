@@ -29,7 +29,7 @@ public class AccountTest {
     }
     
     @Test
-    public void setBio_shouldNotEqual_whenLengthGreaterThan160() {
+    public void setBio_whenLengthGreaterThan160_shouldNotEqual() {
         // arrange
         String longBio = "This string is 161 characters ...................................................................................................................................";
         Account instance = new Account();

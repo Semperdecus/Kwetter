@@ -57,17 +57,20 @@ public class AngularLoginTest {
 
     @Test
     public void loginPageHasTextLogin() {
+        // act
         driver.get("http://localhost:4200/login");
 
+        // assert
         assertThat(driver.findElement(By.tagName("h1")).getText(), containsString("Login"));
     }
 
     @Test
-    public void validLogin_ShouldRedirectTimeline() {
+    public void WhenValidLogin_ShouldRedirectTimeline() {
         // arrange
         final String username = "User";
         final String password = "password";
-
+        
+        // act
         driver.get("http://localhost:4200/login");
 
         WebElement usernameInputField = driver.findElement(By.id("mat-input-0"));
@@ -87,12 +90,11 @@ public class AngularLoginTest {
 
         submit.click();
 
-        // Check the sign up succeeded by checking that the randomized
-        // email appears in the website's header bar.
         (new WebDriverWait(driver, 100)).until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver d) {
                 WebElement user = d.findElement(By.tagName("h5"));
+                // assert
                 assertThat(user.getText().toUpperCase(), containsString(username.toUpperCase()));
                 return user.getText().toUpperCase().contains(username.toUpperCase());
             }
@@ -100,11 +102,12 @@ public class AngularLoginTest {
     }
 
     @Test
-    public void invalidUsername_ShouldShowInvalidLabel() {
+    public void WhenEmptyUsername_ShouldShowInvalidLabel() {
         // arrange
         final String username = "";
         final String password = "password";
-
+        
+        // act
         driver.get("http://localhost:4200/login");
 
         WebElement usernameInputField = driver.findElement(By.id("mat-input-0"));
@@ -121,6 +124,7 @@ public class AngularLoginTest {
 
         WebElement usernameLabel = driver.findElement(By.id("mat-form-field-label-1"));
 
+        // assert
         Assert.assertTrue(tagContainsClassName(usernameLabel, "mat-empty"));
     }
 }

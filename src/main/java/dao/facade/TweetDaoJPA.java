@@ -8,16 +8,13 @@ package dao.facade;
 import dao.ITweetDao;
 import dao.JPA;
 import exceptions.TweetException;
-import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import models.Account;
-import models.Role;
 import models.Tweet;
 
 /**

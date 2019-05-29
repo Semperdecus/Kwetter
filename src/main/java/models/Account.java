@@ -370,7 +370,7 @@ public class Account implements Serializable {
     }
 
     /**
-     * HATOAS
+     * HATEOAS
      * @return 
      */
     public List<Link> getLinks() {
@@ -378,7 +378,7 @@ public class Account implements Serializable {
     }
 
     /**
-     * HATOAS
+     * HATEOAS
      * @param links 
      */
     public void setLinks(List<Link> links) {

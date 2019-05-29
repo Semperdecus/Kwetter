@@ -10,20 +10,15 @@ import javax.xml.bind.DatatypeConverter;
 import models.Account;
 import io.jsonwebtoken.*;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
 import java.util.Properties;
-import javax.crypto.spec.SecretKeySpec;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gherkin.deps.com.google.gson.JsonObject;
-import static io.jsonwebtoken.security.Keys.secretKeyFor;
 import java.io.IOException;
 import javax.crypto.spec.SecretKeySpec;
-import javax.json.JsonArray;
 
 /**
  *
