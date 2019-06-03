@@ -13,30 +13,37 @@
 
     <ui:define name="content">
         <h:form>
+            <h:commandButton action="#{language.changeLanguage('')}"
+                             value="🇬🇧"/>
+            <h:outputText value=" " />
+            <h:commandButton action="#{language.changeLanguage('nl')}"
+                             value="🇧🇪" />
+        </h:form>
+        <h:form>
             <p:growl id="growl"/>
             <div class="card card-container">
                 <div class ="padding">
                     <h:panelGrid columns="2">
-                        <h:outputLabel for="username" value="Username:" />
+                        <h:outputLabel for="username" value="#{msg['username']}:" />
                         <p:inputText 
                             id="username" 
                             value="#{loginBean.username}" 
                             required="true" 
-                            requiredMessage="Fill in your username"
-                            label="username" />
+                            requiredMessage="#{msg['usernameFillIn']}"
+                            label="#{msg['username']}" />
 
-                        <h:outputLabel for="password" value="Password:" />
+                        <h:outputLabel for="password" value="#{msg['password']}:" />
                         <p:password 
                             id="password" 
                             value="#{loginBean.password}" 
                             required="true" 
-                            requiredMessage="Fill in your password"
-                            label="password" />
+                            requiredMessage="#{msg['passwordFillIn']}"
+                            label="#{msg['password']}" />
 
                         <f:facet name="footer">
                             <p:commandButton 
                                 id="login"
-                                value="Login" 
+                                value="#{msg['login']}" 
                                 update="growl" 
                                 action="#{loginBean.login}"/>
                         </f:facet>  
