@@ -1,0 +1,24 @@
+<div class="card">
+  <img
+    class="card-img-top profile-picture"
+    *ngIf="account?.picture"
+    [src]="account?.picture"
+    alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">
+      {{account?.username}}
+    </h5>
+    <p *ngIf="account?.bio" class="card-text">
+      {{account?.bio}}
+    </p>
+
+    <p *ngIf="account?.website" class="card-text">
+      <mat-icon class="icon">web</mat-icon>
+      <a href="{{account?.website }}">{{account?.website }}</a>
+    </p>
+    <p *ngIf="account?.location" class="card-text">
+      <mat-icon class="icon">location_on</mat-icon>
+      {{account?.location}}
+    </p>
+  </div>
+</div>

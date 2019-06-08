@@ -1,1 +1,0 @@
-D:/Terence/Documents/NetBeansProjects/Kwetter/src/test/resources/chromedrivernew.exe --whitelist-ip %*

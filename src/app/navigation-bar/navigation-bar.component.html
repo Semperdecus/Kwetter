@@ -1,0 +1,43 @@
+<nav class="margin navbar navbar-light justify-content-between bg-white shadow-sm">
+  <div class="container" >
+    <div class="float-left">
+      <form class="form-inline">
+        <a i18n [routerLinkActive]="['active-link']" [routerLink]="['/home']" class="navbar-brand">
+          <mat-icon class="btn-icon">home</mat-icon>
+          Home
+        </a>
+        <a i18n [routerLinkActive]="['active-link']" [routerLink]="['/profile']" class="navbar-brand">
+          <mat-icon class="btn-icon">settings</mat-icon>
+          Profile
+        </a>
+      </form>
+    </div>
+    <div class="row float-right">
+      <form [formGroup]="searchForm" class="form-inline" >
+        <input formControlName="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button i18n class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)='open(content)'>Search</button>
+      </form>
+<!--      <div ngbDropdown>-->
+<!--        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>🇬🇧</button>-->
+<!--        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">-->
+<!--          <button ngbDropdownItem>🇳🇱 Nederlands</button>-->
+<!--          <button ngbDropdownItem>🇬🇧 English</button>-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+
+  </div>
+
+</nav>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 i18n class="modal-title" id="modal-basic-title">Search results for: {{query}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body col-sm-12">
+    <app-search [tweetResults]="queryResultTweet" [accountResults]="queryResultAccount"></app-search>
+  </div>
+</ng-template>

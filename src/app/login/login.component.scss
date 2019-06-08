@@ -1,0 +1,9 @@
+.login-card {
+  background:
+    /* top, transparent red, faked with gradient */
+    linear-gradient(
+        rgba(255, 255, 255, 0.85),
+        rgba(255, 255, 255, 0.85)
+    ),
+    url('src/assets/img/login-art.png') no-repeat 100px -100px;
+}
