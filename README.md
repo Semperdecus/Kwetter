@@ -12,11 +12,11 @@ A twitter clone made as a school assignment.
 -    Cucumber
 -    Rest Assured
 -    Mockito
--    Payara
--    JAX-RS
 -    JUnit
 -    Selenium
--    Role security
+-    Payara
+-    JAX-RS
+-    Security Realm
 -    BCrypt hashing
 -    JWT verification
 -    JSF
@@ -25,7 +25,6 @@ A twitter clone made as a school assignment.
 -    Angular
 -    I18n
 -    Mail server
-
 
 ### Patterns
 
