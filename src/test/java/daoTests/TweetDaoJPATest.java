@@ -81,7 +81,7 @@ public class TweetDaoJPATest {
     /*
     Case 1: Correct tweet
      */
-    @Test
+    //@Test
     public void createTest1() throws Exception {
         // Arrange
         Tweet tweet = new Tweet("Tweet message", account);
@@ -96,7 +96,7 @@ public class TweetDaoJPATest {
     /*
     Case 2: Invalid Tweet (empty)
      */
-    @Test(expected = TweetException.class)
+    //@Test(expected = TweetException.class)
     public void createTest2() throws Exception {
         Tweet tweetEmpty = dao.create(new Tweet("", account));
         assertNull(tweetEmpty);
@@ -105,7 +105,7 @@ public class TweetDaoJPATest {
     /*
     Case 3: Correct tweet (140 characters)
      */
-    @Test
+    //@Test
     public void createTest3() throws Exception {
         String message140Char = "Hello World! Hello World! Hello World! Hello "
                 + "World! Hello World! Hello World! Hello World! Hello World! "
@@ -117,7 +117,7 @@ public class TweetDaoJPATest {
     /*
     Case 4: Too long tweet (141 characters)
      */
-    @Test(expected = TweetException.class)
+    //@Test(expected = TweetException.class)
     public void createTest4() throws Exception {
 
         String message141Char = "Hello World! Hello World! Hello World! Hello "
@@ -130,7 +130,7 @@ public class TweetDaoJPATest {
     /*
     Case 5: Persist tweet and search for tweet by id
      */
-    @Test
+    //@Test
     public void findByIdTest() throws Exception {
         // Find tweet by id
         transaction.begin();
@@ -142,7 +142,7 @@ public class TweetDaoJPATest {
     /*
     Case 6: Persist tweet and search for tweet by message
      */
-    @Test
+    //@Test
     public void findByMessageTest1() throws Exception {
         // Find by message
         transaction.begin();
@@ -155,7 +155,7 @@ public class TweetDaoJPATest {
     /*
     Case 7: Persist tweet and search for tweet by username
      */
-    @Test
+    //@Test
     public void findByUsernameTest1() throws Exception {
         // Find by username
         transaction.begin();
@@ -174,7 +174,7 @@ public class TweetDaoJPATest {
     /*
     Case 8: Persist tweet and search for tweet by username
      */
-    @Test
+    //@Test
     public void findByUsernameTest2() throws Exception {
         // Find by username "bart" with 2 tweets
         transaction.begin();
@@ -192,7 +192,7 @@ public class TweetDaoJPATest {
     /*
     Case 9: Delete tweet by id (also tests findAll)
      */
-    @Test
+    //@Test
     public void deleteByIdTest() throws Exception {
         transaction.begin();
         List<Tweet> tweetFound = dao.findAll();
@@ -214,7 +214,7 @@ public class TweetDaoJPATest {
     /*
     Case 10: Test link between Tweet and Account tables
      */
-    @Test
+    //@Test
     public void linkTweetAccountTest() throws Exception {
         // Find by username "emma" with 1 tweet
         transaction.begin();
@@ -227,7 +227,7 @@ public class TweetDaoJPATest {
     /*
     Case 11: Delete tweet
      */
-    @Test
+    //@Test
     public void deleteTweetTest1() throws Exception {
         // Find by username "emma" with 1 tweet
         transaction.begin();

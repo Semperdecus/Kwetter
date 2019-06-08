@@ -8,9 +8,8 @@ package seleniumTests.PageObjects;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import seleniumTest.PageObjects.AdminDashboard;
-import seleniumTest.PageObjects.PageObject;
-import seleniumTest.PageObjects.ProfilePage;
+import seleniumTests.PageObjects.AdminDashboard;
+import seleniumTests.PageObjects.ProfilePage;
 
 /**
  *

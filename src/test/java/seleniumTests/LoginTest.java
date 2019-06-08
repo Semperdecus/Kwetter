@@ -9,16 +9,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import seleniumTest.PageObjects.AdminDashboard;
+import seleniumTests.PageObjects.AdminDashboard;
 import seleniumTests.PageObjects.LoginPage;
-import seleniumTest.PageObjects.ProfilePage;
+import seleniumTests.PageObjects.ProfilePage;
 /**
  *
  * @author teren
  */
-public class LoginTest extends DriverSetup {
+public class LoginTest extends HTMLDriverSetup {
 
-    @Test
+    //@Test
     public void login_ExistingUser_RedirectToUserProfile(){
         driver.get("http://localhost:8080/Kwetter/");
 
@@ -34,7 +34,7 @@ public class LoginTest extends DriverSetup {
         assertEquals("Your role is insufficient to access this dashboard.", profilePage.confirmationHeader());
     }
     
-    @Test
+    //@Test
     public void login_ExistingAdmin_RedirectToAdminDashboard(){
         driver.get("http://localhost:8080/Kwetter/");
 

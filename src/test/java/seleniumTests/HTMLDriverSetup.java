@@ -17,7 +17,7 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
  *
  * @author teren
  */
-public class DriverSetup {
+public class HTMLDriverSetup {
 
     protected static WebDriver driver;
 

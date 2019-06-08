@@ -28,12 +28,19 @@ public class CORSFilter implements Filter {
     /**
      * @see Filter#destroy()
      */
+    @Override
     public void destroy() {
     }
 
     /**
+     * @param servletRequest
+     * @param servletResponse
+     * @param chain
+     * @throws java.io.IOException
+     * @throws javax.servlet.ServletException
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
      */
+    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
 
@@ -59,8 +66,11 @@ public class CORSFilter implements Filter {
     }
 
     /**
+     * @param fConfig
+     * @throws javax.servlet.ServletException
      * @see Filter#init(FilterConfig)
      */
+    @Override
     public void init(FilterConfig fConfig) throws ServletException {
     }
 
