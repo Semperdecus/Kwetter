@@ -1,0 +1,22 @@
+<div class="login-card container col-sm-3  card base-margin-top">
+  <div class="card-body">
+    <h1>Login</h1>
+    <form [formGroup]="loginForm">
+      <table class="col-sm-12" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="input-field">
+              <input formControlName="username" matInput placeholder="Username" name="username" required>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td><mat-form-field class="input-field">
+            <input formControlName="password" matInput placeholder="Password" type="password" name="password" required>
+          </mat-form-field></td>
+        </tr></table>
+    </form>
+    <button class="btn btn-primary" (click)="login()">Login</button>
+  </div>
+
+</div>

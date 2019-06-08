@@ -1,0 +1,32 @@
+<div class="fixed-alert">
+  <ngb-alert i18n (close)="successAlert = true" *ngIf="!successAlert" type="success">A new tweet was added</ngb-alert>
+</div>
+<div *ngFor="let tweet of tweets" class="card base-margin-top">
+  <div class="row no-gutters">
+    <div class="col-auto">
+      <img [src]="tweet?.account?.picture"
+           alt="profile image" class="avatar">
+    </div>
+    <div class="col">
+      <div class="card-block px-2">
+        <p class="card-text"><strong><a
+          [routerLink]="['/profile', tweet?.account?.username]">{{tweet?.account?.username}}</a></strong> |
+          {{tweet?.date | datex:'MMM Do' }}</p>
+        <p class="card-text">{{tweet?.message}}</p>
+      </div>
+    </div>
+    <div class="card-footer" style="border: 0px">
+      <div *ngIf="tweet?.account?.username == loggedInUser; else elseBlock">
+        <button (click)='delete(tweet)' type="button" class="btn small-button">
+          <mat-icon class="tweetIcon">remove_circle_outline</mat-icon>
+        </button>
+      </div>
+      <ng-template #elseBlock>
+        <button type="button" class="btn small-button">
+          <mat-icon style="color: red;">favorite_outline</mat-icon>
+        </button>
+      </ng-template>
+
+    </div>
+  </div>
+</div>
